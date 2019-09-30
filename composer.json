@@ -1,0 +1,48 @@
+{
+    "name": "connectholland/user-bundle",
+    "description": "User bundle for Symfony 4 projects",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Reyo Stallenberg",
+            "email": "reyo@connectholland.nl"
+        }
+    ],
+    "require": {
+        "php": "^7.3",
+        "symfony/form": "^3.4 || ^4.3",
+        "symfony/framework-bundle": "^3.4 || ^4.3",
+        "symfony/http-kernel": "^3.4 || ^4.3",
+        "symfony/security-bundle": "^3.4 || ^4.3",
+        "symfony/templating": "^3.4 || ^4.3",
+        "symfony/translation": "^3.4 || ^4.3",
+        "symfony/twig-bundle": "^3.4 || ^4.3",
+        "symfony/validator": "^3.4 || ^4.3",
+        "twig/twig": "^2.0 || ^3.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "phpunit/phpunit": "^8.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "ConnectHolland\\UserBundle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ConnectHolland\\UserBundle\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
