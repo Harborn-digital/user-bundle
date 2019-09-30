@@ -1,0 +1,26 @@
+parameters:
+
+services:
+    connectholland_user.security.authenticator:
+        class: ConnectHolland\UserBundle\Security\UserBundleAuthenticator
+        public: false
+
+    connectholland_user.controller.registration:
+        class: ConnectHolland\UserBundle\Controller\RegistrationController
+        public: false
+
+    connectholland_user.controller.security:
+        class: ConnectHolland\UserBundle\Controller\SecurityController
+        public: false
+
+    connectholland_user.form.type.registration:
+        class: ConnectHolland\UserBundle\Form\RegistrationFormType
+        public: false
+        tags:
+            - { name: form.type }
+
+    connectholland_user.doctrine.repository.user:
+        class: ConnectHolland\UserBundle\Repository\UserRepository
+        public: false
+        tags:
+            - { name: form.type }
