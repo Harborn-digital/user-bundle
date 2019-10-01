@@ -1,26 +1,23 @@
 parameters:
 
 services:
-    connectholland_user.security.authenticator:
-        class: ConnectHolland\UserBundle\Security\UserBundleAuthenticator
+    _defaults:
+        autowire: false
+        autoconfigure: false
         public: false
 
-    connectholland_user.controller.registration:
-        class: ConnectHolland\UserBundle\Controller\RegistrationController
-        public: false
+    ConnectHolland\UserBundle\Security\UserBundleAuthenticator: ~
 
-    connectholland_user.controller.security:
-        class: ConnectHolland\UserBundle\Controller\SecurityController
-        public: false
+    ConnectHolland\UserBundle\Controller\RegistrationController:
+        tags:
+            - { name: controller.service_arguments }
 
-    connectholland_user.form.type.registration:
-        class: ConnectHolland\UserBundle\Form\RegistrationFormType
-        public: false
+    ConnectHolland\UserBundle\Controller\SecurityController:
+        tags:
+            - { name: controller.service_arguments }
+
+    ConnectHolland\UserBundle\Form\RegistrationFormType:
         tags:
             - { name: form.type }
 
-    connectholland_user.doctrine.repository.user:
-        class: ConnectHolland\UserBundle\Repository\UserRepository
-        public: false
-        tags:
-            - { name: form.type }
+    ConnectHolland\UserBundle\Repository\UserRepository: ~
