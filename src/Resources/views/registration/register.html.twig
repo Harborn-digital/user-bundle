@@ -1,15 +1,19 @@
 <!DOCTYPE html>
+<htmL>
+    <head>
+        <title>Register</title>
+    </head>
+    <body>
+        {% block body %}
+            <h1>Register</h1>
 
-<title>Register</title>
+            {{ form_start(form) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.plainPassword) }}
+            {{ form_row(form.agreeTerms) }}
 
-{% block body %}
-    <h1>Register</h1>
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button class="btn">Register</button>
-    {{ form_end(registrationForm) }}
-{% endblock %}
+            <button type="submit" class="btn">Register</button>
+            {{ form_end(form) }}
+        {% endblock %}
+    </body>
+</htmL>
