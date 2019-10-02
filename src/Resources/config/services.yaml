@@ -6,13 +6,29 @@ services:
         autoconfigure: false
         public: false
 
-    ConnectHolland\UserBundle\Security\UserBundleAuthenticator: ~
+    ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
+        arguments:
+            - '@doctrine'
+            - '@router'
+            - '@security.csrf.token_manager'
+            - '@security.user_password_encoder.generic'
 
     ConnectHolland\UserBundle\Controller\RegistrationController:
+        arguments:
+            - '@doctrine'
+            - '@session'
+            - '@event_dispatcher'
+            - '@security.token_storage'
+            - '@router'
+            - '@twig'
         tags:
             - { name: controller.service_arguments }
 
     ConnectHolland\UserBundle\Controller\SecurityController:
+        arguments:
+            - '@security.authentication_utils'
+            - '@form.factory'
+            - '@twig'
         tags:
             - { name: controller.service_arguments }
 
@@ -20,4 +36,21 @@ services:
         tags:
             - { name: form.type }
 
-    ConnectHolland\UserBundle\Repository\UserRepository: ~
+    ConnectHolland\UserBundle\Repository\UserRepository:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: doctrine.repository_service }
+
+    ConnectHolland\UserBundle\Command\UserCreateCommand:
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: console.command }
+
+    ConnectHolland\UserBundle\EventSubscriber\CreateUserSubscriber:
+        arguments:
+            - '@security.user_password_encoder.generic'
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }

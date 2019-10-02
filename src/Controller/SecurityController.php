@@ -9,35 +9,55 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use ConnectHolland\UserBundle\Form\LoginType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Twig\Environment;
 
-class SecurityController extends AbstractController
+class SecurityController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @var AuthenticationUtils
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    private $authenticationUtils;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var Environment
+     */
+    private $twig;
+
+    public function __construct(AuthenticationUtils $authenticationUtils, FormFactoryInterface $formFactory, Environment $twig)
     {
-        // if ($this->getUser()) {
-        //    $this->redirectToRoute('target_path');
-        // }
-
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        $this->authenticationUtils = $authenticationUtils;
+        $this->formFactory         = $formFactory;
+        $this->twig                = $twig;
     }
 
     /**
-     * @Route("/logout", name="app_logout")
+     * @Route("/inloggen", name="connectholland_user_login", methods={"GET", "POST"})
      */
-    public function logout()
+    public function login(): Response
     {
-        throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
+        $form         = $this->formFactory->create(LoginType::class);
+        $lastUsername = $this->authenticationUtils->getLastUsername();
+        $error        = $this->authenticationUtils->getLastAuthenticationError();
+
+        return new Response(
+            $this->twig->render(
+                '@ConnecthollandUser/security/login.html.twig',
+                [
+                    'form'          => $form->createView(),
+                    'last_username' => $lastUsername,
+                    'error'         => $error,
+                ]
+            )
+        );
     }
 }

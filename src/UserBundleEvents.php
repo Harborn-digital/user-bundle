@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class ConnecthollandUserBundle extends Bundle
+class UserBundleEvents
 {
+    const CREATE_USER  = 'connectholland_user.create_user';
+    const USER_CREATED = 'connectholland_user.user_created';
 }

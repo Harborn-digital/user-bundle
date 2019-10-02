@@ -11,7 +11,6 @@ namespace ConnectHolland\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="ConnectHolland\UserBundle\Repository\UserRepository")
@@ -32,13 +31,23 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="boolean", options={"default" : 0})
+     */
+    private $enabled = false;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $passwordRequestToken;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -52,9 +61,38 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): UserInterface
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): UserInterface
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getPasswordRequestToken(): ?string
+    {
+        return $this->passwordRequestToken;
+    }
+
+    /**
+     * @param mixed $passwordRequestToken
+     *
+     * @return User
+     */
+    public function setPasswordRequestToken($passwordRequestToken): UserInterface
+    {
+        $this->passwordRequestToken = $passwordRequestToken;
 
         return $this;
     }
@@ -96,7 +134,7 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): UserInterface
     {
         $this->password = $password;
 
@@ -108,7 +146,6 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
     /**
@@ -116,7 +153,5 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 }
