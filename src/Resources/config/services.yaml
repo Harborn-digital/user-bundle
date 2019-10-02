@@ -6,6 +6,22 @@ services:
         autoconfigure: false
         public: false
 
+    _instanceof:
+        ConnectHolland\UserBundle\Mailer\BaseEmail:
+            calls:
+                - method: setMailer
+                  arguments:
+                      - '@ConnectHolland\UserBundle\Mailer\Mailer'
+
+    ConnectHolland\UserBundle\Mailer\Mailer:
+        arguments:
+            - '@mailer'
+            - '%env(USERBUNDLE_FROM_EMAILADDRESS)%'
+            - '@twig'
+            - '%kernel.project_dir%'
+
+    ConnectHolland\UserBundle\Mailer\RegistrationEmail: ~
+
     ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
         arguments:
             - '@doctrine'
@@ -52,5 +68,11 @@ services:
         arguments:
             - '@security.user_password_encoder.generic'
             - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ConnectHolland\UserBundle\EventSubscriber\UserCreatedSubscriber:
+        arguments:
+            - '@ConnectHolland\UserBundle\Mailer\RegistrationEmail'
         tags:
             - { name: kernel.event_subscriber }

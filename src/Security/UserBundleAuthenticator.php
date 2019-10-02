@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Security;
 
 use ConnectHolland\UserBundle\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

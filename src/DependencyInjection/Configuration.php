@@ -14,7 +14,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    const CONFIG_ROOT_KEY = 'connectholland_user';
+    private const CONFIG_ROOT_KEY = 'connectholland_user';
 
     /**
      * {@inheritdoc}

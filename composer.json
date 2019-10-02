@@ -14,10 +14,12 @@
         "doctrine/doctrine-bundle": "^1.11",
         "doctrine/orm": "^2.6",
         "doctrine/persistence": "^1.1",
+        "league/html-to-markdown": "^4.8",
         "symfony/config": "^3.4 || ^4.3",
         "symfony/console": "^3.4 || ^4.3",
         "symfony/dependency-injection": "^3.4 || ^4.3",
         "symfony/doctrine-bridge": "^3.4 || ^4.3",
+        "symfony/dom-crawler": "^3.4 || ^4.3",
         "symfony/event-dispatcher": "^3.4 || ^4.3",
         "symfony/event-dispatcher-contracts": "^1.1",
         "symfony/form": "^3.4 || ^4.3",
@@ -28,6 +30,7 @@
         "symfony/routing": "^3.4 || ^4.3",
         "symfony/security": "^3.4 || ^4.3",
         "symfony/security-bundle": "^3.4 || ^4.3",
+        "symfony/swiftmailer-bundle": "^3.2",
         "symfony/templating": "^3.4 || ^4.3",
         "symfony/translation": "^3.4 || ^4.3",
         "symfony/twig-bundle": "^3.4 || ^4.3",
@@ -39,7 +42,8 @@
         "maglnet/composer-require-checker": "^2.0",
         "phpstan/phpstan": "^0.11.16",
         "phpunit/phpunit": "^8.3",
-        "sensiolabs/security-checker": "^6.0"
+        "sensiolabs/security-checker": "^6.0",
+        "symfony/var-dumper": "^3.4 || ^4.3"
     },
     "autoload": {
         "psr-4": {
@@ -67,9 +71,9 @@
             "phpunit"
         ],
         "analyse": [
-            "phpstan analyse --level=7 src/ tests/",
+            "security-checker security:check",
             "composer-require-checker",
-            "security-checker security:check"
+            "phpstan analyse --level=7 src/ tests/"
         ]
     },
     "extra": {

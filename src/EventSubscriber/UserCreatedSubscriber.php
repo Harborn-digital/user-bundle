@@ -10,27 +10,28 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
+use ConnectHolland\UserBundle\Mailer\RegistrationEmail;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\UriSigner;
 
 class UserCreatedSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var UriSigner
+     * @var RegistrationEmail
      */
-    private $uriSigner;
+    private $email;
 
-    public function __construct(UriSigner $uriSigner)
+    public function __construct(RegistrationEmail $email)
     {
-        $this->uriSigner = $uriSigner;
+        $this->email = $email;
     }
 
     public function onUserCreated(UserCreatedEvent $event)
     {
         $user = $event->getUser();
-
-        echo sprintf('Send an email with a signed uri to %s', $user->getUsername());
+        if ($user->isEnabled() === false) {
+            $this->email->send($user);
+        }
     }
 
     public static function getSubscribedEvents()
