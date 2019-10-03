@@ -12,14 +12,14 @@ namespace ConnectHolland\UserBundle\Command;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
+use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UserCreateCommand extends Command
 {
@@ -34,7 +34,7 @@ class UserCreateCommand extends Command
     {
         parent::__construct();
 
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher) ?? $eventDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     protected function configure()
@@ -63,10 +63,10 @@ EOT
         $enable   = $input->getOption('inactive') !== true;
 
         /** @var CreateUserEvent $event */
-        $event = $this->eventDispatcher->dispatch(new CreateUserEvent((new User())->setEmail($email)->setEnabled($enable), $password));
+        $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent((new User())->setEmail($email)->setEnabled($enable), $password));
         if ($event->isPropagationStopped() === false) {
             /** @var UserCreatedEvent $event */
-            $event = $this->eventDispatcher->dispatch(new UserCreatedEvent($event->getUser()));
+            $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
             if ($event->isPropagationStopped() === false) {
                 $output->writeln(sprintf('Created user <comment>%s</comment>', $email));
             }
