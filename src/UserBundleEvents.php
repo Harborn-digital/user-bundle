@@ -9,8 +9,11 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle;
 
+use ConnectHolland\UserBundle\Event\CreateUserEvent;
+use ConnectHolland\UserBundle\Event\UserCreatedEvent;
+
 class UserBundleEvents
 {
-    const CREATE_USER  = 'connectholland_user.create_user';
-    const USER_CREATED = 'connectholland_user.user_created';
+    const CREATE_USER  = CreateUserEvent::class;
+    const USER_CREATED = UserCreatedEvent::class;
 }

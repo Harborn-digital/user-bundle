@@ -41,6 +41,9 @@ class CreateUserSubscriber implements EventSubscriberInterface
         $user->setPassword(
             $this->passwordEncoder->encodePassword($user, $event->getPlainPassword())
         );
+        if ($user->isEnabled() === false) {
+            $user->setPasswordRequestToken(bin2hex(random_bytes(32)));
+        }
 
         /** @var EntityManagerInterface $userManager */
         $userManager = $this->registry->getManagerForClass(User::class);

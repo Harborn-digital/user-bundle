@@ -28,4 +28,8 @@ interface UserInterface extends BaseUserInterface
     public function getPasswordRequestToken(): ?string;
 
     public function setPasswordRequestToken(string $passwordRequestToken): self;
+
+    public function getLastLogin(): ?\DateTimeImmutable;
+
+    public function setLastLogin(\DateTimeImmutable $lastLogin): self;
 }

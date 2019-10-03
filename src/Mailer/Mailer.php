@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Mailer;
 
-use ConnectHolland\PeriodicalNotificationBundle\Entity\MessageInterface;
 use League\HTMLToMarkdown\HtmlConverter;
 use Symfony\Component\DomCrawler\Crawler;
 use Twig\Environment;
@@ -47,13 +46,6 @@ class Mailer
     public function createMessageAndSend(string $name, $to, array $parameters = []): \Swift_Message
     {
         return $this->doSend($to, $this->createHTMLBody($name, $parameters), $parameters);
-    }
-
-    public function send(MessageInterface $message, $from): int
-    {
-        $message = $this->doSend($message->getTo(), $message->getBody(), []);
-
-        return ($message instanceof \Swift_Message) ? 1 : 0;
     }
 
     private function createHTMLBody(string $name, array $parameters): string

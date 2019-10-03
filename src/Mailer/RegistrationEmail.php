@@ -9,14 +9,40 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Mailer;
 
-use ConnectHolland\UserBundle\Entity\User;
+use ConnectHolland\UserBundle\Entity\UserInterface;
+use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class RegistrationEmail extends BaseEmail
 {
-    public function send(User $user): \Swift_Message
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var UriSigner
+     */
+    private $uriSigner;
+
+    public function __construct(RouterInterface $router, UriSigner $uriSigner)
     {
-        return $this->mailer->createMessageAndSend('registration', $user->getEmail(), [
-            'user' => $user,
-        ]);
+        $this->router    = $router;
+        $this->uriSigner = $uriSigner;
+    }
+
+    public function send(UserInterface $user): \Swift_Message
+    {
+        $link = $this->router->generate('connectholland_user_registration_confirm', ['token' => $user->getPasswordRequestToken(), 'email' => $user->getEmail()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return $this->mailer->createMessageAndSend(
+            'registration',
+            $user->getEmail(),
+            [
+                'user' => $user,
+                'link' => $this->uriSigner->sign($link),
+            ]
+        );
     }
 }

@@ -11,6 +11,7 @@ namespace ConnectHolland\UserBundle\Security;
 
 use ConnectHolland\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -31,14 +32,34 @@ class UserBundleAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private $entityManager;
+    /**
+     * @var RegistryInterface
+     */
+    private $registry;
+
+    /**
+     * @var UrlGeneratorInterface
+     */
     private $urlGenerator;
+
+    /**
+     * @var CsrfTokenManagerInterface
+     */
     private $csrfTokenManager;
+
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $passwordEncoder;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     public function __construct(RegistryInterface $registry, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->entityManager    = $registry->getManagerForClass(User::class);
+        $this->registry         = $registry;
         $this->urlGenerator     = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder  = $passwordEncoder;
@@ -46,8 +67,7 @@ class UserBundleAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        return 'connectholland_user_login' === $request->attributes->get('_route')
-            && $request->isMethod('POST');
+        return 'connectholland_user_login' === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
@@ -73,9 +93,10 @@ class UserBundleAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['username'], 'enabled' => true]);
+        /** @var UserInterface|null $user */
+        $user = $this->registry->getRepository(User::class)->findOneBy(['email' => $credentials['username'], 'enabled' => true]);
 
-        if (!$user) {
+        if ($user instanceof UserInterface === false) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
@@ -95,7 +116,7 @@ class UserBundleAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('connectholland_user_login')); // TODO: Add suitable route
+        return new RedirectResponse('/'); // No target path configured, just go to /
     }
 
     protected function getLoginUrl()

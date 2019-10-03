@@ -13,6 +13,10 @@ services:
                   arguments:
                       - '@ConnectHolland\UserBundle\Mailer\Mailer'
 
+    Symfony\Component\HttpKernel\UriSigner:
+        arguments:
+            - '%kernel.secret%'
+
     ConnectHolland\UserBundle\Mailer\Mailer:
         arguments:
             - '@mailer'
@@ -20,7 +24,10 @@ services:
             - '@twig'
             - '%kernel.project_dir%'
 
-    ConnectHolland\UserBundle\Mailer\RegistrationEmail: ~
+    ConnectHolland\UserBundle\Mailer\RegistrationEmail:
+        arguments:
+            - '@router'
+            - '@Symfony\Component\HttpKernel\UriSigner'
 
     ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
         arguments:
@@ -28,6 +35,7 @@ services:
             - '@router'
             - '@security.csrf.token_manager'
             - '@security.user_password_encoder.generic'
+            - '@event_dispatcher'
 
     ConnectHolland\UserBundle\Controller\RegistrationController:
         arguments:
@@ -67,6 +75,12 @@ services:
     ConnectHolland\UserBundle\EventSubscriber\CreateUserSubscriber:
         arguments:
             - '@security.user_password_encoder.generic'
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ConnectHolland\UserBundle\EventSubscriber\UserLoginSubscriber:
+        arguments:
             - '@doctrine'
         tags:
             - { name: kernel.event_subscriber }
