@@ -41,6 +41,11 @@ class User implements UserInterface
     private $passwordRequestToken;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -93,6 +98,18 @@ class User implements UserInterface
     public function setPasswordRequestToken($passwordRequestToken): UserInterface
     {
         $this->passwordRequestToken = $passwordRequestToken;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeImmutable
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(\DateTimeImmutable $lastLogin): UserInterface
+    {
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }

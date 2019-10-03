@@ -6,19 +6,42 @@ services:
         autoconfigure: false
         public: false
 
+    _instanceof:
+        ConnectHolland\UserBundle\Mailer\BaseEmail:
+            calls:
+                - method: setMailer
+                  arguments:
+                      - '@ConnectHolland\UserBundle\Mailer\Mailer'
+
+    Symfony\Component\HttpKernel\UriSigner:
+        arguments:
+            - '%kernel.secret%'
+
+    ConnectHolland\UserBundle\Mailer\Mailer:
+        arguments:
+            - '@mailer'
+            - '%env(USERBUNDLE_FROM_EMAILADDRESS)%'
+            - '@twig'
+            - '%kernel.project_dir%'
+
+    ConnectHolland\UserBundle\Mailer\RegistrationEmail:
+        arguments:
+            - '@router'
+            - '@Symfony\Component\HttpKernel\UriSigner'
+
     ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
         arguments:
             - '@doctrine'
             - '@router'
             - '@security.csrf.token_manager'
             - '@security.user_password_encoder.generic'
+            - '@event_dispatcher'
 
     ConnectHolland\UserBundle\Controller\RegistrationController:
         arguments:
             - '@doctrine'
             - '@session'
             - '@event_dispatcher'
-            - '@security.token_storage'
             - '@router'
             - '@twig'
         tags:
@@ -52,5 +75,17 @@ services:
         arguments:
             - '@security.user_password_encoder.generic'
             - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ConnectHolland\UserBundle\EventSubscriber\UserLoginSubscriber:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ConnectHolland\UserBundle\EventSubscriber\UserCreatedSubscriber:
+        arguments:
+            - '@ConnectHolland\UserBundle\Mailer\RegistrationEmail'
         tags:
             - { name: kernel.event_subscriber }
