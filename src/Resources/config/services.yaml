@@ -22,7 +22,6 @@ services:
             - '@mailer'
             - '%env(USERBUNDLE_FROM_EMAILADDRESS)%'
             - '@twig'
-            - '%kernel.project_dir%'
 
     ConnectHolland\UserBundle\Mailer\RegistrationEmail:
         arguments:

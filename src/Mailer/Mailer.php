@@ -30,17 +30,11 @@ class Mailer
      */
     private $twig;
 
-    /**
-     * @var string
-     */
-    private $projectDirectory;
-
-    public function __construct(\Swift_Mailer $mailer, string $fromEmail, Environment $twig, string $projectDirectory)
+    public function __construct(\Swift_Mailer $mailer, string $fromEmail, Environment $twig)
     {
-        $this->mailer           = $mailer;
-        $this->fromEmail        = $fromEmail;
-        $this->twig             = $twig;
-        $this->projectDirectory = $projectDirectory;
+        $this->mailer    = $mailer;
+        $this->fromEmail = $fromEmail;
+        $this->twig      = $twig;
     }
 
     public function createMessageAndSend(string $name, $to, array $parameters = []): \Swift_Message

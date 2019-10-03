@@ -14,3 +14,11 @@ This bundle will be extendible and provide:
 - Recover password functionality
 - Being API accessable
 - Ability to 'switch on' OAuth (Google/GitHub/Facebook/etc)
+
+## Environment
+
+Set the environment variables to be able to send e-mails.
+
+```dotenv
+USERBUNDLE_FROM_EMAILADDRESS=example@example.com
+```
