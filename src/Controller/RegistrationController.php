@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
@@ -55,21 +54,15 @@ class RegistrationController
     private $session;
 
     /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
      * @var Environment
      */
     private $twig;
 
-    public function __construct(RegistryInterface $registry, Session $session, EventDispatcherInterface $eventDispatcher, TokenStorageInterface $tokenStorage, RouterInterface $router, Environment $twig)
+    public function __construct(RegistryInterface $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router, Environment $twig)
     {
         $this->registry        = $registry;
         $this->session         = $session;
         $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
-        $this->tokenStorage    = $tokenStorage;
         $this->router          = $router;
         $this->twig            = $twig;
     }

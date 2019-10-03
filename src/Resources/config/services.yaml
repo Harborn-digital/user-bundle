@@ -42,7 +42,6 @@ services:
             - '@doctrine'
             - '@session'
             - '@event_dispatcher'
-            - '@security.token_storage'
             - '@router'
             - '@twig'
         tags:
