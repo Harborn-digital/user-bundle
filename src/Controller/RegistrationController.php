@@ -34,24 +34,24 @@ use Twig\Environment;
 class RegistrationController
 {
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var RegistryInterface
      */
     private $registry;
 
     /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
      * @var Session
      */
     private $session;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
     /**
      * @var Environment
@@ -62,7 +62,7 @@ class RegistrationController
     {
         $this->registry        = $registry;
         $this->session         = $session;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher) ?? $eventDispatcher;
         $this->router          = $router;
         $this->twig            = $twig;
     }

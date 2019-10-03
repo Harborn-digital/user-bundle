@@ -34,7 +34,7 @@ class UserCreateCommand extends Command
     {
         parent::__construct();
 
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher) ?? $eventDispatcher;
     }
 
     protected function configure()
