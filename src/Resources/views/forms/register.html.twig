@@ -3,7 +3,7 @@
 {% trans_default_domain 'ConnecthollandUserBundle' %}
 
 {% block connectholland_user_content %}
-    <h1>Register</h1>
+    <h1>{{ 'connectholland_user.registration.title'|trans }}</h1>
 
     {{ form_start(form) }}
         {{ form_row(form.email) }}
