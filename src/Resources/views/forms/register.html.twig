@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<htmL>
-    <head>
-        <title>Register</title>
-    </head>
-    <body>
-        {% block body %}
-            <h1>Register</h1>
+{% extends '@ConnecthollandUser/base.html.twig' %}
 
-            {{ form_start(form) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.plainPassword) }}
-            {{ form_row(form.agreeTerms) }}
+{% trans_default_domain 'ConnecthollandUserBundle' %}
 
-            <button type="submit" class="btn">Register</button>
-            {{ form_end(form) }}
-        {% endblock %}
-    </body>
-</htmL>
+{% block connectholland_user_content %}
+    <h1>{{ 'connectholland_user.registration.title'|trans }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword) }}
+        {{ form_row(form.agreeTerms) }}
+
+        <button type="submit" class="btn">{{ 'connectholland_user.registration.submit'|trans }}</button>
+    {{ form_end(form) }}
+{% endblock %}

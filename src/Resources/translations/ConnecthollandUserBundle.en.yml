@@ -1,0 +1,13 @@
+connectholland_user:
+    registration:
+        email: 'Email address'
+        password: 'Password'
+        submit: 'Register'
+        terms: 'Terms'
+        title: 'Register'
+    security:
+        login:
+            password: 'Password'
+            submit: 'Login'
+            title: 'Login'
+            username: 'Username'
