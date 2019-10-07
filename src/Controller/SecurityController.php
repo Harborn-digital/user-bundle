@@ -43,7 +43,7 @@ class SecurityController
     /**
      * @Route("/inloggen", name="connectholland_user_login", methods={"GET", "POST"})
      */
-    public function login(): Response
+    public function __invoke(): Response
     {
         $form         = $this->formFactory->create(LoginType::class);
         $lastUsername = $this->authenticationUtils->getLastUsername();

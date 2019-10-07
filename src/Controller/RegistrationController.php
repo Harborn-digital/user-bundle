@@ -16,6 +16,7 @@ use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Form\RegistrationType;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use ConnectHolland\UserBundle\Security\UserBundleAuthenticator;
+use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
@@ -28,7 +29,7 @@ use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 
 class RegistrationController
@@ -62,7 +63,7 @@ class RegistrationController
     {
         $this->registry        = $registry;
         $this->session         = $session;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher) ?? $eventDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
         $this->router          = $router;
         $this->twig            = $twig;
     }
@@ -77,10 +78,10 @@ class RegistrationController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var CreateUserEvent $event */
-            $event = $this->eventDispatcher->dispatch(new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData()));
+            $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData()));
             if ($event->isPropagationStopped() === false) {
                 /** @var UserCreatedEvent $event */
-                $event = $this->eventDispatcher->dispatch(new UserCreatedEvent($event->getUser()));
+                $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
                 if ($event->isPropagationStopped() === false) {
                     $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your registration');
 
@@ -91,7 +92,7 @@ class RegistrationController
 
         return new Response(
             $this->twig->render(
-                '@ConnecthollandUser/registration/register.html.twig',
+                '@ConnecthollandUser/forms/register.html.twig',
                 [
                     'form' => $form->createView(),
                 ]
