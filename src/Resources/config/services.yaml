@@ -88,3 +88,7 @@ services:
             - '@ConnectHolland\UserBundle\Mailer\RegistrationEmail'
         tags:
             - { name: kernel.event_subscriber }
+
+    ConnectHolland\UserBundle\Security\OAuthUserProvider:
+        arguments:
+            - '@doctrine'

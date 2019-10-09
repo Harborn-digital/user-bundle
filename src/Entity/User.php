@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -55,6 +57,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", nullable=true)
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserOAuth", mappedBy="user", orphanRemoval=true)
+     */
+    private $oauths;
+
+    public function __construct()
+    {
+        $this->oauths = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -170,5 +182,36 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * @return Collection|UserOAuth[]
+     */
+    public function getOauths(): Collection
+    {
+        return $this->oauths;
+    }
+
+    public function addOauth(UserOAuth $oauth): self
+    {
+        if (!$this->oauths->contains($oauth)) {
+            $this->oauths[] = $oauth;
+            $oauth->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOauth(UserOAuth $oauth): self
+    {
+        if ($this->oauths->contains($oauth)) {
+            $this->oauths->removeElement($oauth);
+            // set the owning side to null (unless already changed)
+            if ($oauth->getUser() === $this) {
+                $oauth->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
