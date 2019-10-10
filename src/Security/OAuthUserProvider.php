@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Security;
 
 use ConnectHolland\UserBundle\Entity\User;
+use ConnectHolland\UserBundle\Entity\UserOAuth;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
@@ -32,6 +33,37 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
         /** @var UserRepository $repository */
         $repository = $this->doctrine->getRepository(User::class);
 
-        return $repository->findOneByOAuthUsername($response->getResourceOwner()->getName(), $response->getUsername());
+        $name = $response->getResourceOwner()->getName();
+        $username = $response->getUsername();
+        $email = $response->getEmail();
+
+        $user = $repository->findOneByOAuthUsername($name, $username);
+
+        if (is_null($user)) {
+            $user = $repository->findOneByEmail($email);
+            if (is_null($user)) {
+                $user = new User();
+                $user->setEnabled(true);
+                $user->setEmail($email);
+            }
+
+            $oauth = new UserOAuth();
+            $oauth->setResource($name);
+            $oauth->setOAuthUsername($username);
+
+            $user->addOAuth($oauth);
+
+            // @todo: Dispatch new UserOAuth created here to be able adding more data from $response.
+        }
+
+        $roles = $user->getRoles();
+        $roles[] = 'ROLE_OAUTH';
+        $roles[] = 'ROLE_OAUTH_'.strtoupper($name);
+        $user->setRoles($roles);
+
+        $this->doctrine->getManagerForClass(User::class)->persist($user);
+        $this->doctrine->getManagerForClass(User::class)->flush();
+
+        return $user;
     }
 }

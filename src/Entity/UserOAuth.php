@@ -29,7 +29,7 @@ class UserOAuth
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="oauths")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="oauths", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -77,7 +77,7 @@ class UserOAuth
     /**
      * @return mixed
      */
-    public function getOauthUsername()
+    public function getOAuthUsername()
     {
         return $this->oauthUsername;
     }
@@ -87,7 +87,7 @@ class UserOAuth
      *
      * @return UserOAuth
      */
-    public function setOauthUsername($oauthUsername)
+    public function setOAuthUsername($oauthUsername)
     {
         $this->oauthUsername = $oauthUsername;
 

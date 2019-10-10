@@ -59,7 +59,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserOAuth", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     private $oauths;
 
@@ -187,12 +187,12 @@ class User implements UserInterface
     /**
      * @return Collection|UserOAuth[]
      */
-    public function getOauths(): Collection
+    public function getOAuths(): Collection
     {
         return $this->oauths;
     }
 
-    public function addOauth(UserOAuth $oauth): self
+    public function addOAuth(UserOAuth $oauth): self
     {
         if (!$this->oauths->contains($oauth)) {
             $this->oauths[] = $oauth;
@@ -202,7 +202,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeOauth(UserOAuth $oauth): self
+    public function removeOAuth(UserOAuth $oauth): self
     {
         if ($this->oauths->contains($oauth)) {
             $this->oauths->removeElement($oauth);
