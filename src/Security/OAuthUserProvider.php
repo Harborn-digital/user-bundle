@@ -33,9 +33,9 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
         /** @var UserRepository $repository */
         $repository = $this->doctrine->getRepository(User::class);
 
-        $name = $response->getResourceOwner()->getName();
+        $name     = $response->getResourceOwner()->getName();
         $username = $response->getUsername();
-        $email = $response->getEmail();
+        $email    = $response->getEmail();
 
         $user = $repository->findOneByOAuthUsername($name, $username);
 
@@ -56,7 +56,7 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
             // @todo: Dispatch new UserOAuth created here to be able adding more data from $response.
         }
 
-        $roles = $user->getRoles();
+        $roles   = $user->getRoles();
         $roles[] = 'ROLE_OAUTH';
         $roles[] = 'ROLE_OAUTH_'.strtoupper($name);
         $user->setRoles($roles);
