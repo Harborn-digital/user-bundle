@@ -32,40 +32,14 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
 
     public function prepend(ContainerBuilder $container)
     {
-        // @todo: Only do this if OAuthBundle is loaded and only suggest it
         // @todo: Extract
 
-        $resourceOwners = [];
-        $classes        = ClassFinder::getClassesInNamespace('HWI\\Bundle\\OAuthBundle\\OAuth\\ResourceOwner');
-        foreach ($classes as $class) {
-            if (is_subclass_of($class, GenericOAuth2ResourceOwner::class)) {
-                $naming                                 = explode('ResourceOwner', (new \ReflectionClass($class))->getShortName());
-                $resourceOwners[strtolower($naming[0])] = [];
-            }
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['HWIOAuthBundle'])) {
+            $config = $this->getResourceOwnersConfiguration($container);
+
+            $container->prependExtensionConfig('hwi_oauth', $config);
         }
-
-        $types = [
-            'id',
-            'secret',
-            'scope',
-            'options',
-        ];
-        foreach ($resourceOwners as $resourceOwner => $options) {
-            foreach ($types as $type) {
-                $envVarName = sprintf('USERBUNDLE_OAUTH_%s_%s', strtoupper($resourceOwner), strtoupper($type));
-                if (getenv($envVarName) !== false) {
-                    $parameterName                         = sprintf('env(%s)', $envVarName);
-                    $resourceOwners[$resourceOwner][$type] = $container->resolveEnvPlaceholders($container->getParameter($parameterName), true);
-                }
-            }
-        }
-
-        $config = [
-            'firewall_name'   => ['secured_area'],
-            'resource_owners' => $this->createConfigForResourceOwners(array_filter($resourceOwners)),
-        ];
-
-        $container->prependExtensionConfig('hwi_oauth', $config);
     }
 
     private function createConfigForResourceOwners($resourceOwners): array
@@ -95,5 +69,53 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
         }
 
         return $configForResourceOwners;
+    }
+
+    private function getResourceOwnersConfiguration(ContainerBuilder $container): array
+    {
+        $resourceOwners = $this->getResourceOwnersByClasses();
+        $resourceOwners = $this->fillResourceOwnersWithEnvVars($container, $resourceOwners);
+
+        $config = [
+            'firewall_name'   => ['secured_area'],
+            'resource_owners' => $this->createConfigForResourceOwners(array_filter($resourceOwners)),
+        ];
+
+        return $config;
+    }
+
+    private function getResourceOwnersByClasses(): array
+    {
+        $resourceOwners = [];
+        $classes        = ClassFinder::getClassesInNamespace('HWI\\Bundle\\OAuthBundle\\OAuth\\ResourceOwner');
+        foreach ($classes as $class) {
+            if (is_subclass_of($class, GenericOAuth2ResourceOwner::class)) {
+                $naming                                 = explode('ResourceOwner', (new \ReflectionClass($class))->getShortName());
+                $resourceOwners[strtolower($naming[0])] = [];
+            }
+        }
+
+        return $resourceOwners;
+    }
+
+    private function fillResourceOwnersWithEnvVars(ContainerBuilder $container, array $resourceOwners): array
+    {
+        $types = [
+            'id',
+            'secret',
+            'scope',
+            'options',
+        ];
+        foreach ($resourceOwners as $resourceOwner => $options) {
+            foreach ($types as $type) {
+                $envVarName = sprintf('USERBUNDLE_OAUTH_%s_%s', strtoupper($resourceOwner), strtoupper($type));
+                if (getenv($envVarName) !== false) {
+                    $parameterName                         = sprintf('env(%s)', $envVarName);
+                    $resourceOwners[$resourceOwner][$type] = $container->resolveEnvPlaceholders($container->getParameter($parameterName), true);
+                }
+            }
+        }
+
+        return $resourceOwners;
     }
 }
