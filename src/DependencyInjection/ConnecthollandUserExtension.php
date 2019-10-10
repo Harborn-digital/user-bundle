@@ -32,8 +32,6 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
 
     public function prepend(ContainerBuilder $container)
     {
-        // @todo: Extract
-
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['HWIOAuthBundle'])) {
             $config = $this->getResourceOwnersConfiguration($container);
