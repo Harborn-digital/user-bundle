@@ -16,7 +16,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 
-class OAuthUserProvider implements OAuthAwareUserProviderInterface
+class OAuthUserProvider # implements OAuthAwareUserProviderInterface
 {
     /**
      * @var Registry

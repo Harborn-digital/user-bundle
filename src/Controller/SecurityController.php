@@ -51,7 +51,7 @@ class SecurityController
 
         return new Response(
             $this->twig->render(
-                '@ConnecthollandUser/security/login.html.twig',
+                '@ConnecthollandUser/forms/login.html.twig',
                 [
                     'form'          => $form->createView(),
                     'last_username' => $lastUsername,
