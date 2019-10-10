@@ -25,13 +25,7 @@ USERBUNDLE_FROM_EMAILADDRESS=example@example.com
 
 ## OAuth
 
-To be able using OAuth login require _HWIOAuth_ bundle.
-
-```bash
-composer require hwi/oauth-bundle php-http/guzzle6-adapter:^1.0 php-http/httplug-bundle
-```
-
-Add environment variables to enable a specific OAuth provider (resource). E.g. for google:
+To use OAuth login add environment variables to enable a specific OAuth provider (resource). E.g. for google:
 ```dotenv
 USERBUNDLE_OAUTH_GOOGLE_ID=xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
 USERBUNDLE_OAUTH_GOOGLE_SECRET=XXXXXXXXXXX-xx_xx_xxxxx

@@ -15,7 +15,10 @@
         "doctrine/orm": "^2.6",
         "doctrine/persistence": "^1.1",
         "haydenpierce/class-finder": "^0.4.0",
+        "hwi/oauth-bundle": "^0.6.3",
         "league/html-to-markdown": "^4.8",
+        "php-http/guzzle6-adapter": "^1.0",
+        "php-http/httplug-bundle": "^1.16",
         "symfony/config": "^3.4 || ^4.3",
         "symfony/console": "^3.4 || ^4.3",
         "symfony/dependency-injection": "^3.4 || ^4.3",
@@ -46,9 +49,6 @@
         "sensiolabs/security-checker": "^6.0",
         "symfony/var-dumper": "^3.4 || ^4.3"
     },
-    "suggest": {
-        "hwi/oauth-bundle": "For support of OAuth login"
-    },
     "autoload": {
         "psr-4": {
             "ConnectHolland\\UserBundle\\": "src"
@@ -76,7 +76,6 @@
         ],
         "analyse": [
             "security-checker security:check",
-            "composer-require-checker",
             "phpstan analyse --level=7 src/ tests/"
         ]
     },

@@ -32,12 +32,9 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
 
     public function prepend(ContainerBuilder $container)
     {
-        $bundles = $container->getParameter('kernel.bundles');
-        if (isset($bundles['HWIOAuthBundle'])) {
-            $config = $this->getResourceOwnersConfiguration($container);
+        $config = $this->getResourceOwnersConfiguration($container);
 
-            $container->prependExtensionConfig('hwi_oauth', $config);
-        }
+        $container->prependExtensionConfig('hwi_oauth', $config);
     }
 
     private function createConfigForResourceOwners($resourceOwners): array
