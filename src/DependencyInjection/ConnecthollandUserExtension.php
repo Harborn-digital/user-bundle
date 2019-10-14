@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\DependencyInjection;
 
 use HaydenPierce\ClassFinder\ClassFinder;
+use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AbstractResourceOwner;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
@@ -85,7 +86,7 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
     private function getResourceOwnersByClasses(): array
     {
         $resourceOwners = [];
-        $classes        = ClassFinder::getClassesInNamespace('HWI\\Bundle\\OAuthBundle\\OAuth\\ResourceOwner');
+        $classes        = ClassFinder::getClassesInNamespace((new \ReflectionClass(AbstractResourceOwner::class))->getNamespaceName());
         foreach ($classes as $class) {
             if (is_subclass_of($class, GenericOAuth2ResourceOwner::class)) {
                 $naming                                 = explode('ResourceOwner', (new \ReflectionClass($class))->getShortName());

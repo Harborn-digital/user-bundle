@@ -31,14 +31,26 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
 
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
-        /** @var UserRepository $repository */
-        $repository = $this->doctrine->getRepository(User::class);
-
         $name     = $response->getResourceOwner()->getName();
         $username = $response->getUsername();
         $email    = $response->getEmail();
 
-        $user = $repository->findOneByOAuthUsername($name, $username);
+        $user = $this->loadDatabaseUser($name, $username, $email);
+        $this->updateUserRoles($user, $name);
+
+        /** @var ObjectManager $objectManager */
+        $objectManager = $this->doctrine->getManagerForClass(User::class);
+        $objectManager->persist($user);
+        $objectManager->flush();
+
+        return $user;
+    }
+
+    private function loadDatabaseUser(string $name, string $username, ?string $email): User
+    {
+        /** @var UserRepository $repository */
+        $repository = $this->doctrine->getRepository(User::class);
+        $user       = $repository->findOneByOAuthUsername($name, $username);
 
         if (is_null($user)) {
             $user = $repository->findOneByEmail($email);
@@ -60,16 +72,14 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
             // @todo: Dispatch new UserOAuth created here to be able adding more data from $response.
         }
 
+        return $user;
+    }
+
+    private function updateUserRoles(User $user, string $name): void
+    {
         $roles   = $user->getRoles();
         $roles[] = 'ROLE_OAUTH';
         $roles[] = 'ROLE_OAUTH_'.strtoupper($name);
         $user->setRoles(array_unique($roles));
-
-        /** @var ObjectManager $objectManager */
-        $objectManager = $this->doctrine->getManagerForClass(User::class);
-        $objectManager->persist($user);
-        $objectManager->$this->doctrine->getManagerForClass(User::class)->flush();
-
-        return $user;
     }
 }
