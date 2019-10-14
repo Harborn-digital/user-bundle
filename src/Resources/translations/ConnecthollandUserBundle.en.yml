@@ -9,5 +9,6 @@ connectholland_user:
         login:
             password: 'Password'
             submit: 'Login'
+            register: 'Register'
             title: 'Login'
             username: 'Username'

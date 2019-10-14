@@ -9,5 +9,6 @@ connectholland_user:
         login:
             password: 'Wachtwoord'
             submit: 'Inloggen'
+            register: 'Registreren'
             title: 'Inloggen'
             username: 'Gebruikersnaam'

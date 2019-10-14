@@ -12,6 +12,7 @@ namespace ConnectHolland\UserBundle\Repository;
 use ConnectHolland\UserBundle\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,32 +27,23 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findOneByEmail($email): ?User
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.email = :email')
+            ->setParameter('email', $email)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?User
+    public function findOneByOAuthUsername($resource, $oauthUsername): ?User
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('user')
+            ->leftJoin('user.oauths', 'oauths', Expr\Join::WITH, 'oauths.oauthUsername = :oauthUsername')
+            ->andWhere('oauths.resource = :resource')
+            ->setParameter('resource', $resource)
+            ->setParameter('oauthUsername', $oauthUsername)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
 }
