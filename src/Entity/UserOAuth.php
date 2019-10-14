@@ -13,17 +13,23 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
+ * @ORM\Table(
+ *    uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="unique_oauth_username_resource",
+ *            columns={"resource", "oauth_username"})
+ *    }
+ * )
  */
 class UserOAuth
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      */
     private $resource;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      */
     private $oauthUsername;
 

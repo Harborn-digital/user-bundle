@@ -11,6 +11,7 @@ namespace ConnectHolland\UserBundle\DependencyInjection;
 
 use HaydenPierce\ClassFinder\ClassFinder;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
@@ -33,7 +34,6 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
     public function prepend(ContainerBuilder $container)
     {
         $config = $this->getResourceOwnersConfiguration($container);
-
         $container->prependExtensionConfig('hwi_oauth', $config);
     }
 
@@ -71,8 +71,11 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
         $resourceOwners = $this->getResourceOwnersByClasses();
         $resourceOwners = $this->fillResourceOwnersWithEnvVars($container, $resourceOwners);
 
+        $configuration   = new Configuration();
+        $processedConfig = (new Processor())->processConfiguration($configuration, $container->getExtensionConfig(Configuration::CONFIG_ROOT_KEY));
+
         $config = [
-            'firewall_name'   => ['secured_area'],
+            'firewall_name'   => $processedConfig['oauth_firewalls'],
             'resource_owners' => $this->createConfigForResourceOwners(array_filter($resourceOwners)),
         ];
 
@@ -101,6 +104,7 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
             'scope',
             'options',
         ];
+
         foreach ($resourceOwners as $resourceOwner => $options) {
             foreach ($types as $type) {
                 $envVarName = sprintf('USERBUNDLE_OAUTH_%s_%s', strtoupper($resourceOwner), strtoupper($type));

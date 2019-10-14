@@ -33,3 +33,49 @@ USERBUNDLE_OAUTH_GOOGLE_SCOPE='email profile'
 # Options specific for the provider can be added in a json encoded string like below.
 USERBUNDLE_OAUTH_GOOGLE_OPTIONS={"hd": "connectholland.nl"}
 ```
+
+## Security configuration example
+
+```yaml
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\UserInterface:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: ConnectHolland\UserBundle\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+            guard:
+                authenticators:
+                    - ConnectHolland\UserBundle\Security\UserBundleAuthenticator
+            logout:
+                path: connectholland_user_logout
+            oauth:
+                use_forward: false
+                resource_owners:
+                    # The resource_owners routing postfixes are a composition of the firewall name and the resource name
+                    google: connectholland_user_oauth_check_main_google
+                    facebook: connectholland_user_oauth_check_main_facebook
+                    linkedin: connectholland_user_oauth_check_main_linkedin
+                    # etcetera
+                login_path: connectholland_user_login
+                failure_path: connectholland_user_login
+                oauth_user_provider:
+                    service: ConnectHolland\UserBundle\Security\OAuthUserProvider
+
+    access_control:
+        - { path: ^/inloggen, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/registreren, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login/oauth-check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: [ROLE_OAUTH, ROLE_ADMIN ] }
+```

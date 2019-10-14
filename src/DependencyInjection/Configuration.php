@@ -14,7 +14,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    private const CONFIG_ROOT_KEY = 'connectholland_user';
+    public const CONFIG_ROOT_KEY = 'connectholland_user';
 
     /**
      * {@inheritdoc}
@@ -27,6 +27,15 @@ class Configuration implements ConfigurationInterface
         } else {
             $rootNode = $treeBuilder->root(self::CONFIG_ROOT_KEY); // Sf < 4.2 support
         }
+
+        $rootNode
+            ->children()
+                ->arrayNode('oauth_firewalls')
+                    ->prototype('scalar')->end()
+                    ->defaultValue(['main'])
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

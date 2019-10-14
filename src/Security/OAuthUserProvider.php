@@ -41,6 +41,7 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
 
         if (is_null($user)) {
             $user = $repository->findOneByEmail($email);
+
             if (is_null($user)) {
                 $user = new User();
                 $user->setEnabled(true);
@@ -59,7 +60,7 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
         $roles   = $user->getRoles();
         $roles[] = 'ROLE_OAUTH';
         $roles[] = 'ROLE_OAUTH_'.strtoupper($name);
-        $user->setRoles($roles);
+        $user->setRoles(array_unique($roles));
 
         $this->doctrine->getManagerForClass(User::class)->persist($user);
         $this->doctrine->getManagerForClass(User::class)->flush();

@@ -92,3 +92,14 @@ services:
     ConnectHolland\UserBundle\Security\OAuthUserProvider:
         arguments:
             - '@doctrine'
+
+
+    ConnectHolland\UserBundle\Routing\OAuthRouteLoader:
+        public: true
+        arguments:
+            $resourceOwnerMaps: []
+        tags:
+            - { name: 'routing.loader' }
+
+    connectholland_user.routing_oauth_route_loader: '@ConnectHolland\UserBundle\Routing\OAuthRouteLoader'
+
