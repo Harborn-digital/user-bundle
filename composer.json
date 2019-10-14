@@ -11,6 +11,8 @@
     ],
     "require": {
         "php": "^7.3",
+        "ext-json": "*",
+        "doctrine/collections": "^1.6",
         "doctrine/doctrine-bundle": "^1.11",
         "doctrine/orm": "^2.6",
         "doctrine/persistence": "^1.1",
@@ -19,6 +21,7 @@
         "league/html-to-markdown": "^4.8",
         "php-http/guzzle6-adapter": "^1.0",
         "php-http/httplug-bundle": "^1.16",
+        "swiftmailer/swiftmailer": "^6.2",
         "symfony/config": "^3.4 || ^4.3",
         "symfony/console": "^3.4 || ^4.3",
         "symfony/dependency-injection": "^3.4 || ^4.3",
@@ -76,6 +79,7 @@
         ],
         "analyse": [
             "security-checker security:check",
+            "composer-require-checker",
             "phpstan analyse --level=7 src/ tests/"
         ]
     },
