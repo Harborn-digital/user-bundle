@@ -35,7 +35,7 @@ class RegistrationType extends AbstractType
                 'label'              => 'connectholland_user.registration.password',
                 'mapped'             => false,
                 'translation_domain' => 'ConnecthollandUserBundle',
-                'constraints' => [
+                'constraints'        => [
                     new NotBlank([
                         'message' => 'Please enter a password',
                     ]),
@@ -51,7 +51,7 @@ class RegistrationType extends AbstractType
                 'label'              => 'connectholland_user.registration.terms',
                 'mapped'             => false,
                 'translation_domain' => 'ConnecthollandUserBundle',
-                'constraints' => [
+                'constraints'        => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',
                     ]),

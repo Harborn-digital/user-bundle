@@ -13,6 +13,7 @@ use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserOAuth;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ObjectManager;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 
@@ -45,7 +46,9 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
             if (is_null($user)) {
                 $user = new User();
                 $user->setEnabled(true);
-                $user->setEmail($email);
+                if ($email) {
+                    $user->setEmail($email);
+                }
             }
 
             $oauth = new UserOAuth();
@@ -62,8 +65,10 @@ class OAuthUserProvider implements OAuthAwareUserProviderInterface
         $roles[] = 'ROLE_OAUTH_'.strtoupper($name);
         $user->setRoles(array_unique($roles));
 
-        $this->doctrine->getManagerForClass(User::class)->persist($user);
-        $this->doctrine->getManagerForClass(User::class)->flush();
+        /** @var ObjectManager $objectManager */
+        $objectManager = $this->doctrine->getManagerForClass(User::class);
+        $objectManager->persist($user);
+        $objectManager->$this->doctrine->getManagerForClass(User::class)->flush();
 
         return $user;
     }

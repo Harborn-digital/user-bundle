@@ -23,18 +23,18 @@ class LoginType extends AbstractType
             '_username',
             TextType::class,
             [
-                'label'    => 'connectholland_user.security.login.username',
-                'required' => true,
-                'translation_domain' => 'ConnecthollandUserBundle'
+                'label'              => 'connectholland_user.security.login.username',
+                'required'           => true,
+                'translation_domain' => 'ConnecthollandUserBundle',
             ]
         );
         $builder->add(
             '_password',
             PasswordType::class,
             [
-                'label'    => 'connectholland_user.security.login.password',
-                'required' => true,
-                'translation_domain' => 'ConnecthollandUserBundle'
+                'label'              => 'connectholland_user.security.login.password',
+                'required'           => true,
+                'translation_domain' => 'ConnecthollandUserBundle',
             ]
         );
     }
