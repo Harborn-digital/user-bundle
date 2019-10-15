@@ -1,5 +1,9 @@
 # Connect Holland User Bundle
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/build-status/master)
+
 User bundle for Symfony 4 projects
 
 ## Functionality
