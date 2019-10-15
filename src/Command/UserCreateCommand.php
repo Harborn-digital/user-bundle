@@ -47,6 +47,7 @@ final class UserCreateCommand extends Command
             ->addArgument('email', InputArgument::REQUIRED, 'The email')
             ->addArgument('password', InputArgument::REQUIRED, 'The password')
             ->addOption('inactive', null, InputOption::VALUE_NONE, 'Set the user as inactive')
+            ->addOption('role', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Set the users role(s)', ['ROLE_USER'])
             ->setHelp(<<<'EOT'
 The <info>connectholland:user:create</info> command creates a user:
   <info>%command.full_name% email</info>
@@ -64,10 +65,11 @@ EOT
         /** @var string $password */
         $password = $input->getArgument('password');
         $enable   = $input->getOption('inactive') !== true;
+        $roles    = $input->getOption('role');
 
         /** @var CreateUserEvent $event */
         /** @scrutinizer ignore-call */
-        $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent((new User())->setEmail($email)->setEnabled($enable), $password));
+        $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent((new User())->setEmail($email)->setEnabled($enable)->setRoles($roles), $password));
         if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
             /** @var UserCreatedEvent $event */
             /** @scrutinizer ignore-call */
