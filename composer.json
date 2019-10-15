@@ -46,6 +46,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.15",
+        "icanhazstring/composer-unused": "^0.5.6",
         "maglnet/composer-require-checker": "^2.0",
         "phpstan/phpstan": "^0.11.16",
         "phpunit/phpunit": "^8.3",
@@ -78,8 +79,9 @@
             "phpunit"
         ],
         "analyse": [
+            "composer unused --excludePackage=php-http/guzzle6-adapter --excludePackage=symfony/swiftmailer-bundle --no-ansi",
             "security-checker security:check",
-            "composer-require-checker",
+            "composer-require-checker --config-file=.composer-require-checker.json",
             "phpstan analyse --level=7 src/ tests/"
         ]
     },
