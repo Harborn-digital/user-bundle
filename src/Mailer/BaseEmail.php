@@ -12,7 +12,7 @@ namespace ConnectHolland\UserBundle\Mailer;
 /**
  * @codeCoverageIgnore Will be tested in the implementations
  */
-abstract class BaseEmail
+abstract class BaseEmail implements EmailInterface
 {
     /**
      * @var Mailer
