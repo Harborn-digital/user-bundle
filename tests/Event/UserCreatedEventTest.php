@@ -1,15 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the user bundle package.
+ * (c) Connect Holland.
+ */
 
 namespace ConnectHolland\UserBundle\Tests\Event;
 
 use ConnectHolland\UserBundle\Entity\User;
-use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass ConnectHolland\UserBundle\Event\UserCreatedEvent
+ * @coversDefaultClass \ConnectHolland\UserBundle\Event\UserCreatedEvent
  */
 class UserCreatedEventTest extends TestCase
 {
@@ -19,7 +24,7 @@ class UserCreatedEventTest extends TestCase
      */
     public function testGetUser()
     {
-        $user = new User();
+        $user  = new User();
         $event = new UserCreatedEvent($user);
 
         $this->assertEquals($user, $event->getUser());

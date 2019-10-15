@@ -68,11 +68,11 @@ EOT
         /** @var CreateUserEvent $event */
         /** @scrutinizer ignore-call */
         $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent((new User())->setEmail($email)->setEnabled($enable), $password));
-        if (/** @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
+        if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
             /** @var UserCreatedEvent $event */
             /** @scrutinizer ignore-call */
             $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
-            if (/** @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
+            if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
                 $output->writeln(sprintf('Created user <comment>%s</comment>', $email));
             }
         }

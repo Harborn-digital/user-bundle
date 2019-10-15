@@ -12,7 +12,7 @@ namespace ConnectHolland\UserBundle\Event;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-final class CreateUserEvent extends /** @scrutinizer ignore-deprecated */ Event
+final class CreateUserEvent extends /* @scrutinizer ignore-deprecated */ Event
 {
     /**
      * @var UserInterface
