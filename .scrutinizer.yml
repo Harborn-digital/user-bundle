@@ -1,0 +1,42 @@
+checks:
+    php: true
+
+build:
+    nodes:
+        phpunit:
+            environment:
+                timezone: Europe/Amsterdam
+                postgresql: false
+                rabbitmq: false
+                mysql: false
+                redis: true
+                elasticsearch: false
+                php:
+                    version: 7.2
+                    ini:
+                        'date.timezone': 'Europe/Amsterdam'
+            tests:
+                override:
+                    -   command: 'vendor/bin/phpunit --coverage-clover=code-coverage'
+                        coverage:
+                            file: 'code-coverage'
+                            format: 'clover'
+                        idle_timeout: 300
+        analysis:
+            environment:
+                postgresql: false
+                redis: false
+                mongodb: false
+                mysql: false
+            tests:
+                override:
+                    - php-scrutinizer-run
+
+    dependencies:
+        override:
+            - command: 'composer install --no-interaction --no-scripts'
+
+filter:
+    excluded_paths:
+        - 'tests/*'
+        - 'src/Entity/*'
