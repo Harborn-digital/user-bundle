@@ -28,8 +28,7 @@ final class Configuration implements ConfigurationInterface
         if (method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->getRootNode();
         } else {
-            $rootNode = /** @scrutinizer ignore-deprecated */ $treeBuilder->root(self::CONFIG_ROOT_KEY); // Sf < 4.2 support
-
+            $rootNode = /* @scrutinizer ignore-deprecated */ $treeBuilder->root(self::CONFIG_ROOT_KEY); // Sf < 4.2 support
         }
 
         $rootNode
