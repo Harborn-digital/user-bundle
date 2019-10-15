@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\DependencyInjection\Compiler\ResourceOwnerMapsPass
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ConnecthollandUserBundle extends Bundle
+final class ConnecthollandUserBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {

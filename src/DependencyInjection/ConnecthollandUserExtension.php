@@ -20,6 +20,9 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
+/**
+ * @codeCoverageIgnore WIP
+ */
 class ConnecthollandUserExtension extends Extension implements ExtensionInterface, PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container)

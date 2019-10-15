@@ -17,7 +17,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-class UserLoginSubscriber implements EventSubscriberInterface
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class UserLoginSubscriber implements EventSubscriberInterface
 {
     /**
      * @var RegistryInterface

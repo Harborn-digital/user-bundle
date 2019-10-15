@@ -31,7 +31,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Twig\Environment;
 
-class RegistrationController
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class RegistrationController
 {
     /**
      * @var RegistryInterface
@@ -77,11 +80,13 @@ class RegistrationController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var CreateUserEvent $event */
+            /** @scrutinizer ignore-call */
             $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData()));
-            if ($event->isPropagationStopped() === false) {
+            if (/** @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
                 /** @var UserCreatedEvent $event */
+                /** @scrutinizer ignore-call */
                 $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
-                if ($event->isPropagationStopped() === false) {
+                if (/** @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
                     $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your registration');
 
                     return new RedirectResponse($this->router->generate($request->attributes->get('_route'))); // TODO: use a correct redirect route/path to login

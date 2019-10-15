@@ -13,7 +13,10 @@ use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class OAuthRouteLoader extends Loader
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class OAuthRouteLoader extends Loader
 {
     private $isLoaded = false;
 
@@ -37,8 +40,8 @@ class OAuthRouteLoader extends Loader
         $routes = new RouteCollection();
 
         foreach ($this->resourceOwnerMaps as $firewallName => $resourceOwnerMap) {
-            foreach ($resourceOwnerMap->getResourceOwners() as $resourceName => $path) {
-                $this->addResourceRoute($routes, $firewallName, $resourceName, (string) $path);
+            foreach (array_keys($resourceOwnerMap->getResourceOwners()) as $resourceName) {
+                $this->addResourceRoute($routes, $firewallName, $resourceName);
             }
         }
 
@@ -52,7 +55,7 @@ class OAuthRouteLoader extends Loader
         return 'connectholland_user_oauth' === $type;
     }
 
-    protected function addResourceRoute(RouteCollection $routes, string $firewallName, string $resourceName, string $path): void
+    protected function addResourceRoute(RouteCollection $routes, string $firewallName, string $resourceName): void
     {
         $routeName = sprintf(
             'connectholland_user_oauth_check_%s_%s',

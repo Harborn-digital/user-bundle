@@ -18,3 +18,5 @@ $ phpunit
 EOT;
     exit(1);
 }
+
+DG\BypassFinals::enable();

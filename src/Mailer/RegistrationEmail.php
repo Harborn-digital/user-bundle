@@ -14,7 +14,10 @@ use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class RegistrationEmail extends BaseEmail
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class RegistrationEmail extends BaseEmail
 {
     /**
      * @var RouterInterface

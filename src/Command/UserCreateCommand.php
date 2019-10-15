@@ -21,7 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class UserCreateCommand extends Command
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class UserCreateCommand extends Command
 {
     protected static $defaultName = 'connectholland:user:create';
 
@@ -63,11 +66,13 @@ EOT
         $enable   = $input->getOption('inactive') !== true;
 
         /** @var CreateUserEvent $event */
+        /** @scrutinizer ignore-call */
         $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent((new User())->setEmail($email)->setEnabled($enable), $password));
-        if ($event->isPropagationStopped() === false) {
+        if (/** @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
             /** @var UserCreatedEvent $event */
+            /** @scrutinizer ignore-call */
             $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
-            if ($event->isPropagationStopped() === false) {
+            if (/** @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
                 $output->writeln(sprintf('Created user <comment>%s</comment>', $email));
             }
         }

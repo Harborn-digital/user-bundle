@@ -13,7 +13,10 @@ use League\HTMLToMarkdown\HtmlConverter;
 use Symfony\Component\DomCrawler\Crawler;
 use Twig\Environment;
 
-class Mailer
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class Mailer
 {
     /**
      * @var \Swift_Mailer

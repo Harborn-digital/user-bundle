@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Mailer;
 
+/**
+ * @codeCoverageIgnore Will be tested in the implementations
+ */
 abstract class BaseEmail
 {
     /**

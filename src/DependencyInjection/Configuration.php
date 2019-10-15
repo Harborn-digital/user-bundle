@@ -12,7 +12,10 @@ namespace ConnectHolland\UserBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class Configuration implements ConfigurationInterface
 {
     public const CONFIG_ROOT_KEY = 'connectholland_user';
 
@@ -25,7 +28,8 @@ class Configuration implements ConfigurationInterface
         if (method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->getRootNode();
         } else {
-            $rootNode = $treeBuilder->root(self::CONFIG_ROOT_KEY); // Sf < 4.2 support
+            $rootNode = /** @scrutinizer ignore-deprecated */ $treeBuilder->root(self::CONFIG_ROOT_KEY); // Sf < 4.2 support
+
         }
 
         $rootNode
