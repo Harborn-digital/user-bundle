@@ -16,7 +16,7 @@ use Twig\Environment;
 /**
  * @codeCoverageIgnore WIP
  */
-final class Mailer
+final class Mailer implements MailerInterface
 {
     /**
      * @var \Swift_Mailer

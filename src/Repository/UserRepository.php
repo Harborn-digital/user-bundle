@@ -22,14 +22,14 @@ use Doctrine\ORM\Query\Expr;
  *
  * @codeCoverageIgnore WIP
  */
-final class UserRepository extends ServiceEntityRepository
+final class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
-    public function findOneByEmail($email): ?User
+    public function findOneByEmail(string $email): ?User
     {
         return $this->createQueryBuilder('user')
             ->andWhere('user.email = :email')
@@ -38,7 +38,7 @@ final class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findOneByOAuthUsername($resource, $oauthUsername): ?User
+    public function findOneByOAuthUsername(string $resource, string $oauthUsername): ?User
     {
         return $this->createQueryBuilder('user')
             ->leftJoin('user.oauths', 'oauths', Expr\Join::WITH, 'oauths.oauthUsername = :oauthUsername')

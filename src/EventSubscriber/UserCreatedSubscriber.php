@@ -12,12 +12,11 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Mailer\RegistrationEmail;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @codeCoverageIgnore WIP
  */
-final class UserCreatedSubscriber implements EventSubscriberInterface
+final class UserCreatedSubscriber implements UserCreatedSubscriberInterface
 {
     /**
      * @var RegistrationEmail
@@ -29,7 +28,7 @@ final class UserCreatedSubscriber implements EventSubscriberInterface
         $this->email = $email;
     }
 
-    public function onUserCreated(UserCreatedEvent $event)
+    public function onUserCreated(UserCreatedEvent $event): void
     {
         $user = $event->getUser();
         if ($user->isEnabled() === false) {

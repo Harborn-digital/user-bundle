@@ -13,14 +13,13 @@ use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
 /**
  * @codeCoverageIgnore WIP
  */
-final class UserLoginSubscriber implements EventSubscriberInterface
+final class UserLoginSubscriber implements UserLoginSubscriberInterface
 {
     /**
      * @var RegistryInterface
@@ -32,7 +31,7 @@ final class UserLoginSubscriber implements EventSubscriberInterface
         $this->registry = $registry;
     }
 
-    public function onUserLogin(InteractiveLoginEvent $event)
+    public function onUserLogin(InteractiveLoginEvent $event): void
     {
         /** @var UserInterface $user */
         $user = $event->getAuthenticationToken()->getUser();

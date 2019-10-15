@@ -55,7 +55,7 @@ final class OAuthRouteLoader extends Loader
         return 'connectholland_user_oauth' === $type;
     }
 
-    protected function addResourceRoute(RouteCollection $routes, string $firewallName, string $resourceName): void
+    private function addResourceRoute(RouteCollection $routes, string $firewallName, string $resourceName): void
     {
         $routeName = sprintf(
             'connectholland_user_oauth_check_%s_%s',

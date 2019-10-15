@@ -14,13 +14,12 @@ use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @codeCoverageIgnore WIP
  */
-final class CreateUserSubscriber implements EventSubscriberInterface
+final class CreateUserSubscriber implements CreateUserSubscriberInterface
 {
     /**
      * @var UserPasswordEncoderInterface
@@ -38,7 +37,7 @@ final class CreateUserSubscriber implements EventSubscriberInterface
         $this->registry        = $registry;
     }
 
-    public function onCreateUser(CreateUserEvent $event)
+    public function onCreateUser(CreateUserEvent $event): void
     {
         $user = $event->getUser();
         $user->setPassword(

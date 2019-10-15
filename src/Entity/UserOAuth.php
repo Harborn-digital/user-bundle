@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  *    }
  * )
  */
-class UserOAuth
+class UserOAuth implements UserOAuthInterface
 {
     /**
      * @ORM\Id
@@ -43,7 +43,7 @@ class UserOAuth
     /**
      * @return mixed
      */
-    public function getResource()
+    public function getResource(): ?string
     {
         return $this->resource;
     }
@@ -53,7 +53,7 @@ class UserOAuth
      *
      * @return UserOAuth
      */
-    public function setResource($resource)
+    public function setResource(string $resource)
     {
         $this->resource = $resource;
 
@@ -63,7 +63,7 @@ class UserOAuth
     /**
      * @return mixed
      */
-    public function getOAuthUsername()
+    public function getOAuthUsername(): ?string
     {
         return $this->oauthUsername;
     }
@@ -73,7 +73,7 @@ class UserOAuth
      *
      * @return UserOAuth
      */
-    public function setOAuthUsername($oauthUsername)
+    public function setOAuthUsername(string $oauthUsername)
     {
         $this->oauthUsername = $oauthUsername;
 
