@@ -1,7 +1,7 @@
 {
     "name": "connectholland/user-bundle",
-    "description": "User bundle for Symfony 4 projects",
     "type": "symfony-bundle",
+    "description": "User bundle for Symfony 4 projects",
     "license": "MIT",
     "authors": [
         {
@@ -54,6 +54,17 @@
         "sensiolabs/security-checker": "^6.0",
         "symfony/var-dumper": "^3.4 || ^4.3"
     },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-development": "1.0.x-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "ConnectHolland\\UserBundle\\": "src"
@@ -66,30 +77,19 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "config": {
-        "preferred-install": {
-            "*": "dist"
-        },
-        "sort-packages": true
-    },
     "scripts": {
+        "analyse": [
+            "composer unused --excludePackage=php-http/guzzle6-adapter --excludePackage=symfony/swiftmailer-bundle --no-ansi",
+            "security-checker security:check",
+            "composer-require-checker --config-file=.composer-require-checker.json",
+            "phpstan analyse --level=7 src/ tests/"
+        ],
         "fix": [
             "php-cs-fixer fix --allow-risky=yes",
             "composer normalize --no-update-lock"
         ],
         "test": [
             "phpunit"
-        ],
-        "analyse": [
-            "composer unused --excludePackage=php-http/guzzle6-adapter --excludePackage=symfony/swiftmailer-bundle --no-ansi",
-            "security-checker security:check",
-            "composer-require-checker --config-file=.composer-require-checker.json",
-            "phpstan analyse --level=7 src/ tests/"
         ]
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-development": "1.0.x-dev"
-        }
     }
 }
