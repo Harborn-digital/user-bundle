@@ -1,0 +1,14 @@
+connectholland_user_oauth:
+    resource: .
+    type: connectholland_user_oauth
+
+connectholland_user_security:
+    resource: '@ConnecthollandUserBundle/Controller/SecurityController.php'
+    type: annotation
+
+connectholland_user_registration:
+    resource: '@ConnecthollandUserBundle/Controller/RegistrationController.php'
+    type: annotation
+
+connectholland_user_logout:
+    path: /logout
