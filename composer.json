@@ -45,6 +45,7 @@
         "twig/twig": "^2.0 || ^3.0"
     },
     "require-dev": {
+        "dg/bypass-finals": "^1.1",
         "friendsofphp/php-cs-fixer": "^2.15",
         "icanhazstring/composer-unused": "^0.5.6",
         "localheinz/composer-normalize": "^1.3",
