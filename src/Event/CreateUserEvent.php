@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * @codeCoverageIgnore WIP
  */
-final class CreateUserEvent extends Event
+final class CreateUserEvent extends /** @scrutinizer ignore-deprecated */ Event
 {
     /**
      * @var UserInterface
