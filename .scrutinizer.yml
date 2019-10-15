@@ -12,7 +12,7 @@ build:
                 redis: true
                 elasticsearch: false
                 php:
-                    version: 7.2
+                    version: 7.3
                     ini:
                         'date.timezone': 'Europe/Amsterdam'
             tests:
