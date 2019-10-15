@@ -12,7 +12,7 @@ namespace ConnectHolland\UserBundle\Tests;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-class TestKernel extends Kernel
+final class TestKernel extends Kernel
 {
     public function registerBundles()
     {

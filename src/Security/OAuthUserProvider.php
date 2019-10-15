@@ -17,7 +17,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 
-class OAuthUserProvider implements OAuthAwareUserProviderInterface
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class OAuthUserProvider implements OAuthAwareUserProviderInterface
 {
     /**
      * @var Registry

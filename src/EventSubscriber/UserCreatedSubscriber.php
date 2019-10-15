@@ -14,7 +14,10 @@ use ConnectHolland\UserBundle\Mailer\RegistrationEmail;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class UserCreatedSubscriber implements EventSubscriberInterface
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class UserCreatedSubscriber implements EventSubscriberInterface
 {
     /**
      * @var RegistrationEmail

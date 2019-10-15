@@ -21,7 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class UserCreateCommand extends Command
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class UserCreateCommand extends Command
 {
     protected static $defaultName = 'connectholland:user:create';
 

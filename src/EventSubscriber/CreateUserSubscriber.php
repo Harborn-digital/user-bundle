@@ -17,7 +17,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class CreateUserSubscriber implements EventSubscriberInterface
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class CreateUserSubscriber implements EventSubscriberInterface
 {
     /**
      * @var UserPasswordEncoderInterface

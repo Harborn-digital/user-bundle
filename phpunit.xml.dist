@@ -26,6 +26,9 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
+                <file>./src/UserBundleEvents.php</file>
+                <file>./src/ConnecthollandUserBundle.php</file>
+                <directory>./src/Entity</directory>
                 <directory>./tests</directory>
                 <directory>./vendor</directory>
             </exclude>

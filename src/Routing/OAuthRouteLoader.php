@@ -13,7 +13,10 @@ use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class OAuthRouteLoader extends Loader
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class OAuthRouteLoader extends Loader
 {
     private $isLoaded = false;
 

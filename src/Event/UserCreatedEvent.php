@@ -12,7 +12,10 @@ namespace ConnectHolland\UserBundle\Event;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class UserCreatedEvent extends Event
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class UserCreatedEvent extends Event
 {
     /**
      * @var UserInterface

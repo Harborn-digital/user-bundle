@@ -12,7 +12,10 @@ namespace ConnectHolland\UserBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class Configuration implements ConfigurationInterface
 {
     public const CONFIG_ROOT_KEY = 'connectholland_user';
 

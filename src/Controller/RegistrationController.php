@@ -31,7 +31,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Twig\Environment;
 
-class RegistrationController
+/**
+ * @codeCoverageIgnore WIP
+ */
+final class RegistrationController
 {
     /**
      * @var RegistryInterface
