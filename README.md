@@ -27,6 +27,14 @@ Set the environment variables to be able to send e-mails.
 USERBUNDLE_FROM_EMAILADDRESS=example@example.com
 ```
 
+## Create a user
+
+To create a new user run:
+
+```bash
+./bin/console connectholland:user:create example@example.com p@$$w0rd --role=ROLE_USER
+```
+
 ## OAuth
 
 To use OAuth login add environment variables to enable a specific OAuth provider (resource). E.g. for google:
