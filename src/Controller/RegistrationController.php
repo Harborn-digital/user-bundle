@@ -79,12 +79,16 @@ final class RegistrationController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var CreateUserEvent $event */
-            /** @scrutinizer ignore-call */
+            /**
+             * @var CreateUserEvent $event
+             * @scrutinizer ignore-call
+             */
             $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData()));
             if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
-                /** @var UserCreatedEvent $event */
-                /** @scrutinizer ignore-call */
+                /**
+                 * @var UserCreatedEvent $event
+                 * @scrutinizer ignore-call
+                 */
                 $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
                 if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
                     $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your registration');
@@ -107,7 +111,7 @@ final class RegistrationController
     /**
      * @Route("/registreren/bevestigen/{email}/{token}", name="connectholland_user_registration_confirm", methods={"GET", "POST"})
      */
-    public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
+    public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): Response
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->registry->getRepository(UserInterface::class);
@@ -128,13 +132,18 @@ final class RegistrationController
         $userManager = $this->registry->getManagerForClass(User::class);
         $userManager->flush();
 
-        return $this->authenticateUser($request, $user, $guardAuthenticatorHandler, $authenticator);
+        $response = $this->authenticateUser($request, $user, $guardAuthenticatorHandler, $authenticator);
+        if (null !== $response) {
+            return $response;
+        }
+
+        return new RedirectResponse('/'); // TODO: use a correct redirect route/path to login
     }
 
     /**
      * Login a User manually.
      */
-    private function authenticateUser(Request $request, User $user, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
+    private function authenticateUser(Request $request, UserInterface $user, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
     {
         $providerKey = 'main'; // TODO: Make configurable
 

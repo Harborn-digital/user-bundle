@@ -70,7 +70,7 @@ EOT
         /** @var string $password */
         $password = $input->getArgument('password');
         $enable   = $input->getOption('inactive') !== true;
-        $roles    = $input->getOption('role');
+        $roles    = (array) $input->getOption('role') ?? [];
 
         /** @var CreateUserEvent $event */
         /** @scrutinizer ignore-call */

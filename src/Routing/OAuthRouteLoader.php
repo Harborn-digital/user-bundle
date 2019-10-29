@@ -41,7 +41,7 @@ final class OAuthRouteLoader extends Loader
 
         foreach ($this->resourceOwnerMaps as $firewallName => $resourceOwnerMap) {
             foreach (array_keys($resourceOwnerMap->getResourceOwners()) as $resourceName) {
-                $this->addResourceRoute($routes, $firewallName, $resourceName);
+                $this->addResourceRoute($routes, $firewallName, (string) $resourceName);
             }
         }
 

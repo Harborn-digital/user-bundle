@@ -17,6 +17,7 @@ use ConnectHolland\UserBundle\Form\NewPasswordType;
 use ConnectHolland\UserBundle\Form\ResetType;
 use ConnectHolland\UserBundle\Security\UserBundleAuthenticator;
 use ConnectHolland\UserBundle\UserBundleEvents;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -79,12 +80,16 @@ final class ResetController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ResetUserEvent $event */
-            /** @scrutinizer ignore-call */
+            /**
+             * @var ResetUserEvent $event
+             * @scrutinizer ignore-call
+             */
             $event = $this->eventDispatcher->dispatch(UserBundleEvents::RESET_USER, new ResetUserEvent($form->get('email')->getData()));
             if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
-                /** @var UserReset $event */
-                /** @scrutinizer ignore-call */
+                /**
+                 * @var UserResetEvent $event
+                 * @scrutinizer ignore-call
+                 */
                 $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_RESET, new UserResetEvent($event->getEmail()));
                 if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
                     $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your password reset');
@@ -150,7 +155,10 @@ final class ResetController
             $userManager->persist($user);
             $userManager->flush();
 
-            return $this->authenticateUser($request, $user, $guardAuthenticatorHandler, $authenticator);
+            $response = $this->authenticateUser($request, $user, $guardAuthenticatorHandler, $authenticator);
+            if (null !== $response) {
+                return $response;
+            }
         }
 
         return new Response(
@@ -166,7 +174,7 @@ final class ResetController
     /**
      * Login a User manually.
      */
-    private function authenticateUser(Request $request, User $user, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
+    private function authenticateUser(Request $request, UserInterface $user, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
     {
         $providerKey = 'main'; // TODO: Make configurable
 
