@@ -1,14 +1,27 @@
 connectholland_user:
     registration:
         email: 'Email address'
-        password: 'Password'
+        plainPassword: 'Password'
         submit: 'Register'
         terms: 'Terms'
         title: 'Register'
+    reset:
+        request:
+            email: 'Email address'
+            login: 'Login'
+            submit: 'Send'
+            title: 'Forgot password'
+        new_password:
+            login: 'Login'
+            password: 'Password'
+            password_repeat: 'Repeat password'
+            submit: 'Save'
+            title: 'Forgot password'
     security:
         login:
             password: 'Password'
-            submit: 'Login'
             register: 'Register'
+            reset: 'Forgot password?'
+            submit: 'Login'
             title: 'Login'
             username: 'Username'

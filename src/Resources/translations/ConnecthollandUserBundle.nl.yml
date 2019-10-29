@@ -1,14 +1,27 @@
 connectholland_user:
     registration:
         email: 'E-mailadres'
-        password: 'Wachtwoord'
+        plainPassword: 'Wachtwoord'
         submit: 'Registreren'
         terms: 'Voorwaarden'
         title: 'Registreren'
+    reset:
+        request:
+            email: 'E-mailadres'
+            login: 'Inloggen'
+            submit: 'Versturen'
+            title: 'Wachtwoord vergeten'
+        new_password:
+            login: 'Inloggen'
+            password: 'Wachtwoord'
+            password_repeat: 'Herhaal wachtwoord'
+            submit: 'Opslaan'
+            title: 'Wachtwoord vergeten'
     security:
         login:
             password: 'Wachtwoord'
-            submit: 'Inloggen'
             register: 'Registreren'
+            reset: 'Wachtwoord vergeten?'
+            submit: 'Inloggen'
             title: 'Inloggen'
             username: 'Gebruikersnaam'
