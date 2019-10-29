@@ -32,9 +32,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Twig\Environment;
 
-/**
- * @codeCoverageIgnore WIP
- */
 final class ResetController
 {
     /**
@@ -80,18 +77,16 @@ final class ResetController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var ResetUserEvent $event
-             * @scrutinizer ignore-call
-             */
-            $event = $this->eventDispatcher->dispatch(UserBundleEvents::RESET_USER, new ResetUserEvent($form->get('email')->getData()));
-            if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
-                /**
-                 * @var UserResetEvent $event
-                 * @scrutinizer ignore-call
-                 */
-                $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_RESET, new UserResetEvent($event->getEmail()));
-                if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
+            /** @var ResetUserEvent $resetUserEvent */
+            $resetUserEvent =new ResetUserEvent($form->get('email')->getData());
+            /* @scrutinizer ignore-call */
+            $this->eventDispatcher->dispatch(UserBundleEvents::RESET_USER, $resetUserEvent);
+            if (/* @scrutinizer ignore-deprecated */ $resetUserEvent->isPropagationStopped() === false) {
+                /** @var UserResetEvent $userResetEvent */
+                $userResetEvent = new UserResetEvent($resetUserEvent->getEmail());
+                /* @scrutinizer ignore-call */
+                $this->eventDispatcher->dispatch(UserBundleEvents::USER_RESET, $userResetEvent);
+                if (/* @scrutinizer ignore-deprecated */ $userResetEvent->isPropagationStopped() === false) {
                     $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your password reset');
 
                     $form = $formFactory->create(ResetType::class); // reset input

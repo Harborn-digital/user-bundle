@@ -11,16 +11,12 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
-use ConnectHolland\UserBundle\Event\ResetUserEvent;
+use ConnectHolland\UserBundle\Event\ResetUserEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @codeCoverageIgnore WIP
- */
-final class ResetUserSubscriber implements EventSubscriberInterface
+final class ResetUserSubscriber implements ResetUserSubscriberInterface
 {
     /**
      * @var RegistryInterface
@@ -32,7 +28,7 @@ final class ResetUserSubscriber implements EventSubscriberInterface
         $this->registry = $registry;
     }
 
-    public function onResetUser(ResetUserEvent $event): void
+    public function onResetUser(ResetUserEventInterface $event): void
     {
         $user = $this->registry->getRepository(User::class)->findOneBy([
             'email' => $event->getEmail(),

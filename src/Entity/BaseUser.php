@@ -60,9 +60,9 @@ class BaseUser implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="ConnectHolland\UserBundle\Entity\UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
-    protected $oauths;
+    private $oauths;
 
     public function __construct()
     {
@@ -103,62 +103,45 @@ class BaseUser implements UserInterface
         return $this->passwordRequestToken;
     }
 
-    /**
-     * @param mixed $passwordRequestToken
-     *
-     * @return User
-     */
-    public function setPasswordRequestToken($passwordRequestToken): UserInterface
+    public function setPasswordRequestToken(?string $passwordRequestToken): UserInterface
     {
         $this->passwordRequestToken = $passwordRequestToken;
 
         return $this;
     }
 
-    public function getLastLogin(): ?\DateTime
+    public function getLastLogin(): ?\DateTimeImmutable
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(\DateTime $lastLogin): UserInterface
+    public function setLastLogin(\DateTimeImmutable $lastLogin): UserInterface
     {
         $this->lastLogin = $lastLogin;
 
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUsername(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+        $roles   = $this->roles;
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): UserInterface
     {
         $this->roles = $roles;
 
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getPassword(): string
     {
         return (string) $this->password;
@@ -171,23 +154,14 @@ class BaseUser implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getSalt()
     {
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials()
     {
     }
 
-    /**
-     * @return Collection|UserOAuth[]
-     */
     public function getOAuths(): Collection
     {
         return $this->oauths;

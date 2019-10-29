@@ -14,9 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @codeCoverageIgnore WIP
- */
 final class ResetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\Entity\User;
-use ConnectHolland\UserBundle\Event\CreateUserEvent;
+use ConnectHolland\UserBundle\Event\CreateUserEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -37,7 +37,7 @@ final class CreateUserSubscriber implements CreateUserSubscriberInterface
         $this->registry        = $registry;
     }
 
-    public function onCreateUser(CreateUserEvent $event): void
+    public function onCreateUser(CreateUserEventInterface $event): void
     {
         $user = $event->getUser();
         $user->setPassword(

@@ -72,15 +72,17 @@ EOT
         $enable   = $input->getOption('inactive') !== true;
         $roles    = (array) $input->getOption('role') ?? [];
 
-        /** @var CreateUserEvent $event */
-        /** @scrutinizer ignore-call */
+        /** @var CreateUserEvent $createUserEvent */
         $user  = new $this->class();
-        $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent($user->setEmail($email)->setEnabled($enable)->setRoles($roles), $password));
-        if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
-            /** @var UserCreatedEvent $event */
-            /** @scrutinizer ignore-call */
-            $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
-            if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
+        $createUserEvent = new CreateUserEvent($user->setEmail($email)->setEnabled($enable)->setRoles($roles), $password);
+        /* @scrutinizer ignore-call */
+        $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, $createUserEvent);
+        if (/* @scrutinizer ignore-deprecated */ $createUserEvent->isPropagationStopped() === false) {
+            /** @var UserCreatedEvent $userCreatedEvent */
+            $userCreatedEvent = new UserCreatedEvent($createUserEvent->getUser());
+            /* @scrutinizer ignore-call */
+            $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
+            if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
                 $output->writeln(sprintf('Created user <comment>%s</comment>', $email));
             }
         }

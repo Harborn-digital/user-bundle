@@ -79,18 +79,16 @@ final class RegistrationController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var CreateUserEvent $event
-             * @scrutinizer ignore-call
-             */
-            $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData()));
-            if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
-                /**
-                 * @var UserCreatedEvent $event
-                 * @scrutinizer ignore-call
-                 */
-                $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
-                if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
+            /** @var CreateUserEvent $createUserEvent */
+            $createUserEvent = new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData());
+            /* @scrutinizer ignore-call */
+            $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, $createUserEvent);
+            if (/* @scrutinizer ignore-deprecated */ $createUserEvent->isPropagationStopped() === false) {
+                /** @var UserCreatedEvent $userCreatedEvent */
+                $userCreatedEvent = new UserCreatedEvent($createUserEvent->getUser());
+                /* @scrutinizer ignore-call */
+                $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
+                if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
                     $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your registration');
 
                     return new RedirectResponse($this->router->generate($request->attributes->get('_route'))); // TODO: use a correct redirect route/path to login
