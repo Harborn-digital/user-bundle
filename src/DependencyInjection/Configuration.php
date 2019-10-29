@@ -34,10 +34,16 @@ final class Configuration implements ConfigurationInterface
         }
 
         $rootNode
+            ->addDefaultsIfNotSet()
             ->children()
-                ->arrayNode('oauth_firewalls')
-                    ->prototype('scalar')->end()
-                    ->defaultValue(['main'])
+                ->arrayNode('firewalls')
+                    ->useAttributeAsKey('name')
+                    ->defaultValue(['main' => ['prefix' => '/']])
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('prefix')
+                        ->end()
+                    ->end()
                 ->end()
                 ->scalarNode('user_class')
                     ->defaultValue(User::class)

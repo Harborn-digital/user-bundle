@@ -79,7 +79,7 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
         $processedConfig = (new Processor())->processConfiguration($configuration, $container->getExtensionConfig(Configuration::CONFIG_ROOT_KEY));
 
         $config = [
-            'firewall_name'   => $processedConfig['oauth_firewalls'],
+            'firewall_name'   => array_keys($processedConfig['firewalls']),
             'resource_owners' => $this->createConfigForResourceOwners(array_filter($resourceOwners)),
         ];
 
