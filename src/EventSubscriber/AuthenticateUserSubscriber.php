@@ -27,7 +27,7 @@ final class AuthenticateUserSubscriber implements AuthenticateUserSubscriberInte
      */
     private $authenticator;
 
-    public function __construct(GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator)
+    public function __construct(GuardAuthenticatorHandler $guardAuthenticatorHandler, AuthenticatorInterface $authenticator)
     {
         $this->guardAuthenticatorHandler = $guardAuthenticatorHandler;
         $this->authenticator             = $authenticator;
