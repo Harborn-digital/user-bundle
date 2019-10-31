@@ -86,6 +86,13 @@ services:
         tags:
             - { name: console.command }
 
+    ConnectHolland\UserBundle\EventSubscriber\AuthenticateUserSubscriber:
+        arguments:
+            - '@security.authentication.guard_handler'
+            - '@ConnectHolland\UserBundle\Security\UserBundleAuthenticator'
+        tags:
+            - { name: kernel.event_subscriber }
+
     ConnectHolland\UserBundle\EventSubscriber\CreateUserSubscriber:
         arguments:
             - '@security.user_password_encoder.generic'

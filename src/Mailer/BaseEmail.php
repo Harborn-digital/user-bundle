@@ -9,9 +9,6 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Mailer;
 
-/**
- * @codeCoverageIgnore Will be tested in the implementations
- */
 abstract class BaseEmail implements EmailInterface
 {
     /**
@@ -19,7 +16,7 @@ abstract class BaseEmail implements EmailInterface
      */
     protected $mailer;
 
-    public function setMailer(Mailer $mailer): void
+    public function setMailer(MailerInterface $mailer): void
     {
         $this->mailer = $mailer;
     }

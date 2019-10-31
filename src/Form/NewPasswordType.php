@@ -48,11 +48,14 @@ class NewPasswordType extends AbstractType
         );
     }
 
+    /**
+     * @codeCoverageIgnore No need to test setting options for forms without functionality.
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'attr' => [
-                'novalidate'  => 'novalidate',
+                'novalidate' => 'novalidate',
             ],
         ]);
     }

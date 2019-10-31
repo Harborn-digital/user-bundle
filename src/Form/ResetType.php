@@ -26,6 +26,9 @@ final class ResetType extends AbstractType
         ;
     }
 
+    /**
+     * @codeCoverageIgnore No need to test setting options for forms without functionality.
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

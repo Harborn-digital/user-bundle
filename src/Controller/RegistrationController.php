@@ -11,6 +11,7 @@ namespace ConnectHolland\UserBundle\Controller;
 
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
+use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Form\RegistrationType;
@@ -109,7 +110,7 @@ final class RegistrationController
     /**
      * @Route("/registreren/bevestigen/{email}/{token}", name="connectholland_user_registration_confirm", methods={"GET", "POST"})
      */
-    public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): Response
+    public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->registry->getRepository(UserInterface::class);
@@ -130,25 +131,13 @@ final class RegistrationController
         $userManager = $this->registry->getManagerForClass(User::class);
         $userManager->flush();
 
-        $response = $this->authenticateUser($request, $user, $guardAuthenticatorHandler, $authenticator);
-        if (null !== $response) {
-            return $response;
+        $authenticateUserEvent = new AuthenticateUserEvent($user, $request);
+        /* @scrutinizer ignore-call */
+        $this->eventDispatcher->dispatch(UserBundleEvents::AUTHENTICATE_USER, $authenticateUserEvent);
+        if (null !== $authenticateUserEvent->getResponse()) {
+            return $authenticateUserEvent->getResponse();
         }
 
         return new RedirectResponse('/'); // TODO: use a correct redirect route/path to login
-    }
-
-    /**
-     * Login a User manually.
-     */
-    private function authenticateUser(Request $request, UserInterface $user, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
-    {
-        $providerKey = 'main'; // TODO: Make configurable
-
-        $token = $authenticator->createAuthenticatedToken($user, $providerKey);
-
-        $guardAuthenticatorHandler->authenticateWithToken($token, $request, $providerKey);
-
-        return $guardAuthenticatorHandler->handleAuthenticationSuccess($token, $request, $authenticator, $providerKey);
     }
 }

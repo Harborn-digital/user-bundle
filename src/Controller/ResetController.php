@@ -11,11 +11,11 @@ namespace ConnectHolland\UserBundle\Controller;
 
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
+use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
 use ConnectHolland\UserBundle\Event\ResetUserEvent;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
 use ConnectHolland\UserBundle\Form\NewPasswordType;
 use ConnectHolland\UserBundle\Form\ResetType;
-use ConnectHolland\UserBundle\Security\UserBundleAuthenticator;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -29,7 +29,6 @@ use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Twig\Environment;
 
 final class ResetController
@@ -78,7 +77,7 @@ final class ResetController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ResetUserEvent $resetUserEvent */
-            $resetUserEvent =new ResetUserEvent($form->get('email')->getData());
+            $resetUserEvent = new ResetUserEvent($form->get('email')->getData());
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::RESET_USER, $resetUserEvent);
             if (/* @scrutinizer ignore-deprecated */ $resetUserEvent->isPropagationStopped() === false) {
@@ -113,9 +112,7 @@ final class ResetController
         string $token,
         FormFactoryInterface $formFactory,
         UserPasswordEncoderInterface $encoder,
-        UriSigner $uriSigner,
-        GuardAuthenticatorHandler $guardAuthenticatorHandler,
-        UserBundleAuthenticator $authenticator
+        UriSigner $uriSigner
     ): Response {
         /** @var EntityManagerInterface $userManager */
         $userManager = $this->registry->getManagerForClass(User::class);
@@ -150,9 +147,11 @@ final class ResetController
             $userManager->persist($user);
             $userManager->flush();
 
-            $response = $this->authenticateUser($request, $user, $guardAuthenticatorHandler, $authenticator);
-            if (null !== $response) {
-                return $response;
+            $authenticateUserEvent = new AuthenticateUserEvent($user, $request);
+            /* @scrutinizer ignore-call */
+            $this->eventDispatcher->dispatch(UserBundleEvents::AUTHENTICATE_USER, $authenticateUserEvent);
+            if (null !== $authenticateUserEvent->getResponse()) {
+                return $authenticateUserEvent->getResponse();
             }
         }
 
@@ -164,19 +163,5 @@ final class ResetController
                 ]
             )
         );
-    }
-
-    /**
-     * Login a User manually.
-     */
-    private function authenticateUser(Request $request, UserInterface $user, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
-    {
-        $providerKey = 'main'; // TODO: Make configurable
-
-        $token = $authenticator->createAuthenticatedToken($user, $providerKey);
-
-        $guardAuthenticatorHandler->authenticateWithToken($token, $request, $providerKey);
-
-        return $guardAuthenticatorHandler->handleAuthenticationSuccess($token, $request, $authenticator, $providerKey);
     }
 }

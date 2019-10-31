@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 
 interface EmailInterface
 {
-    public function setMailer(Mailer $mailer): void;
+    public function setMailer(MailerInterface $mailer): void;
 
     public function send(UserInterface $user): \Swift_Message;
 }

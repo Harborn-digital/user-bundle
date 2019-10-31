@@ -11,7 +11,7 @@ namespace ConnectHolland\UserBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-final class UserResetEvent extends /* @scrutinizer ignore-deprecated */ Event
+final class UserResetEvent extends /* @scrutinizer ignore-deprecated */ Event implements UserResetEventInterface
 {
     /**
      * @var string
