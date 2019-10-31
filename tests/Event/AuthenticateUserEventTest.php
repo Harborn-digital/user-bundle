@@ -11,7 +11,6 @@ namespace ConnectHolland\UserBundle\Tests\Event;
 
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
-use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

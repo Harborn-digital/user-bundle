@@ -36,6 +36,9 @@ final class UserCreatedSubscriber implements UserCreatedSubscriberInterface
         }
     }
 
+    /**
+     * @codeCoverageIgnore No need to test this array 'config' method
+     */
     public static function getSubscribedEvents()
     {
         return [

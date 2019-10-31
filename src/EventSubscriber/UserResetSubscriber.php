@@ -12,14 +12,14 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\UserResetEventInterface;
-use ConnectHolland\UserBundle\Mailer\ResetEmail;
+use ConnectHolland\UserBundle\Mailer\ResetEmailInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 final class UserResetSubscriber implements UserResetSubscriberInterface
 {
     /**
-     * @var ResetEmail
+     * @var ResetEmailInterface
      */
     private $email;
 
@@ -28,7 +28,7 @@ final class UserResetSubscriber implements UserResetSubscriberInterface
      */
     private $registry;
 
-    public function __construct(ResetEmail $email, RegistryInterface $registry)
+    public function __construct(ResetEmailInterface $email, RegistryInterface $registry)
     {
         $this->email    = $email;
         $this->registry = $registry;
@@ -45,6 +45,9 @@ final class UserResetSubscriber implements UserResetSubscriberInterface
         }
     }
 
+    /**
+     * @codeCoverageIgnore No need to test this array 'config' method
+     */
     public static function getSubscribedEvents(): array
     {
         return [

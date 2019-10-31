@@ -12,6 +12,7 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEventInterface;
 use ConnectHolland\UserBundle\Security\UserBundleAuthenticator;
 use ConnectHolland\UserBundle\UserBundleEvents;
+use Symfony\Component\Security\Guard\AuthenticatorInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 final class AuthenticateUserSubscriber implements AuthenticateUserSubscriberInterface
@@ -43,6 +44,9 @@ final class AuthenticateUserSubscriber implements AuthenticateUserSubscriberInte
         $event->setResponse($this->guardAuthenticatorHandler->handleAuthenticationSuccess($token, $event->getRequest(), $this->authenticator, $providerKey));
     }
 
+    /**
+     * @codeCoverageIgnore No need to test this array 'config' method
+     */
     public static function getSubscribedEvents()
     {
         return [

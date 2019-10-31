@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final class ResetEmail extends BaseEmail
+final class ResetEmail extends BaseEmail implements ResetEmailInterface
 {
     /**
      * @var RouterInterface

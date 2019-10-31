@@ -53,6 +53,9 @@ final class CreateUserSubscriber implements CreateUserSubscriberInterface
         $userManager->flush();
     }
 
+    /**
+     * @codeCoverageIgnore No need to test this array 'config' method
+     */
     public static function getSubscribedEvents()
     {
         return [
