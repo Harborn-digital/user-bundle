@@ -23,7 +23,7 @@ final class AuthenticateUserSubscriber implements AuthenticateUserSubscriberInte
     private $guardAuthenticatorHandler;
 
     /**
-     * @var UserBundleAuthenticator
+     * @var AuthenticatorInterface
      */
     private $authenticator;
 

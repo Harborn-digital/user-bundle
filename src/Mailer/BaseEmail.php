@@ -12,7 +12,7 @@ namespace ConnectHolland\UserBundle\Mailer;
 abstract class BaseEmail implements EmailInterface
 {
     /**
-     * @var Mailer
+     * @var MailerInterface
      */
     protected $mailer;
 

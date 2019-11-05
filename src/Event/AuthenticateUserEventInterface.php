@@ -19,7 +19,7 @@ interface AuthenticateUserEventInterface
 
     public function getRequest(): Request;
 
-    public function getResponse(): Response;
+    public function getResponse(): ?Response;
 
-    public function setResponse(Response $response): void;
+    public function setResponse(?Response $response): void;
 }
