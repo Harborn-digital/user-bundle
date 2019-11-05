@@ -129,7 +129,7 @@ final class ResetController
         }
 
         if ($user instanceof UserInterface === false) {
-            $this->session->getFlashBag()->add('danger', 'User not found');
+            $this->session->getFlashBag()->add('danger', 'Not possible to reset password, please request a reset again.');
 
             return new RedirectResponse($this->router->generate('connectholland_user_reset'));
         }
