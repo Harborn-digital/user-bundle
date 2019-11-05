@@ -1,7 +1,7 @@
 connectholland_user:
     registration:
         email: 'Email address'
-        plainPassword: 'Password'
+        plain_password: 'Password'
         submit: 'Register'
         terms: 'Terms'
         title: 'Register'

@@ -44,16 +44,16 @@ final class RegistrationType extends AbstractType
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
-                'label'              => 'connectholland_user.registration.plainPassword',
+                'label'              => 'connectholland_user.registration.plain_password',
                 'mapped'             => false,
                 'translation_domain' => 'ConnecthollandUserBundle',
                 'constraints'        => [
                     new NotBlank([
-                        'message' => 'connectholland_user.validation.registration.plainPassword.not_blank',
+                        'message' => 'connectholland_user.validation.registration.plain_password.not_blank',
                     ]),
                     new Length([
                         'min'        => 8,
-                        'minMessage' => 'connectholland_user.validation.registration.plainPassword.min_length',
+                        'minMessage' => 'connectholland_user.validation.registration.plain_password.min_length',
                         'max'        => 4096, // max length allowed by Symfony for security reasons
                     ]),
                 ],
@@ -64,7 +64,7 @@ final class RegistrationType extends AbstractType
                 'translation_domain' => 'ConnecthollandUserBundle',
                 'constraints'        => [
                     new IsTrue([
-                        'message' => 'connectholland_user.validation.registration.agreeTerms.is_true',
+                        'message' => 'connectholland_user.validation.registration.terms.is_true',
                     ]),
                 ],
             ])

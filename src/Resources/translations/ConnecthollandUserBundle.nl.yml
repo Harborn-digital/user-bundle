@@ -1,7 +1,7 @@
 connectholland_user:
     registration:
         email: 'E-mailadres'
-        plainPassword: 'Wachtwoord'
+        plain_password: 'Wachtwoord'
         submit: 'Registreren'
         terms: 'Voorwaarden'
         title: 'Registreren'
