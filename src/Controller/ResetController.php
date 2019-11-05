@@ -79,12 +79,10 @@ final class ResetController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ResetUserEvent $resetUserEvent */
             $resetUserEvent = new ResetUserEvent($form->get('email')->getData());
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::RESET_USER, $resetUserEvent);
             if (/* @scrutinizer ignore-deprecated */ $resetUserEvent->isPropagationStopped() === false) {
-                /** @var UserResetEvent $userResetEvent */
                 $userResetEvent = new UserResetEvent($resetUserEvent->getEmail());
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_RESET, $userResetEvent);

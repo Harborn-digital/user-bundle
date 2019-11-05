@@ -78,12 +78,10 @@ final class RegistrationController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var CreateUserEvent $createUserEvent */
             $createUserEvent = new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData());
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, $createUserEvent);
             if (/* @scrutinizer ignore-deprecated */ $createUserEvent->isPropagationStopped() === false) {
-                /** @var UserCreatedEvent $userCreatedEvent */
                 $userCreatedEvent = new UserCreatedEvent($createUserEvent->getUser());
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
