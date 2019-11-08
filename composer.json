@@ -16,6 +16,7 @@
         "doctrine/doctrine-bundle": "^1.11",
         "doctrine/orm": "^2.6",
         "doctrine/persistence": "^1.1",
+        "friendsofsymfony/user-bundle": "^2.1",
         "haydenpierce/class-finder": "^0.4.0",
         "hwi/oauth-bundle": "^0.6.3",
         "league/html-to-markdown": "^4.8",
