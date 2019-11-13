@@ -15,8 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="ConnectHolland\UserBundle\Repository\UserRepository")
- * @UniqueEntity(fields={"email"}, entityClass="ConnectHolland\UserBundle\Entity\User", message="There is already an account with this email")
+ * @ORM\MappedSuperclass
+ * @UniqueEntity(fields={"email"}, entityClass="ConnectHolland\UserBundle\Entity\UserInterface", message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -25,43 +25,43 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    protected $email;
 
     /**
      * @ORM\Column(type="boolean", options={"default" : 0})
      */
-    private $enabled = false;
+    protected $enabled = false;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $passwordRequestToken;
+    protected $passwordRequestToken;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $lastLogin;
+    protected $lastLogin;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    protected $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=true)
      */
-    private $password;
+    protected $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ConnectHolland\UserBundle\Entity\UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
-    private $oauths;
+    protected $oauths;
 
     public function __construct()
     {

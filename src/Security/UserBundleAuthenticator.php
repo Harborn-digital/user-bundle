@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Security;
 
 use ConnectHolland\UserBundle\Entity\User;
+use ConnectHolland\UserBundle\Entity\UserInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -97,7 +98,7 @@ final class UserBundleAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         /** @var UserInterface|null $user */
-        $user = $this->registry->getRepository(User::class)->findOneBy(['email' => $credentials['username'], 'enabled' => true]);
+        $user = $this->registry->getRepository(UserInterface::class)->findOneBy(['email' => $credentials['username'], 'enabled' => true]);
 
         if ($user instanceof UserInterface === false) {
             // fail authentication with a custom error
@@ -107,7 +108,7 @@ final class UserBundleAuthenticator extends AbstractFormLoginAuthenticator
         return $user;
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, BaseUserInterface $user)
     {
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }

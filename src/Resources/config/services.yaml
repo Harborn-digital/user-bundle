@@ -103,3 +103,9 @@ services:
 
     connectholland_user.routing_oauth_route_loader: '@ConnectHolland\UserBundle\Routing\OAuthRouteLoader'
 
+    ConnectHolland\UserBundle\Form\RegistrationType:
+        arguments:
+            - '%connectholland_user.user_class%'
+        tags:
+            - { name: 'form.type' }
+

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Repository;
 
-use ConnectHolland\UserBundle\Entity\User;
+use ConnectHolland\UserBundle\Entity\UserInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
@@ -26,10 +26,10 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, User::class);
+        parent::__construct($registry, UserInterface::class);
     }
 
-    public function findOneByEmail(string $email): ?User
+    public function findOneByEmail(string $email): ?UserInterface
     {
         return $this->createQueryBuilder('user')
             ->andWhere('user.email = :email')
@@ -38,7 +38,7 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
             ->getOneOrNullResult();
     }
 
-    public function findOneByOAuthUsername(string $resource, string $oauthUsername): ?User
+    public function findOneByOAuthUsername(string $resource, string $oauthUsername): ?UserInterface
     {
         return $this->createQueryBuilder('user')
             ->leftJoin('user.oauths', 'oauths', Expr\Join::WITH, 'oauths.oauthUsername = :oauthUsername')

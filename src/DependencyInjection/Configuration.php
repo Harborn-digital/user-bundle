@@ -37,6 +37,7 @@ final class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                     ->defaultValue(['main'])
                 ->end()
+                ->scalarNode('user_class')->cannotBeEmpty()->end()
             ->end()
         ;
 

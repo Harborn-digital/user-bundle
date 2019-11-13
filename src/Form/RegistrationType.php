@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Form;
 
-use ConnectHolland\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -25,6 +24,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 final class RegistrationType extends AbstractType
 {
+    /**
+     * @var string
+     */
+    private $class;
+
+    public function __construct(string $class)
+    {
+        $this->class = $class;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -66,7 +75,7 @@ final class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => $this->class,
             'attr'       => [
                 'novalidate' => 'novalidate',
             ],

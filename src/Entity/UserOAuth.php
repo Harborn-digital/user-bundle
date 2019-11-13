@@ -35,8 +35,7 @@ class UserOAuth implements UserOAuthInterface
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="oauths", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="ConnectHolland\UserBundle\Entity\UserInterface", inversedBy="oauths", cascade={"persist"})
      */
     private $user;
 
