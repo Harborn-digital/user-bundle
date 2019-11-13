@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\MappedSuperclass
- * @UniqueEntity(fields={"email"}, entityClass="ConnectHolland\UserBundle\Entity\UserInterface", message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, entityClass="ConnectHolland\UserBundle\Entity\User", message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -25,38 +25,38 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    protected $email;
+    private $email;
 
     /**
      * @ORM\Column(type="boolean", options={"default" : 0})
      */
-    protected $enabled = false;
+    private $enabled = false;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $passwordRequestToken;
+    private $passwordRequestToken;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $lastLogin;
+    private $lastLogin;
 
     /**
      * @ORM\Column(type="json")
      */
-    protected $roles = [];
+    private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $password;
+    private $password;
 
     /**
      * @ORM\OneToMany(targetEntity="ConnectHolland\UserBundle\Entity\UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})

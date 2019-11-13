@@ -110,7 +110,7 @@ final class RegistrationController
     public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
     {
         /** @var UserRepository $userRepository */
-        $userRepository = $this->registry->getRepository(UserInterface::class);
+        $userRepository = $this->registry->getRepository(User::class);
 
         /** @var User $user */
         $user = $userRepository->findOneBy(['email' => $email, 'passwordRequestToken' => $token]);
