@@ -65,6 +65,7 @@ services:
             - { name: doctrine.repository_service }
 
     ConnectHolland\UserBundle\Command\UserCreateCommand:
+        public: true
         arguments:
             - '@event_dispatcher'
         tags:
