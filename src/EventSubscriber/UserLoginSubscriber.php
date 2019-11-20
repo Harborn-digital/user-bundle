@@ -35,7 +35,7 @@ final class UserLoginSubscriber implements UserLoginSubscriberInterface
     {
         /** @var UserInterface $user */
         $user = $event->getAuthenticationToken()->getUser();
-        $user->setLastLogin(new \DateTimeImmutable());
+        $user->setLastLogin(new \DateTime());
 
         /** @var EntityManagerInterface $userManager */
         $userManager = $this->registry->getManagerForClass(User::class);
