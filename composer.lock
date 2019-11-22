@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38b87a053d413f93f33921b0cf7b2899",
+    "content-hash": "6afeab8bd44a31e1ecff98f52a413e71",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -2528,6 +2528,75 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "rollerworks/password-strength-validator",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rollerworks/PasswordStrengthValidator.git",
+                "reference": "0302937c5275ceabf2b23f019a1150e8027e25e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/0302937c5275ceabf2b23f019a1150e8027e25e0",
+                "reference": "0302937c5275ceabf2b23f019a1150e8027e25e0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1",
+                "psr/container": "^1.0",
+                "psr/log": "^1.0",
+                "symfony/polyfill-mbstring": "^1.5.0",
+                "symfony/translation": "^3.4.22 || ^4.0",
+                "symfony/validator": "^3.4.22 || ^4.0"
+            },
+            "require-dev": {
+                "guzzlehttp/psr7": "^1.4",
+                "php-http/httplug": "^1.1",
+                "symfony/config": "^3.4.22 || ^4.0",
+                "symfony/console": "^3.4.22 || ^4.0",
+                "symfony/phpunit-bridge": "^3.4.22 || ^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rollerworks\\Component\\PasswordStrength\\": "src/"
+                },
+                "exclude-from-classmap": [
+                    "test/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastiaan Stok",
+                    "email": "s.stok@rollercapes.net"
+                },
+                {
+                    "name": "Luis Cordova",
+                    "email": "cordoval@gmail.com"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/rollerworks/PasswordStrengthValidator/contributors"
+                }
+            ],
+            "description": "Password-strength validator for Symfony",
+            "keywords": [
+                "password",
+                "symfony",
+                "validator"
+            ],
+            "time": "2019-05-24T09:08:29+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5647,6 +5716,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {

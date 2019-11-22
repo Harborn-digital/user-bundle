@@ -69,10 +69,6 @@ services:
         tags:
             - { name: controller.service_arguments }
 
-    ConnectHolland\UserBundle\Form\RegistrationFormType:
-        tags:
-            - { name: form.type }
-
     ConnectHolland\UserBundle\Repository\UserRepository:
         arguments:
             - '@doctrine'
@@ -129,7 +125,6 @@ services:
         arguments:
             - '@doctrine'
 
-
     ConnectHolland\UserBundle\Routing\OAuthRouteLoader:
         public: true
         arguments:
@@ -144,3 +139,22 @@ services:
         tags:
             - { name: 'form.type' }
 
+    ConnectHolland\UserBundle\Form\PasswordType:
+        public: true
+        arguments:
+            $passwordRequirements: []
+        tags:
+            - { name: form.type }
+
+    Rollerworks\Component\PasswordStrength\Validator\Constraints\P0wnedPasswordValidator:
+        lazy: false
+        arguments:
+            $client: '@Rollerworks\Component\PasswordStrength\P0wnedPassword\Request\Client'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Rollerworks\Component\PasswordStrength\P0wnedPassword\Request\Client:
+        lazy: false
+        arguments:
+            $client: '@httplug.client'
+            $logger: '@logger'
