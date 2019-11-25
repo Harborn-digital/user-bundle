@@ -14,10 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity()
  * @ORM\Table(
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(name="unique_oauth_username_resource",
- *            columns={"resource", "oauth_username"})
- *    }
+ *     name="connectholland_user_user_oauth",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="unique_oauth_username_resource",
+ *             columns={"resource", "oauth_username"})
+ *     }
  * )
  */
 class UserOAuth implements UserOAuthInterface
