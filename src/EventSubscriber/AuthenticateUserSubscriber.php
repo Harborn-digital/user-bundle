@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\Event\AuthenticateUserEventInterface;
-use ConnectHolland\UserBundle\Security\UserBundleAuthenticator;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Component\Security\Guard\AuthenticatorInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
