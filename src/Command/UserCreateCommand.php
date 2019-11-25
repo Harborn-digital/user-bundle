@@ -72,7 +72,6 @@ EOT
         $enable   = $input->getOption('inactive') !== true;
         $roles    = (array) $input->getOption('role');
 
-        /** @var CreateUserEvent $createUserEvent */
         $user            = new $this->class();
         $createUserEvent = new CreateUserEvent($user->setEmail($email)->setEnabled($enable)->setRoles($roles), $password);
         /* @scrutinizer ignore-call */
