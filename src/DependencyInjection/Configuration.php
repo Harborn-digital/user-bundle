@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\DependencyInjection;
 
+use ConnectHolland\UserBundle\Entity\User;
+use ConnectHolland\UserBundle\Entity\UserInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -36,6 +38,16 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('oauth_firewalls')
                     ->prototype('scalar')->end()
                     ->defaultValue(['main'])
+                ->end()
+                ->scalarNode('user_class')
+                    ->defaultValue(User::class)
+                    ->validate()
+                        ->ifTrue(function ($value) {
+                            return array_search(UserInterface::class, class_implements($value)) === false;
+                        })
+                        ->thenInvalid(sprintf('The class should implement %s', UserInterface::class))
+                    ->end()
+                    ->cannotBeEmpty()
                 ->end()
             ->end()
         ;

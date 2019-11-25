@@ -65,6 +65,7 @@ services:
             - { name: doctrine.repository_service }
 
     ConnectHolland\UserBundle\Command\UserCreateCommand:
+        public: true
         arguments:
             - '@event_dispatcher'
         tags:
@@ -102,4 +103,9 @@ services:
             - { name: 'routing.loader' }
 
     connectholland_user.routing_oauth_route_loader: '@ConnectHolland\UserBundle\Routing\OAuthRouteLoader'
+
+    ConnectHolland\UserBundle\Form\RegistrationType:
+        public: true
+        tags:
+            - { name: 'form.type' }
 

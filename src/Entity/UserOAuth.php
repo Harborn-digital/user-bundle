@@ -14,10 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity()
  * @ORM\Table(
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(name="unique_oauth_username_resource",
- *            columns={"resource", "oauth_username"})
- *    }
+ *     name="connectholland_user_user_oauth",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="unique_oauth_username_resource",
+ *             columns={"resource", "oauth_username"})
+ *     }
  * )
  */
 class UserOAuth implements UserOAuthInterface
@@ -34,8 +35,7 @@ class UserOAuth implements UserOAuthInterface
     private $oauthUsername;
 
     /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="oauths", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="ConnectHolland\UserBundle\Entity\UserInterface", inversedBy="oauths", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

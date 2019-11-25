@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Command;
 
-use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\UserBundleEvents;
@@ -33,11 +32,17 @@ final class UserCreateCommand extends Command
      */
     private $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    /**
+     * @var string
+     */
+    private $class;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher, string $class)
     {
         parent::__construct();
 
         $this->eventDispatcher = $eventDispatcher;
+        $this->class           = $class;
     }
 
     protected function configure()
@@ -69,7 +74,8 @@ EOT
 
         /** @var CreateUserEvent $event */
         /** @scrutinizer ignore-call */
-        $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent((new User())->setEmail($email)->setEnabled($enable)->setRoles($roles), $password));
+        $user  = new $this->class();
+        $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent($user->setEmail($email)->setEnabled($enable)->setRoles($roles), $password));
         if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
             /** @var UserCreatedEvent $event */
             /** @scrutinizer ignore-call */
