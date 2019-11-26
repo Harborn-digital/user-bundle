@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
-use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\UserResetEventInterface;
 use ConnectHolland\UserBundle\Mailer\ResetEmailInterface;

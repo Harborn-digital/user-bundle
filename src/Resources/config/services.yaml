@@ -142,12 +142,23 @@ services:
         tags:
             - { name: 'form.type' }
 
+    ConnectHolland\UserBundle\Form\NewPasswordType:
+        public: true
+        arguments:
+            - '@ConnectHolland\UserBundle\Security\PasswordConstraints'
+        tags:
+            - { name: form.type }
+
     ConnectHolland\UserBundle\Form\PasswordType:
         public: true
         arguments:
-            $passwordRequirements: []
+            - '@ConnectHolland\UserBundle\Security\PasswordConstraints'
         tags:
             - { name: form.type }
+
+    ConnectHolland\UserBundle\Security\PasswordConstraints:
+        arguments:
+            $passwordRequirements: []
 
     Rollerworks\Component\PasswordStrength\Validator\Constraints\P0wnedPasswordValidator:
         lazy: false

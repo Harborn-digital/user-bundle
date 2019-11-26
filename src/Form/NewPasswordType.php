@@ -9,19 +9,28 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Form;
 
+use ConnectHolland\UserBundle\Security\PasswordConstraints;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType as BasePasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore There is something not working with the RepeatedType config
  */
 class NewPasswordType extends AbstractType
 {
+    /**
+     * @var PasswordConstraints
+     */
+    private $passwordConstraints;
+
+    public function __construct(PasswordConstraints $passwordConstraints)
+    {
+        $this->passwordConstraints = $passwordConstraints;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -32,15 +41,7 @@ class NewPasswordType extends AbstractType
                 'required'      => true,
                 'first_options' => [
                     'label'       => 'connectholland_user.reset.new_password.password',
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'connectholland_user.validation.reset.new_password.password.not_blank',
-                        ]),
-                        new Length([
-                            'min'        => 8,
-                            'minMessage' => 'connectholland_user.validation.reset.new_password.password.min_length',
-                        ]),
-                    ],
+                    'constraints' => $this->passwordConstraints->getConstraints(),
                 ],
                 'second_options' => [
                     'label' => 'connectholland_user.reset.new_password.password_repeat',
