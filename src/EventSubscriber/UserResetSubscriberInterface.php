@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
-use ConnectHolland\UserBundle\Event\CreateUserEventInterface;
+use ConnectHolland\UserBundle\Event\UserResetEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-interface CreateUserSubscriberInterface extends EventSubscriberInterface
+interface UserResetSubscriberInterface extends EventSubscriberInterface
 {
-    public function onCreateUser(CreateUserEventInterface $event): void;
+    public function onUserReset(UserResetEventInterface $event): void;
 }

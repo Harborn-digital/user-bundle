@@ -11,11 +11,11 @@ namespace ConnectHolland\UserBundle\Controller;
 
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
+use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Form\RegistrationType;
 use ConnectHolland\UserBundle\Repository\UserRepository;
-use ConnectHolland\UserBundle\Security\UserBundleAuthenticator;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -28,7 +28,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Twig\Environment;
 
 /**
@@ -79,14 +78,14 @@ final class RegistrationController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var CreateUserEvent $event */
-            /** @scrutinizer ignore-call */
-            $event = $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData()));
-            if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
-                /** @var UserCreatedEvent $event */
-                /** @scrutinizer ignore-call */
-                $event = $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, new UserCreatedEvent($event->getUser()));
-                if (/* @scrutinizer ignore-deprecated */ $event->isPropagationStopped() === false) {
+            $createUserEvent = new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData());
+            /* @scrutinizer ignore-call */
+            $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, $createUserEvent);
+            if (/* @scrutinizer ignore-deprecated */ $createUserEvent->isPropagationStopped() === false) {
+                $userCreatedEvent = new UserCreatedEvent($createUserEvent->getUser());
+                /* @scrutinizer ignore-call */
+                $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
+                if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
                     $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your registration');
 
                     return new RedirectResponse($this->router->generate($request->attributes->get('_route'))); // TODO: use a correct redirect route/path to login
@@ -107,7 +106,7 @@ final class RegistrationController
     /**
      * @Route("/registreren/bevestigen/{email}/{token}", name="connectholland_user_registration_confirm", methods={"GET", "POST"})
      */
-    public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
+    public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->registry->getRepository(UserInterface::class);
@@ -128,20 +127,13 @@ final class RegistrationController
         $userManager = $this->registry->getManagerForClass(User::class);
         $userManager->flush();
 
-        return $this->authenticateUser($request, $user, $guardAuthenticatorHandler, $authenticator);
-    }
+        $authenticateUserEvent = new AuthenticateUserEvent($user, $request);
+        /* @scrutinizer ignore-call */
+        $this->eventDispatcher->dispatch(UserBundleEvents::AUTHENTICATE_USER, $authenticateUserEvent);
+        if (null !== $authenticateUserEvent->getResponse()) {
+            return $authenticateUserEvent->getResponse();
+        }
 
-    /**
-     * Login a User manually.
-     */
-    private function authenticateUser(Request $request, User $user, GuardAuthenticatorHandler $guardAuthenticatorHandler, UserBundleAuthenticator $authenticator): ?Response
-    {
-        $providerKey = 'main'; // TODO: Make configurable
-
-        $token = $authenticator->createAuthenticatedToken($user, $providerKey);
-
-        $guardAuthenticatorHandler->authenticateWithToken($token, $request, $providerKey);
-
-        return $guardAuthenticatorHandler->handleAuthenticationSuccess($token, $request, $authenticator, $providerKey);
+        return new RedirectResponse('/'); // TODO: use a correct redirect route/path to login
     }
 }

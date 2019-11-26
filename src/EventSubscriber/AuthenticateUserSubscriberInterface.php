@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
-use ConnectHolland\UserBundle\Event\CreateUserEventInterface;
+use ConnectHolland\UserBundle\Event\AuthenticateUserEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-interface CreateUserSubscriberInterface extends EventSubscriberInterface
+interface AuthenticateUserSubscriberInterface extends EventSubscriberInterface
 {
-    public function onCreateUser(CreateUserEventInterface $event): void;
+    public function onAuthenticateUser(AuthenticateUserEventInterface $event): void;
 }

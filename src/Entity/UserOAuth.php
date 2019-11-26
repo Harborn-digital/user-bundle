@@ -40,19 +40,11 @@ class UserOAuth implements UserOAuthInterface
      */
     private $user;
 
-    /**
-     * @return mixed
-     */
     public function getResource(): ?string
     {
         return $this->resource;
     }
 
-    /**
-     * @param mixed $resource
-     *
-     * @return UserOAuth
-     */
     public function setResource(string $resource)
     {
         $this->resource = $resource;
@@ -60,19 +52,11 @@ class UserOAuth implements UserOAuthInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getOAuthUsername(): ?string
     {
         return $this->oauthUsername;
     }
 
-    /**
-     * @param mixed $oauthUsername
-     *
-     * @return UserOAuth
-     */
     public function setOAuthUsername(string $oauthUsername)
     {
         $this->oauthUsername = $oauthUsername;

@@ -28,6 +28,11 @@ services:
             - '@router'
             - '@Symfony\Component\HttpKernel\UriSigner'
 
+    ConnectHolland\UserBundle\Mailer\ResetEmail:
+        arguments:
+            - '@router'
+            - '@Symfony\Component\HttpKernel\UriSigner'
+
     ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
         arguments:
             - '@doctrine'
@@ -37,6 +42,16 @@ services:
             - '@event_dispatcher'
 
     ConnectHolland\UserBundle\Controller\RegistrationController:
+        arguments:
+            - '@doctrine'
+            - '@session'
+            - '@event_dispatcher'
+            - '@router'
+            - '@twig'
+        tags:
+            - { name: controller.service_arguments }
+
+    ConnectHolland\UserBundle\Controller\ResetController:
         arguments:
             - '@doctrine'
             - '@session'
@@ -71,6 +86,13 @@ services:
         tags:
             - { name: console.command }
 
+    ConnectHolland\UserBundle\EventSubscriber\AuthenticateUserSubscriber:
+        arguments:
+            - '@security.authentication.guard_handler'
+            - '@ConnectHolland\UserBundle\Security\UserBundleAuthenticator'
+        tags:
+            - { name: kernel.event_subscriber }
+
     ConnectHolland\UserBundle\EventSubscriber\CreateUserSubscriber:
         arguments:
             - '@security.user_password_encoder.generic'
@@ -87,6 +109,19 @@ services:
     ConnectHolland\UserBundle\EventSubscriber\UserCreatedSubscriber:
         arguments:
             - '@ConnectHolland\UserBundle\Mailer\RegistrationEmail'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ConnectHolland\UserBundle\EventSubscriber\ResetUserSubscriber:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ConnectHolland\UserBundle\EventSubscriber\UserResetSubscriber:
+        arguments:
+            - '@ConnectHolland\UserBundle\Mailer\ResetEmail'
+            - '@doctrine'
         tags:
             - { name: kernel.event_subscriber }
 

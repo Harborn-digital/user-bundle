@@ -16,6 +16,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @codeCoverageIgnore WIP
@@ -37,6 +38,9 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
         $name     = $response->getResourceOwner()->getName();
         $username = $response->getUsername();
         $email    = $response->getEmail();
+        if (is_null($email)) {
+            throw new AccessDeniedException('No e-mailaddress available in this OAuth provider. Can\'t connect to it.');
+        }
 
         $user = $this->loadDatabaseUser($name, $username, $email);
         $this->updateUserRoles($user, $name);
@@ -49,7 +53,7 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
         return $user;
     }
 
-    private function loadDatabaseUser(string $name, string $username, ?string $email): User
+    private function loadDatabaseUser(string $name, string $username, string $email): User
     {
         /** @var UserRepository $repository */
         $repository = $this->doctrine->getRepository(User::class);

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
-use ConnectHolland\UserBundle\Event\UserCreatedEvent;
+use ConnectHolland\UserBundle\Event\UserCreatedEventInterface;
 use ConnectHolland\UserBundle\Mailer\RegistrationEmail;
 use ConnectHolland\UserBundle\UserBundleEvents;
 
@@ -28,7 +28,7 @@ final class UserCreatedSubscriber implements UserCreatedSubscriberInterface
         $this->email = $email;
     }
 
-    public function onUserCreated(UserCreatedEvent $event): void
+    public function onUserCreated(UserCreatedEventInterface $event): void
     {
         $user = $event->getUser();
         if ($user->isEnabled() === false) {
@@ -36,6 +36,9 @@ final class UserCreatedSubscriber implements UserCreatedSubscriberInterface
         }
     }
 
+    /**
+     * @codeCoverageIgnore No need to test this array 'config' method
+     */
     public static function getSubscribedEvents()
     {
         return [

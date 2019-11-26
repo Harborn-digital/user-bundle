@@ -17,6 +17,8 @@ interface UserInterface extends BaseUserInterface
 
     public function setEmail(string $email): self;
 
+    public function setRoles(array $roles): self;
+
     public function isEnabled(): bool;
 
     public function setEnabled(bool $enabled): self;
@@ -27,7 +29,7 @@ interface UserInterface extends BaseUserInterface
 
     public function getPasswordRequestToken(): ?string;
 
-    public function setPasswordRequestToken(string $passwordRequestToken): self;
+    public function setPasswordRequestToken(?string $passwordRequestToken): self;
 
     public function getLastLogin(): ?\DateTime;
 

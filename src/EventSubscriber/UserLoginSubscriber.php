@@ -43,6 +43,9 @@ final class UserLoginSubscriber implements UserLoginSubscriberInterface
         $userManager->flush();
     }
 
+    /**
+     * @codeCoverageIgnore No need to test this array 'config' method
+     */
     public static function getSubscribedEvents()
     {
         return [

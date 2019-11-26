@@ -11,6 +11,7 @@
 
         <button type="submit" class="btn">{{ 'connectholland_user.security.login.submit'|trans }}</button>
         <a href='{{ path('connectholland_user_registration') }}'>{{ 'connectholland_user.security.login.register'|trans }}</a>
+        <a href='{{ path('connectholland_user_reset') }}'>{{ 'connectholland_user.security.login.reset'|trans }}</a>
     {{ form_end(form) }}
     {% embed "@HWIOAuth/Connect/login.html.twig" %}
     {% endembed %}

@@ -1,0 +1,14 @@
+{% extends '@ConnecthollandUser/base.html.twig' %}
+
+{% trans_default_domain 'ConnecthollandUserBundle' %}
+
+{% block connectholland_user_content %}
+    <h1>{{ 'connectholland_user.reset.request.title'|trans }}</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.email) }}
+
+    <button type="submit" class="btn">{{ 'connectholland_user.reset.request.submit'|trans }}</button>
+    <a href='{{ path('connectholland_user_login') }}'>{{ 'connectholland_user.reset.request.login'|trans }}</a>
+    {{ form_end(form) }}
+{% endblock %}
