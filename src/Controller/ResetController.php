@@ -121,7 +121,7 @@ final class ResetController
             return new RedirectResponse($this->router->generate('connectholland_user_reset'));
         }
 
-        $user = $this->registry->getRepository(User::class)->findOneBy(['passwordRequestToken' => $token, 'email' => $email]);
+        $user = $this->registry->getRepository(UserInterface::class)->findOneBy(['passwordRequestToken' => $token, 'email' => $email]);
         if ($user instanceof UserInterface === false) {
             $this->session->getFlashBag()->add('danger', 'Not possible to reset password, please request a reset again.');
 

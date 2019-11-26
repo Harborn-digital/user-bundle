@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Security;
 
 use ConnectHolland\UserBundle\Entity\User;
+use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Entity\UserOAuth;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -56,7 +57,7 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
     private function loadDatabaseUser(string $name, string $username, string $email): User
     {
         /** @var UserRepository $repository */
-        $repository = $this->doctrine->getRepository(User::class);
+        $repository = $this->doctrine->getRepository(UserInterface::class);
         $user       = $repository->findOneByOAuthUsername($name, $username);
 
         if (is_null($user)) {

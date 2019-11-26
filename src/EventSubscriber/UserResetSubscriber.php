@@ -36,7 +36,7 @@ final class UserResetSubscriber implements UserResetSubscriberInterface
 
     public function onUserReset(UserResetEventInterface $event): void
     {
-        $user = $this->registry->getRepository(User::class)->findOneBy([
+        $user = $this->registry->getRepository(UserInterface::class)->findOneBy([
             'email' => $event->getEmail(),
         ]);
 
