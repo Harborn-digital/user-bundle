@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType as BasePasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,7 +33,7 @@ final class LoginType extends AbstractType
         );
         $builder->add(
             '_password',
-            PasswordType::class,
+            BasePasswordType::class,
             [
                 'label'              => 'connectholland_user.security.login.password',
                 'required'           => true,
