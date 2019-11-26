@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Tests\Event;
 
 use ConnectHolland\UserBundle\Entity\User;
+use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
 use ConnectHolland\UserBundle\EventSubscriber\UserResetSubscriber;
 use ConnectHolland\UserBundle\Mailer\ResetEmailInterface;
@@ -38,7 +39,7 @@ class UserResetSubscriberTest extends TestCase
         $registry
             ->expects($this->once())
             ->method('getRepository')
-            ->with(User::class)
+            ->with(UserInterface::class)
             ->willReturn($repository)
         ;
 
