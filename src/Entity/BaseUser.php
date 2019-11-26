@@ -110,12 +110,12 @@ class BaseUser implements UserInterface
         return $this;
     }
 
-    public function getLastLogin(): ?\DateTimeImmutable
+    public function getLastLogin(): ?\DateTime
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(\DateTimeImmutable $lastLogin): UserInterface
+    public function setLastLogin(\DateTime $lastLogin): UserInterface
     {
         $this->lastLogin = $lastLogin;
 
