@@ -82,7 +82,8 @@ services:
     ConnectHolland\UserBundle\Command\UserCreateCommand:
         public: true
         arguments:
-            - '@event_dispatcher'
+            $eventDispatcher: '@event_dispatcher'
+            $class: ~
         tags:
             - { name: console.command }
 
@@ -141,6 +142,8 @@ services:
 
     ConnectHolland\UserBundle\Form\RegistrationType:
         public: true
+        arguments:
+            $class: ~
         tags:
             - { name: 'form.type' }
 

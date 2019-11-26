@@ -34,7 +34,7 @@ final class Configuration implements ConfigurationInterface
         }
 
         $rootNode
-            ->/** @scrutinizer ignore-call */addDefaultsIfNotSet()
+            ->/* @scrutinizer ignore-call */addDefaultsIfNotSet()
             ->children()
                 ->arrayNode('firewalls')
                     ->useAttributeAsKey('name')
@@ -42,6 +42,7 @@ final class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('prefix')
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
