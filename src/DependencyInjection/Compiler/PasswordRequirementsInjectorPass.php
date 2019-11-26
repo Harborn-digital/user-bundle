@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\DependencyInjection\Compiler;
 
 use ConnectHolland\UserBundle\DependencyInjection\Configuration;
-use ConnectHolland\UserBundle\Form\PasswordType;
+use ConnectHolland\UserBundle\Security\PasswordConstraints;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,7 +22,7 @@ final class PasswordRequirementsInjectorPass implements CompilerPassInterface
         $configuration = new Configuration();
         $config        = (new Processor())->processConfiguration($configuration, $container->getExtensionConfig(Configuration::CONFIG_ROOT_KEY));
 
-        $definition = $container->getDefinition(PasswordType::class);
+        $definition = $container->getDefinition(PasswordConstraints::class);
         $definition->setArgument('$passwordRequirements', $config['password_requirements']);
     }
 }
