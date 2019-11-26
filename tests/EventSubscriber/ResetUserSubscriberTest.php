@@ -45,7 +45,7 @@ class ResetUserSubscriberTest extends TestCase
         $registry
             ->expects($this->once())
             ->method('getRepository')
-            ->with(User::class)
+            ->with(UserInterface::class)
             ->willReturn($repository)
         ;
 

@@ -60,9 +60,9 @@ class BaseUser implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ConnectHolland\UserBundle\Entity\UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
-    private $oauths;
+    protected $oauths;
 
     public function __construct()
     {

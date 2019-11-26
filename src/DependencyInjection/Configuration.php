@@ -35,6 +35,14 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->/* @scrutinizer ignore-call */addDefaultsIfNotSet()
+            ->beforeNormalization()
+                ->ifTrue(function ($v) { return !isset($v['password_requirements']); })
+                ->then(function ($v) {
+                    $v['password_requirements'] = [];
+
+                    return $v;
+                })
+            ->end()
             ->children()
                 ->arrayNode('firewalls')
                     ->useAttributeAsKey('name')
@@ -59,15 +67,13 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('password_requirements')
                     ->children()
                         ->integerNode('min_strength')
-                            ->cannotBeEmpty()
                             ->defaultValue(4)
                         ->end()
                         ->integerNode('min_length')
-                            ->cannotBeEmpty()
                             ->defaultValue(8)
                         ->end()
                         ->booleanNode('not_pwned')
-                            ->defaultValue(false)
+                            ->defaultTrue()
                         ->end()
                     ->end()
                 ->end()
