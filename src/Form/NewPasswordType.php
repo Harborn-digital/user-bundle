@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType as BasePasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,7 +28,7 @@ class NewPasswordType extends AbstractType
             'password',
             RepeatedType::class,
             [
-                'type'          => PasswordType::class,
+                'type'          => BasePasswordType::class,
                 'required'      => true,
                 'first_options' => [
                     'label'       => 'connectholland_user.reset.new_password.password',

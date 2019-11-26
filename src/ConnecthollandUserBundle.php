@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle;
 
+use ConnectHolland\UserBundle\DependencyInjection\Compiler\PasswordRequirementsInjectorPass;
 use ConnectHolland\UserBundle\DependencyInjection\Compiler\ResolveTargetEntityPass;
 use ConnectHolland\UserBundle\DependencyInjection\Compiler\ResourceOwnerMapsPass;
 use ConnectHolland\UserBundle\DependencyInjection\Compiler\UserClassInjectorPass;
@@ -24,5 +25,6 @@ final class ConnecthollandUserBundle extends Bundle
         $container->addCompilerPass(new ResourceOwnerMapsPass());
         $container->addCompilerPass(new ResolveTargetEntityPass());
         $container->addCompilerPass(new UserClassInjectorPass());
+        $container->addCompilerPass(new PasswordRequirementsInjectorPass());
     }
 }
