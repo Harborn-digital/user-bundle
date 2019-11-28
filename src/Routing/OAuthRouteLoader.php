@@ -16,7 +16,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * @codeCoverageIgnore WIP
  */
-final class OAuthRouteLoader extends Loader
+class OAuthRouteLoader extends Loader
 {
     private $isLoaded = false;
 
