@@ -127,6 +127,7 @@ services:
             - '@doctrine'
 
     ConnectHolland\UserBundle\Routing\OAuthRouteLoader:
+        lazy: true
         public: true
         arguments:
             $resourceOwnerMaps: []
