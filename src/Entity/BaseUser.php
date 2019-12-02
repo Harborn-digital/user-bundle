@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="connectholland_user_user")
  * @UniqueEntity(fields={"email"}, entityClass="ConnectHolland\UserBundle\Entity\BaseUser", message="There is already an account with this email")
  */
-class BaseUser implements UserInterface
+abstract class BaseUser implements UserInterface
 {
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -60,11 +60,6 @@ class BaseUser implements UserInterface
     public function __construct()
     {
         $this->oauths = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEmail(): ?string
@@ -160,7 +155,7 @@ class BaseUser implements UserInterface
         return $this->oauths;
     }
 
-    public function addOAuth(UserOAuth $oauth): self
+    public function addOAuth(UserOAuthInterface $oauth): UserInterface
     {
         if (!$this->oauths->contains($oauth)) {
             $this->oauths[] = $oauth;
@@ -170,7 +165,7 @@ class BaseUser implements UserInterface
         return $this;
     }
 
-    public function removeOAuth(UserOAuth $oauth): self
+    public function removeOAuth(UserOAuthInterface $oauth): UserInterface
     {
         if ($this->oauths->contains($oauth)) {
             $this->oauths->removeElement($oauth);
