@@ -1,0 +1,15 @@
+connectholland_user:
+    validation:
+        password:
+            password_strength:
+                too_short: 'Het wachtwoord is te kort'
+                too_weak: 'Het gekozen wachtwoord is te zwak'
+            not_blank: 'Vul een wachtwoord in'
+            p0wned_password: 'Dit wachtwoord is gevonden in een database met gelekte wachtwoorden. Het is {{ used }} keer gebruikt. Om veiligheidsredenen moet u iets anders gebruiken.'
+        reset:
+            new_password:
+                password:
+                    repeat_invalid: 'De opgegeven wachtwoorden komen niet overeen'
+        registration:
+            terms:
+                is_true: 'Om je te kunnen registreren moet je akkoord gaan met onze voorwaarden'
