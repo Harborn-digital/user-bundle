@@ -10,14 +10,14 @@ User bundle for Symfony 4 projects
 
 This bundle will be extendible and provide:
 
-- Simple registration form
-- Simple login form
-- Ability to 'switch on' MFA
-- A Command to create users with their roles
-- An e-mail message with a secure link to complete account registration
-- Recover password functionality
-- Being API accessable
-- Ability to 'switch on' OAuth (Google/GitHub/Facebook/etc)
+- [x] Simple registration form
+- [x] Simple login form
+- [ ] Ability to 'switch on' MFA
+- [x] A Command to create users with their roles
+- [x] An e-mail message with a secure link to complete account registration
+- [x] Recover password functionality
+- [ ] Being API accessable
+- [x] Ability to 'switch on' OAuth (Google/GitHub/Facebook/etc)
 
 ## Environment
 
