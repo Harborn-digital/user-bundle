@@ -70,11 +70,14 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
         $repository = $this->doctrine->getRepository(UserInterface::class);
         $user       = $repository->findOneByOAuthUsername($name, $username);
 
-        if (is_null($user) === false) {
+        if ($user instanceof UserInterface) {
             return $user;
         }
 
-        $user = $repository->findOneByEmail($response->getEmail());
+        if ($response->getEmail() !== '') {
+            $user = $repository->findOneByEmail($response->getEmail());
+        }
+
         if (is_null($user)) {
             $event = new CreateOAuthUserEvent($repository->getClassName(), $response);
             $this->eventDispatcher->dispatch($event);
