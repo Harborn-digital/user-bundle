@@ -80,7 +80,7 @@ services:
         public: true
         arguments:
             $eventDispatcher: '@event_dispatcher'
-            $class: ~
+            $doctrine: '@doctrine'
         tags:
             - { name: console.command }
 
@@ -146,7 +146,7 @@ services:
     ConnectHolland\UserBundle\Form\RegistrationType:
         public: true
         arguments:
-            $class: ~
+            $doctrine: '@doctrine'
         tags:
             - { name: 'form.type' }
 
