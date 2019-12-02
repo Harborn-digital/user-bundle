@@ -35,7 +35,7 @@ services:
 
     ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
         arguments:
-            - '@doctrine'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@router'
             - '@security.csrf.token_manager'
             - '@security.user_password_encoder.generic'
@@ -43,7 +43,7 @@ services:
 
     ConnectHolland\UserBundle\Controller\RegistrationController:
         arguments:
-            - '@doctrine'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@session'
             - '@event_dispatcher'
             - '@router'
@@ -53,7 +53,7 @@ services:
 
     ConnectHolland\UserBundle\Controller\ResetController:
         arguments:
-            - '@doctrine'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@session'
             - '@event_dispatcher'
             - '@router'
@@ -71,7 +71,7 @@ services:
 
     ConnectHolland\UserBundle\Repository\UserRepository:
         arguments:
-            $registry: '@doctrine'
+            $registry: '@Doctrine\Common\Persistence\ManagerRegistry'
             $class: ~
         tags:
             - { name: doctrine.repository_service }
@@ -80,7 +80,7 @@ services:
         public: true
         arguments:
             $eventDispatcher: '@event_dispatcher'
-            $doctrine: '@doctrine'
+            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
         tags:
             - { name: console.command }
 
@@ -94,7 +94,7 @@ services:
     ConnectHolland\UserBundle\EventSubscriber\CreateUserSubscriber:
         arguments:
             - '@security.user_password_encoder.generic'
-            - '@doctrine'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -104,7 +104,7 @@ services:
 
     ConnectHolland\UserBundle\EventSubscriber\UserLoginSubscriber:
         arguments:
-            - '@doctrine'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -116,20 +116,20 @@ services:
 
     ConnectHolland\UserBundle\EventSubscriber\ResetUserSubscriber:
         arguments:
-            - '@doctrine'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
 
     ConnectHolland\UserBundle\EventSubscriber\UserResetSubscriber:
         arguments:
             - '@ConnectHolland\UserBundle\Mailer\ResetEmail'
-            - '@doctrine'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
 
     ConnectHolland\UserBundle\Security\OAuthUserProvider:
         arguments:
-            $doctrine: '@doctrine'
+            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
             $eventDispatcher: '@event_dispatcher'
 
 
@@ -146,7 +146,7 @@ services:
     ConnectHolland\UserBundle\Form\RegistrationType:
         public: true
         arguments:
-            $doctrine: '@doctrine'
+            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
         tags:
             - { name: 'form.type' }
 
