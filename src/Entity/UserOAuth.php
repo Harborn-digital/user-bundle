@@ -30,6 +30,7 @@ class UserOAuth implements UserOAuthInterface
     private $resource;
 
     /**
+     * @ORM\Id
      * @ORM\Column(type="string", length=180)
      */
     private $oauthUsername;

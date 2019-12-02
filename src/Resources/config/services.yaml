@@ -98,6 +98,10 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    ConnectHolland\UserBundle\EventSubscriber\CreateOAuthUserSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
     ConnectHolland\UserBundle\EventSubscriber\UserLoginSubscriber:
         arguments:
             - '@doctrine'
@@ -125,7 +129,9 @@ services:
 
     ConnectHolland\UserBundle\Security\OAuthUserProvider:
         arguments:
-            - '@doctrine'
+            $doctrine: '@doctrine'
+            $eventDispatcher: '@event_dispatcher'
+
 
     ConnectHolland\UserBundle\Routing\OAuthRouteLoader:
         lazy: true

@@ -9,14 +9,16 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Security;
 
-use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Entity\UserOAuth;
+use ConnectHolland\UserBundle\Event\CreateOAuthUserEvent;
+use ConnectHolland\UserBundle\Event\OAuthUserCreatedEvent;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -29,16 +31,29 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
      */
     private $doctrine;
 
-    public function __construct(Registry $doctrine)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var UserResponseInterface
+     */
+    private $response;
+
+    public function __construct(Registry $doctrine, EventDispatcherInterface $eventDispatcher)
     {
-        $this->doctrine = $doctrine;
+        $this->doctrine        = $doctrine;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
-        $name     = $response->getResourceOwner()->getName();
-        $username = $response->getUsername();
-        $email    = $response->getEmail();
+        $this->response = $response;
+
+        $name     = $this->response->getResourceOwner()->getName();
+        $username = $this->response->getUsername();
+        $email    = $this->response->getEmail();
         if (is_null($email)) {
             throw new AccessDeniedException('No e-mailaddress available in this OAuth provider. Can\'t connect to it.');
         }
@@ -66,12 +81,9 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
             $user = $repository->findOneByEmail($email);
 
             if (is_null($user)) {
-                $userClass = $repository->getClassName();
-                $user      = new $userClass();
-                $user->setEnabled(true);
-                if ($email) {
-                    $user->setEmail($email);
-                }
+                $event = new CreateOAuthUserEvent($repository->getClassName(), $this->response);
+                $this->eventDispatcher->dispatch($event);
+                $user = $event->getUser();
             }
 
             $oauth = new UserOAuth();
@@ -80,7 +92,7 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
 
             $user->addOAuth($oauth);
 
-            // @todo: Dispatch new UserOAuth created here to be able adding more data from $response.
+            $this->eventDispatcher->dispatch(new OAuthUserCreatedEvent($user, $this->response));
         }
 
         return $user;
