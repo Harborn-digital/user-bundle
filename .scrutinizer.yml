@@ -2,6 +2,11 @@ checks:
     php: true
 
 build:
+    environment:
+        php:
+            version: 7.3
+            ini:
+                'date.timezone': 'Europe/Amsterdam'
     nodes:
         phpunit:
             environment:
@@ -11,10 +16,6 @@ build:
                 mysql: false
                 redis: true
                 elasticsearch: false
-                php:
-                    version: 7.3
-                    ini:
-                        'date.timezone': 'Europe/Amsterdam'
             tests:
                 override:
                     -   command: 'vendor/bin/phpunit --coverage-clover=code-coverage'
