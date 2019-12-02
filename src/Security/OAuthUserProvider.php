@@ -36,11 +36,6 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
      */
     private $eventDispatcher;
 
-    /**
-     * @var UserResponseInterface
-     */
-    private $response;
-
     public function __construct(RegistryInterface $doctrine, EventDispatcherInterface $eventDispatcher)
     {
         $this->doctrine        = $doctrine;
@@ -49,17 +44,12 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
 
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
-        $this->response = $response;
-
-        $name     = $this->response->getResourceOwner()->getName();
-        $username = $this->response->getUsername();
-        $email    = $this->response->getEmail();
-        if (is_null($email)) {
-            throw new AccessDeniedException('No e-mailaddress available in this OAuth provider. Can\'t connect to it.');
+        if (is_null($response->getEmail())) {
+            throw new AccessDeniedException('No email address available in this OAuth provider. Can\'t connect to it.');
         }
 
-        $user = $this->loadDatabaseUser($name, $username, $email);
-        $this->updateUserRoles($user, $name);
+        $user = $this->loadDatabaseUser($response);
+        $this->updateUserRoles($user, $response->getResourceOwner()->getName());
 
         /** @var ObjectManager $objectManager */
         $objectManager = $this->doctrine->getManagerForClass(
@@ -71,29 +61,33 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
         return $user;
     }
 
-    private function loadDatabaseUser(string $name, string $username, string $email): UserInterface
+    private function loadDatabaseUser(UserResponseInterface $response): UserInterface
     {
+        $name     = $response->getResourceOwner()->getName();
+        $username = $response->getUsername();
+
         /** @var UserRepository $repository */
         $repository = $this->doctrine->getRepository(UserInterface::class);
         $user       = $repository->findOneByOAuthUsername($name, $username);
 
-        if (is_null($user)) {
-            $user = $repository->findOneByEmail($email);
-
-            if (is_null($user)) {
-                $event = new CreateOAuthUserEvent($repository->getClassName(), $this->response);
-                $this->eventDispatcher->dispatch($event);
-                $user = $event->getUser();
-            }
-
-            $oauth = new UserOAuth();
-            $oauth->setResource($name);
-            $oauth->setOAuthUsername($username);
-
-            $user->addOAuth($oauth);
-
-            $this->eventDispatcher->dispatch(new OAuthUserCreatedEvent($user, $this->response));
+        if (is_null($user) === false) {
+            return $user;
         }
+
+        $user = $repository->findOneByEmail($response->getEmail());
+        if (is_null($user)) {
+            $event = new CreateOAuthUserEvent($repository->getClassName(), $response);
+            $this->eventDispatcher->dispatch($event);
+            $user = $event->getUser();
+        }
+
+        $oauth = new UserOAuth();
+        $oauth->setResource($name);
+        $oauth->setOAuthUsername($username);
+
+        $user->addOAuth($oauth);
+
+        $this->eventDispatcher->dispatch(new OAuthUserCreatedEvent($user, $response));
 
         return $user;
     }
