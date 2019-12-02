@@ -13,7 +13,7 @@
         "php": "^7.3",
         "ext-json": "*",
         "doctrine/collections": "^1.6",
-        "doctrine/doctrine-bundle": "^1.11",
+        "doctrine/doctrine-bundle": "^1.11 || ^2.0",
         "doctrine/orm": "^2.6",
         "doctrine/persistence": "^1.1",
         "haydenpierce/class-finder": "^0.4.0",

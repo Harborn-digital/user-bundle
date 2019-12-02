@@ -12,9 +12,20 @@ namespace ConnectHolland\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ConnectHolland\UserBundle\Repository\UserRepository")
  * @ORM\Table(name="connectholland_user_user")
  */
 class User extends BaseUser
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }

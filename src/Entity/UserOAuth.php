@@ -30,6 +30,7 @@ class UserOAuth implements UserOAuthInterface
     private $resource;
 
     /**
+     * @ORM\Id
      * @ORM\Column(type="string", length=180)
      */
     private $oauthUsername;
@@ -64,12 +65,12 @@ class UserOAuth implements UserOAuthInterface
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?UserInterface
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
 

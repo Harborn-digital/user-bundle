@@ -71,7 +71,8 @@ services:
 
     ConnectHolland\UserBundle\Repository\UserRepository:
         arguments:
-            - '@doctrine'
+            $registry: '@doctrine'
+            $class: ~
         tags:
             - { name: doctrine.repository_service }
 
@@ -79,7 +80,7 @@ services:
         public: true
         arguments:
             $eventDispatcher: '@event_dispatcher'
-            $class: ~
+            $doctrine: '@doctrine'
         tags:
             - { name: console.command }
 
@@ -94,6 +95,10 @@ services:
         arguments:
             - '@security.user_password_encoder.generic'
             - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ConnectHolland\UserBundle\EventSubscriber\CreateOAuthUserSubscriber:
         tags:
             - { name: kernel.event_subscriber }
 
@@ -124,7 +129,9 @@ services:
 
     ConnectHolland\UserBundle\Security\OAuthUserProvider:
         arguments:
-            - '@doctrine'
+            $doctrine: '@doctrine'
+            $eventDispatcher: '@event_dispatcher'
+
 
     ConnectHolland\UserBundle\Routing\OAuthRouteLoader:
         lazy: true
@@ -139,7 +146,7 @@ services:
     ConnectHolland\UserBundle\Form\RegistrationType:
         public: true
         arguments:
-            $class: ~
+            $doctrine: '@doctrine'
         tags:
             - { name: 'form.type' }
 

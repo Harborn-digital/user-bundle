@@ -19,7 +19,7 @@ interface UserOAuthInterface
 
     public function setOAuthUsername(string $oauthUsername);
 
-    public function getUser(): ?User;
+    public function getUser(): ?UserInterface;
 
-    public function setUser(?User $user);
+    public function setUser(?UserInterface $user);
 }

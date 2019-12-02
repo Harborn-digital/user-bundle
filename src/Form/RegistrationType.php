@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Form;
 
+use ConnectHolland\UserBundle\Entity\UserInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,13 +24,13 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 final class RegistrationType extends AbstractType
 {
     /**
-     * @var string
+     * @var RegistryInterface
      */
-    private $class;
+    private $doctrine;
 
-    public function __construct(string $class)
+    public function __construct(RegistryInterface $doctrine)
     {
-        $this->class = $class;
+        $this->doctrine = $doctrine;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -61,7 +63,7 @@ final class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => $this->class,
+            'data_class' => $this->doctrine->getRepository(UserInterface::class)->getClassName(),
             'attr'       => [
                 'novalidate' => 'novalidate',
             ],

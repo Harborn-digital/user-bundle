@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
 interface UserInterface extends BaseUserInterface
@@ -34,4 +35,10 @@ interface UserInterface extends BaseUserInterface
     public function getLastLogin(): ?\DateTime;
 
     public function setLastLogin(\DateTime $lastLogin): self;
+
+    public function getOAuths(): Collection;
+
+    public function addOAuth(UserOAuthInterface $oauth): self;
+
+    public function removeOAuth(UserOAuthInterface $oauth): self;
 }

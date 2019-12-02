@@ -24,9 +24,9 @@ use Doctrine\ORM\Query\Expr;
  */
 final class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, string $class)
     {
-        parent::__construct($registry, UserInterface::class);
+        parent::__construct($registry, $class);
     }
 
     public function findOneByEmail(string $email): ?UserInterface

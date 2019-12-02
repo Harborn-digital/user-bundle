@@ -1,0 +1,15 @@
+connectholland_user:
+    validation:
+        password:
+            password_strength:
+                too_short: 'The chosen password is too short'
+                too_weak: 'The chosen password is too weak'
+            not_blank: 'Fill in a password'
+            p0wned_password: 'This password was found in a database of compromised passwords. It has been used {{ used }} times. For security purposes you must use something else.'
+        reset:
+            new_password:
+                password:
+                    repeat_invalid: 'The specified passwords do not match'
+        registration:
+            terms:
+                is_true: 'In order to register you must agree to our terms and conditions'
