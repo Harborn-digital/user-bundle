@@ -12,6 +12,7 @@ namespace ConnectHolland\UserBundle\DependencyInjection\Compiler;
 use ConnectHolland\UserBundle\Command\UserCreateCommand;
 use ConnectHolland\UserBundle\DependencyInjection\Configuration;
 use ConnectHolland\UserBundle\Form\RegistrationType;
+use ConnectHolland\UserBundle\Repository\UserRepository;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -27,6 +28,9 @@ final class UserClassInjectorPass implements CompilerPassInterface
         $definition->replaceArgument('$class', $config['user_class']);
 
         $definition = $container->getDefinition(UserCreateCommand::class);
+        $definition->replaceArgument('$class', $config['user_class']);
+
+        $definition = $container->getDefinition(UserRepository::class);
         $definition->replaceArgument('$class', $config['user_class']);
     }
 }

@@ -71,7 +71,8 @@ services:
 
     ConnectHolland\UserBundle\Repository\UserRepository:
         arguments:
-            - '@doctrine'
+            $registry: '@doctrine'
+            $class: ~
         tags:
             - { name: doctrine.repository_service }
 

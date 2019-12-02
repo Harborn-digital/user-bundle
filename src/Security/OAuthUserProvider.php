@@ -47,14 +47,16 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
         $this->updateUserRoles($user, $name);
 
         /** @var ObjectManager $objectManager */
-        $objectManager = $this->doctrine->getManagerForClass(User::class);
+        $objectManager = $this->doctrine->getManagerForClass(
+            $this->doctrine->getRepository(UserInterface::class)->getClassName()
+        );
         $objectManager->persist($user);
         $objectManager->flush();
 
         return $user;
     }
 
-    private function loadDatabaseUser(string $name, string $username, string $email): User
+    private function loadDatabaseUser(string $name, string $username, string $email): UserInterface
     {
         /** @var UserRepository $repository */
         $repository = $this->doctrine->getRepository(UserInterface::class);
@@ -64,7 +66,8 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
             $user = $repository->findOneByEmail($email);
 
             if (is_null($user)) {
-                $user = new User();
+                $userClass = $repository->getClassName();
+                $user      = new $userClass();
                 $user->setEnabled(true);
                 if ($email) {
                     $user->setEmail($email);
@@ -83,7 +86,7 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
         return $user;
     }
 
-    private function updateUserRoles(User $user, string $name): void
+    private function updateUserRoles(UserInterface $user, string $name): void
     {
         $roles   = $user->getRoles();
         $roles[] = 'ROLE_OAUTH';
