@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<htmL>
-    <head>
-        <title>Registration</title>
-    </head>
-    <body>
-        {% block body %}
-            <h1>Registration</h1>
-            <a href='{{ link }}'>Confirm registration</a>
-        {% endblock %}
-    </body>
-</htmL>
+{% extends 'emails/base.html.twig' %}
+
+{% block connectholland_user_email_title %}Registration{% endblock %}
+
+{% block connectholland_user_email_content %}
+    <h1>Registration</h1>
+    <a href='{{ link }}'>Confirm registation</a>
+{% endblock %}
