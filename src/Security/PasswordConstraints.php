@@ -48,7 +48,9 @@ class PasswordConstraints
         ];
 
         if ($this->passwordRequirements['not_pwned'] === true) {
-            $constraints[] = new P0wnedPassword();
+            $constraints[] = new P0wnedPassword([
+                'message' => 'connectholland_user.validation.password.p0wned_password',
+            ]);
         }
 
         return $constraints;
