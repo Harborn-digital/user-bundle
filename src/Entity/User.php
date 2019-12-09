@@ -22,7 +22,7 @@ class User extends BaseUser
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     public function getId(): ?int
     {

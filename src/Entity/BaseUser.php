@@ -24,33 +24,33 @@ abstract class BaseUser implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    protected $email;
 
     /**
      * @ORM\Column(type="boolean", options={"default" : 0})
      */
-    private $enabled = false;
+    protected $enabled = false;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $passwordRequestToken;
+    protected $passwordRequestToken;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $lastLogin;
+    protected $lastLogin;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    protected $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=true)
      */
-    private $password;
+    protected $password;
 
     /**
      * @ORM\OneToMany(targetEntity="ConnectHolland\UserBundle\Entity\UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
