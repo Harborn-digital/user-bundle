@@ -127,6 +127,10 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    ConnectHolland\UserBundle\EventSubscriber\FlashSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
     ConnectHolland\UserBundle\Security\OAuthUserProvider:
         arguments:
             $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'

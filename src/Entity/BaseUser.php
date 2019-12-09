@@ -28,7 +28,7 @@ abstract class BaseUser implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    protected $email;
+    private $email;
 
     /**
      * @ORM\Column(type="boolean", options={"default" : 0})

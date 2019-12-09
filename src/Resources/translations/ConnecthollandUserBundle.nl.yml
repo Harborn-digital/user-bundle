@@ -1,4 +1,6 @@
 connectholland_user:
+    flash_message:
+
     registration:
         email: 'E-mailadres'
         plain_password: 'Wachtwoord'
