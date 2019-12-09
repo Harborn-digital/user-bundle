@@ -14,6 +14,7 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
+use ConnectHolland\UserBundle\Event\UserRegistrationCompletedEvent;
 use ConnectHolland\UserBundle\Form\RegistrationType;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use ConnectHolland\UserBundle\UserBundleEvents;
@@ -86,6 +87,14 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
+
+                    $registrationCompletedEvent = new UserRegistrationCompletedEvent();
+                    $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $registrationCompletedEvent);
+
+                    if ($registrationCompletedEvent->getResponse() instanceof Response) {
+                        return $registrationCompletedEvent->getResponse();
+                    }
+
                     $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your registration');
 
                     return new RedirectResponse($this->router->generate($request->attributes->get('_route'))); // TODO: use a correct redirect route/path to login
