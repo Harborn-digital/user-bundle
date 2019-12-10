@@ -95,7 +95,6 @@ final class RegistrationController
                     if ($registrationCompletedEvent->getResponse() instanceof Response) {
                         return $registrationCompletedEvent->getResponse();
                     }
-                    $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your registration');
 
                     return new RedirectResponse($this->router->generate($request->attributes->get('_route'))); // TODO: use a correct redirect route/path to login
                 }

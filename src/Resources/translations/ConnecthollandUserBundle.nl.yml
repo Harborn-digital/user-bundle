@@ -1,6 +1,8 @@
 connectholland_user:
     flash_message:
-
+        register_form:
+            flash:
+                success: 'Check your e-mail to complete your registration'
     registration:
         email: 'E-mailadres'
         plain_password: 'Wachtwoord'
