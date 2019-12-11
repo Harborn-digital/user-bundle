@@ -91,3 +91,7 @@ security:
         - { path: ^/login/oauth-check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [ROLE_OAUTH, ROLE_ADMIN ] }
 ```
+
+## Extend User entity
+
+If you want to extend the User entity, you should clone [User](https://github.com/ConnectHolland/user-bundle/blob/master/src/Entity/User.php) and add it as entity in your own project.

@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="ConnectHolland\UserBundle\Repository\UserRepository")
  * @ORM\Table(name="connectholland_user_user")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User extends BaseUser
 {

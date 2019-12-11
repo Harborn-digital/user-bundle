@@ -18,7 +18,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\MappedSuperclass
  * @ORM\Table(name="connectholland_user_user")
- * @UniqueEntity(fields={"email"}, entityClass="ConnectHolland\UserBundle\Entity\BaseUser", message="There is already an account with this email")
  */
 abstract class BaseUser implements UserInterface
 {
