@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="ConnectHolland\UserBundle\Repository\UserRepository")
