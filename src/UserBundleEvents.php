@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle;
 
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
-use ConnectHolland\UserBundle\Event\ControllerFormSuccessEvent;
+use ConnectHolland\UserBundle\Event\ControllerSuccessEvent;
 use ConnectHolland\UserBundle\Event\CreateOAuthUserEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\OAuthUserCreatedEvent;
@@ -22,7 +22,7 @@ use ConnectHolland\UserBundle\Event\UserResetEvent;
 final class UserBundleEvents
 {
     const AUTHENTICATE_USER       = AuthenticateUserEvent::class;
-    const CONTROLLER_FORM_SUCCESS = ControllerFormSuccessEvent::class;
+    const CONTROLLER_SUCCESS      = ControllerSuccessEvent::class;
     const CREATE_OAUTH_USER       = CreateOAuthUserEvent::class;
     const CREATE_USER             = CreateUserEvent::class;
     const OAUTH_USER_CREATED      = OAuthUserCreatedEvent::class;

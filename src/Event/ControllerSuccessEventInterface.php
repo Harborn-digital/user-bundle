@@ -11,7 +11,7 @@ namespace ConnectHolland\UserBundle\Event;
 
 use Symfony\Component\Form\FormInterface;
 
-interface ControllerFormSuccessEventInterface
+interface ControllerSuccessEventInterface
 {
     public function getAction(): string;
 

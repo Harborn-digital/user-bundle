@@ -11,7 +11,7 @@ namespace ConnectHolland\UserBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class ControllerFormSuccessEvent extends Event implements ControllerFormSuccessEventInterface
+class ControllerSuccessEvent extends Event implements ControllerSuccessEventInterface
 {
     /**
      * @var string

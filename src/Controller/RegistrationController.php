@@ -12,7 +12,7 @@ namespace ConnectHolland\UserBundle\Controller;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
-use ConnectHolland\UserBundle\Event\ControllerFormSuccessEvent;
+use ConnectHolland\UserBundle\Event\ControllerSuccessEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Event\UserRegistrationCompletedEvent;
@@ -88,8 +88,10 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
+                    $controllerSuccessEvent = new ControllerSuccessEvent('register', 'user');
+                    $this->eventDispatcher->dispatch(UserBundleEvents::CONTROLLER_SUCCESS, $controllerSuccessEvent);
+
                     $registrationCompletedEvent = new UserRegistrationCompletedEvent();
-                    $this->eventDispatcher->dispatch(UserBundleEvents::CONTROLLER_FORM_SUCCESS, new ControllerFormSuccessEvent('register', 'user'));
                     $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $registrationCompletedEvent);
 
                     if ($registrationCompletedEvent->getResponse() instanceof Response) {
