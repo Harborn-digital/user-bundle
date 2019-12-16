@@ -7,6 +7,8 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
+namespace ConnectHolland\UserBundle\Event;
+
 interface PostRegistrationEventInterface
 {
     public function getState(): string;

@@ -88,9 +88,9 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
-
                     $defaultResponse = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
                     $postRegistrationEvent = new PostRegistrationEvent('success', $defaultResponse, __FUNCTION__);
+                    /* @scrutinizer ignore-call */
                     $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $postRegistrationEvent);
 
                     return $postRegistrationEvent->getResponse();
@@ -122,6 +122,7 @@ final class RegistrationController
         if (!($user instanceof UserInterface) || $uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
             $defaultResponse = new RedirectResponse('/'); // TODO: use a correct redirect route/path to login
             $userNotFoundEvent = new UserNotFoundEvent($defaultResponse, 'danger', __FUNCTION__);
+            /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::USER_NOT_FOUND, $userNotFoundEvent);
 
             return $userNotFoundEvent->getResponse();

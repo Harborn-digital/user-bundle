@@ -89,8 +89,8 @@ final class ResetController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_RESET, $userResetEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userResetEvent->isPropagationStopped() === false) {
-
                     $postPasswordResetEvent = new PostPasswordResetEvent('notice', __FUNCTION__);
+                    /* @scrutinizer ignore-call */
                     $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_COMPLETED, $postPasswordResetEvent);
 
                     $form = $formFactory->create(ResetType::class); // reset input
@@ -122,6 +122,7 @@ final class ResetController
         if ($uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
             $defaultResponse = new RedirectResponse($this->router->generate('connectholland_user_reset'));
             $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', __FUNCTION__);
+            /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
 
             return $passwordResetFailedEvent->getResponse();
@@ -131,6 +132,7 @@ final class ResetController
         if ($user instanceof UserInterface === false) {
             $defaultResponse = new RedirectResponse($this->router->generate('connectholland_user_reset'));
             $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', __FUNCTION__);
+            /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
 
             return $passwordResetFailedEvent->getResponse();

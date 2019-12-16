@@ -5,7 +5,7 @@ namespace ConnectHolland\UserBundle\Event;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\Event;
 
-class PostRegistrationEvent extends Event implements PostRegistrationEventInterface, ResponseEventInterface
+class PostRegistrationEvent extends /* @scrutinizer ignore-deprecated */ Event implements PostRegistrationEventInterface, ResponseEventInterface
 {
     /**
      * @var string
