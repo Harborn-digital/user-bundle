@@ -128,6 +128,9 @@ services:
             - { name: kernel.event_subscriber }
 
     ConnectHolland\UserBundle\EventSubscriber\FlashSubscriber:
+        arguments:
+            - '@session'
+            - '@translator'
         tags:
             - { name: kernel.event_subscriber }
 

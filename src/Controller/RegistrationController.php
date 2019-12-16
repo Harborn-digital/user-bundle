@@ -88,7 +88,7 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
-                    $controllerSuccessEvent = new ControllerSuccessEvent('register', 'user');
+                    $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user');
                     $this->eventDispatcher->dispatch(UserBundleEvents::CONTROLLER_SUCCESS, $controllerSuccessEvent);
 
                     $registrationCompletedEvent = new UserRegistrationCompletedEvent();
