@@ -88,7 +88,7 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
-                    $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user');
+                    $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user', 'success');
                     $this->eventDispatcher->dispatch(UserBundleEvents::CONTROLLER_SUCCESS, $controllerSuccessEvent);
 
                     $defaultRedirect = new RedirectResponse($this->router->generate($request->attributes->get('_route')));

@@ -1,8 +1,11 @@
 connectholland_user:
     flash_message:
-        register_form:
+        register:
             flash:
-                success: 'Check your e-mail to complete your registration'
+                success: 'Check je e-mail om je registratie te voltooien.'
+        resetPassword:
+            flash:
+                danger: 'Wachtwoord opnieuw instellen niet mogelijk. Probeer opnieuw.'
     registration:
         email: 'E-mailadres'
         plain_password: 'Wachtwoord'

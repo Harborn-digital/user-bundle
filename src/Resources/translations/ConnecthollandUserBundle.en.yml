@@ -1,4 +1,11 @@
 connectholland_user:
+    flash_message:
+        register:
+            flash:
+                success: 'Check your e-mail to complete your registration.'
+        resetPassword:
+            flash:
+                danger: 'Not possible to reset password, please request a reset again.'
     registration:
         email: 'Email address'
         plain_password: 'Password'

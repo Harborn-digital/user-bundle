@@ -42,8 +42,8 @@ class FlashSubscriber implements EventSubscriberInterface
 
     public function addSuccessFlash(ControllerSuccessEventInterface $event): void
     {
-        $message = $this->translate(sprintf('connectholland_user.flash_message.%s_form.flash.success', $event->getAction()));
-        $this->session->getFlashBag()->add('success', $message);
+        $message = $this->translate(sprintf('connectholland_user.flash_message.%s.flash.'.$event->getFlashType(), $event->getAction()));
+        $this->session->getFlashBag()->add($event->getFlashType(), $message);
     }
 
     private function translate(string $message, array $parameters = []): string

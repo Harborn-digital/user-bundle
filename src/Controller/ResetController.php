@@ -12,6 +12,7 @@ namespace ConnectHolland\UserBundle\Controller;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
+use ConnectHolland\UserBundle\Event\ControllerSuccessEvent;
 use ConnectHolland\UserBundle\Event\ResetUserEvent;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
 use ConnectHolland\UserBundle\Form\NewPasswordType;
@@ -116,14 +117,16 @@ final class ResetController
         UriSigner $uriSigner
     ): Response {
         if ($uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
-            $this->session->getFlashBag()->add('danger', 'Not possible to reset password, please request a reset again.');
+            $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user', 'danger');
+            $this->eventDispatcher->dispatch(UserBundleEvents::CONTROLLER_SUCCESS, $controllerSuccessEvent);
 
             return new RedirectResponse($this->router->generate('connectholland_user_reset'));
         }
 
         $user = $this->registry->getRepository(UserInterface::class)->findOneBy(['passwordRequestToken' => $token, 'email' => $email]);
         if ($user instanceof UserInterface === false) {
-            $this->session->getFlashBag()->add('danger', 'Not possible to reset password, please request a reset again.');
+            $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user', 'danger');
+            $this->eventDispatcher->dispatch(UserBundleEvents::CONTROLLER_SUCCESS, $controllerSuccessEvent);
 
             return new RedirectResponse($this->router->generate('connectholland_user_reset'));
         }

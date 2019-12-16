@@ -23,10 +23,16 @@ class ControllerSuccessEvent extends Event implements ControllerSuccessEventInte
      */
     private $entityName;
 
-    public function __construct(string $action, string $entityName)
+    /**
+     * @var string
+     */
+    private $flashType;
+
+    public function __construct(string $action, string $entityName, ?string $flashType = 'notice')
     {
         $this->action     = $action;
         $this->entityName = $entityName;
+        $this->flashType  = $flashType;
     }
 
     public function getAction(): string
@@ -37,5 +43,10 @@ class ControllerSuccessEvent extends Event implements ControllerSuccessEventInte
     public function getEntityName(): string
     {
         return $this->entityName;
+    }
+
+    public function getFlashType(): string
+    {
+        return $this->flashType;
     }
 }
