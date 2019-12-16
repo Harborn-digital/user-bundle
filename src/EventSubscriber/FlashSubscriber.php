@@ -36,7 +36,9 @@ class FlashSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            UserBundleEvents::REGISTRATION_COMPLETED => 'addFlashMessage',
+            UserBundleEvents::REGISTRATION_COMPLETED   => 'addFlashMessage',
+            UserBundleEvents::PASSWORD_RESET_COMPLETED => 'addFlashMessage',
+            UserBundleEvents::PASSWORD_RESET_FAILED    => 'addFlashMessage',
         ];
     }
 

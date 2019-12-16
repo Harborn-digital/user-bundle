@@ -7,7 +7,9 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-interface PostRegistrationEventInterface
+namespace ConnectHolland\UserBundle\Event;
+
+interface PasswordResetFailedEventInterface
 {
     public function getState(): string;
 
