@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
-use ConnectHolland\UserBundle\Event\ControllerFormSuccessEventInterface;
+use ConnectHolland\UserBundle\Event\ControllerSuccessEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -40,7 +40,7 @@ class FlashSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function addSuccessFlash(ControllerFormSuccessEventInterface $event): void
+    public function addSuccessFlash(ControllerSuccessEventInterface $event): void
     {
         $message = $this->translate(sprintf('connectholland_user.flash_message.%s_form.flash.success', $event->getAction()));
         $this->session->getFlashBag()->add('success', $message);

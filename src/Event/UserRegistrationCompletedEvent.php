@@ -19,6 +19,11 @@ final class UserRegistrationCompletedEvent extends /* @scrutinizer ignore-deprec
      */
     private $response;
 
+    public function __construct(?Response $response = null)
+    {
+        $this->response = $response;
+    }
+
     public function getResponse(): ?Response
     {
         return $this->response;

@@ -91,14 +91,11 @@ final class RegistrationController
                     $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user');
                     $this->eventDispatcher->dispatch(UserBundleEvents::CONTROLLER_SUCCESS, $controllerSuccessEvent);
 
-                    $registrationCompletedEvent = new UserRegistrationCompletedEvent();
+                    $defaultRedirect = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
+                    $registrationCompletedEvent = new UserRegistrationCompletedEvent($defaultRedirect);
                     $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $registrationCompletedEvent);
 
-                    if ($registrationCompletedEvent->getResponse() instanceof Response) {
-                        return $registrationCompletedEvent->getResponse();
-                    }
-
-                    return new RedirectResponse($this->router->generate($request->attributes->get('_route'))); // TODO: use a correct redirect route/path to login
+                    return $registrationCompletedEvent->getResponse();
                 }
             }
         }
