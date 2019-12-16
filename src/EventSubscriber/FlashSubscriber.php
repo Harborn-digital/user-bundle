@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
-use ConnectHolland\UserBundle\Event\ControllerSuccessEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FlashSubscriber implements EventSubscriberInterface
@@ -36,14 +36,14 @@ class FlashSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            UserBundleEvents::CONTROLLER_SUCCESS => 'addSuccessFlash',
+            UserBundleEvents::REGISTRATION_COMPLETED => 'addFlashMessage',
         ];
     }
 
-    public function addSuccessFlash(ControllerSuccessEventInterface $event): void
+    public function addFlashMessage(Event $event): void
     {
-        $message = $this->translate(sprintf('connectholland_user.flash_message.%s.flash.%s', $event->getAction(), $event->getFlashType()));
-        $this->session->getFlashBag()->add($event->getFlashType(), $message);
+        $message = $this->translate(sprintf('connectholland_user.flash_message.%s.flash.%s', $event->getAction(), $event->getState()));
+        $this->session->getFlashBag()->add($event->getState(), $message);
     }
 
     private function translate(string $message, array $parameters = []): string

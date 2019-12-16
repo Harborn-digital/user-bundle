@@ -11,8 +11,9 @@ namespace ConnectHolland\UserBundle\Event;
 
 use Symfony\Component\HttpFoundation\Response;
 
-interface UserRegistrationCompletedEventInterface
+interface ResponseEventInterface
 {
-    public function getResponse(): ?Response;
-    public function setResponse(?Response $response): void;
+    public function getResponse(): Response;
+
+    public function setResponse(Response $response): void;
 }

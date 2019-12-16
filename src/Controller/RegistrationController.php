@@ -14,6 +14,7 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
 use ConnectHolland\UserBundle\Event\ControllerSuccessEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
+use ConnectHolland\UserBundle\Event\PostRegistrationEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Event\UserRegistrationCompletedEvent;
 use ConnectHolland\UserBundle\Form\RegistrationType;
@@ -88,30 +89,13 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
+                    $defaultResponse = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
+                    $postRegistrationEvent = new PostRegistrationEvent('success', $defaultResponse, __FUNCTION__);
+                    $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $postRegistrationEvent);
 
-                    $defaultRedirect = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
-                    new PostRegistrtionEvent($user, $state, $respn); //ResponseEventInterface // PostRegistrtionEventInterface
-                    $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $registrationCompletedEvent);
-
-
-
-
-
-                    $registrationCompletedEvent = new UserRegistrationCompletedEvent($defaultRedirect);
-
-                    //Add flash message
-                    $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user', 'success');
-                    $this->eventDispatcher->dispatch(UserBundleEvents::POST_USER_CREATED, $controllerSuccessEvent);
-
-
-                    return $registrationCompletedEvent->getResponse();
+                    return $postRegistrationEvent->getResponse();
                 }
-
-
-                //
             }
-
-
         }
 
         return new Response(

@@ -14,9 +14,9 @@ use ConnectHolland\UserBundle\Event\ControllerSuccessEvent;
 use ConnectHolland\UserBundle\Event\CreateOAuthUserEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\OAuthUserCreatedEvent;
+use ConnectHolland\UserBundle\Event\PostRegistrationEvent;
 use ConnectHolland\UserBundle\Event\ResetUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
-use ConnectHolland\UserBundle\Event\UserRegistrationCompletedEvent;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
 
 final class UserBundleEvents
@@ -26,7 +26,7 @@ final class UserBundleEvents
     const CREATE_OAUTH_USER       = CreateOAuthUserEvent::class;
     const CREATE_USER             = CreateUserEvent::class;
     const OAUTH_USER_CREATED      = OAuthUserCreatedEvent::class;
-    const REGISTRATION_COMPLETED  = UserRegistrationCompletedEvent::class;
+    const REGISTRATION_COMPLETED  = PostRegistrationEvent::class;
     const RESET_USER              = ResetUserEvent::class;
     const USER_CREATED            = UserCreatedEvent::class;
     const USER_RESET              = UserResetEvent::class;
