@@ -3,6 +3,9 @@ connectholland_user:
         register:
             flash:
                 success: 'Controleer je e-mail om je registratie te voltooien.'
+        registrationConfirm:
+            flash:
+                danger: 'Gebruiker niet gevonden'
         resetPassword:
             flash:
                 danger: 'Wachtwoord opnieuw instellen niet mogelijk. Probeer opnieuw.'

@@ -39,6 +39,7 @@ class FlashSubscriber implements EventSubscriberInterface
             UserBundleEvents::REGISTRATION_COMPLETED   => 'addFlashMessage',
             UserBundleEvents::PASSWORD_RESET_COMPLETED => 'addFlashMessage',
             UserBundleEvents::PASSWORD_RESET_FAILED    => 'addFlashMessage',
+            UserBundleEvents::USER_NOT_FOUND           => 'addFlashMessage',
         ];
     }
 

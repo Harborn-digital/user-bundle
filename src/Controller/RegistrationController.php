@@ -15,6 +15,7 @@ use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\PostRegistrationEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
+use ConnectHolland\UserBundle\Event\UserNotFoundEvent;
 use ConnectHolland\UserBundle\Form\RegistrationType;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use ConnectHolland\UserBundle\UserBundleEvents;
@@ -119,9 +120,11 @@ final class RegistrationController
         $user = $userRepository->findOneBy(['email' => $email, 'passwordRequestToken' => $token]);
 
         if (!($user instanceof UserInterface) || $uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
-            $this->session->getFlashBag()->add('danger', 'User was not found');
+            $defaultResponse = new RedirectResponse('/'); // TODO: use a correct redirect route/path to login
+            $userNotFoundEvent = new UserNotFoundEvent($defaultResponse, 'danger', __FUNCTION__);
+            $this->eventDispatcher->dispatch(UserBundleEvents::USER_NOT_FOUND, $userNotFoundEvent);
 
-            return new RedirectResponse('/'); // TODO: use a correct redirect route/path to login
+            return $userNotFoundEvent->getResponse();
         }
 
         $user->setEnabled(true);
