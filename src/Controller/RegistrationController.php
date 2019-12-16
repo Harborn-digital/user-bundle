@@ -88,16 +88,30 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
-                    $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user', 'success');
-                    $this->eventDispatcher->dispatch(UserBundleEvents::CONTROLLER_SUCCESS, $controllerSuccessEvent);
 
                     $defaultRedirect = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
-                    $registrationCompletedEvent = new UserRegistrationCompletedEvent($defaultRedirect);
+                    new PostRegistrtionEvent($user, $state, $respn); //ResponseEventInterface // PostRegistrtionEventInterface
                     $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $registrationCompletedEvent);
+
+
+
+
+
+                    $registrationCompletedEvent = new UserRegistrationCompletedEvent($defaultRedirect);
+
+                    //Add flash message
+                    $controllerSuccessEvent = new ControllerSuccessEvent(__FUNCTION__, 'user', 'success');
+                    $this->eventDispatcher->dispatch(UserBundleEvents::POST_USER_CREATED, $controllerSuccessEvent);
+
 
                     return $registrationCompletedEvent->getResponse();
                 }
+
+
+                //
             }
+
+
         }
 
         return new Response(
