@@ -120,7 +120,7 @@ final class RegistrationController
         $user = $userRepository->findOneBy(['email' => $email, 'passwordRequestToken' => $token]);
 
         if (!($user instanceof UserInterface) || $uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
-            $defaultResponse = new RedirectResponse('/'); // TODO: use a correct redirect route/path to login
+            $defaultResponse = new RedirectResponse($this->router->generate('connectholland_user_registration'));
             $userNotFoundEvent = new UserNotFoundEvent($defaultResponse, 'danger', __FUNCTION__);
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::USER_NOT_FOUND, $userNotFoundEvent);

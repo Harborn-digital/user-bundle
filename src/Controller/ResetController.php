@@ -38,6 +38,9 @@ use Twig\Environment;
  */
 final class ResetController
 {
+    private const PASSWORD_REQUEST_ACTION = 'reset';
+    private const PASSWORD_RESET_ACTION   = 'resetPassword';
+
     /**
      * @var RegistryInterface
      */
@@ -89,7 +92,7 @@ final class ResetController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_RESET, $userResetEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userResetEvent->isPropagationStopped() === false) {
-                    $postPasswordResetEvent = new PostPasswordResetEvent('notice', __FUNCTION__);
+                    $postPasswordResetEvent = new PostPasswordResetEvent('notice', self::PASSWORD_REQUEST_ACTION);
                     /* @scrutinizer ignore-call */
                     $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_COMPLETED, $postPasswordResetEvent);
 
@@ -121,7 +124,7 @@ final class ResetController
     ): Response {
         if ($uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
             $defaultResponse = new RedirectResponse($this->router->generate('connectholland_user_reset'));
-            $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', __FUNCTION__);
+            $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', self::PASSWORD_RESET_ACTION);
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
 
@@ -131,7 +134,7 @@ final class ResetController
         $user = $this->registry->getRepository(UserInterface::class)->findOneBy(['passwordRequestToken' => $token, 'email' => $email]);
         if ($user instanceof UserInterface === false) {
             $defaultResponse = new RedirectResponse($this->router->generate('connectholland_user_reset'));
-            $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', __FUNCTION__);
+            $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', self::PASSWORD_RESET_ACTION);
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
 
