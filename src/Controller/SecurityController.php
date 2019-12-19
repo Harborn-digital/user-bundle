@@ -52,6 +52,8 @@ final class SecurityController
         $lastUsername = $this->authenticationUtils->getLastUsername();
         $error        = $this->authenticationUtils->getLastAuthenticationError();
 
+        $form->get('_username')->setData($lastUsername);
+
         return new Response(
             $this->twig->render(
                 '@ConnecthollandUser/forms/login.html.twig',
