@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Event;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\EventDispatcher\Event;
 
 final class AuthenticateUserEvent extends /* @scrutinizer ignore-deprecated */ Event implements AuthenticateUserEventInterface
 {

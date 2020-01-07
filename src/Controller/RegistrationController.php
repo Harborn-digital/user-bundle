@@ -13,7 +13,9 @@ use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
+use ConnectHolland\UserBundle\Event\PostRegistrationEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
+use ConnectHolland\UserBundle\Event\UserNotFoundEvent;
 use ConnectHolland\UserBundle\Form\RegistrationType;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use ConnectHolland\UserBundle\UserBundleEvents;
@@ -86,9 +88,12 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
-                    $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your registration');
+                    $defaultResponse       = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
+                    $postRegistrationEvent = new PostRegistrationEvent('success', $defaultResponse, __FUNCTION__);
+                    /* @scrutinizer ignore-call */
+                    $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $postRegistrationEvent);
 
-                    return new RedirectResponse($this->router->generate($request->attributes->get('_route'))); // TODO: use a correct redirect route/path to login
+                    return $postRegistrationEvent->getResponse();
                 }
             }
         }
@@ -115,9 +120,12 @@ final class RegistrationController
         $user = $userRepository->findOneBy(['email' => $email, 'passwordRequestToken' => $token]);
 
         if (!($user instanceof UserInterface) || $uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
-            $this->session->getFlashBag()->add('danger', 'User was not found');
+            $defaultResponse   = new RedirectResponse($this->router->generate('connectholland_user_registration'));
+            $userNotFoundEvent = new UserNotFoundEvent($defaultResponse, 'danger', __FUNCTION__);
+            /* @scrutinizer ignore-call */
+            $this->eventDispatcher->dispatch(UserBundleEvents::USER_NOT_FOUND, $userNotFoundEvent);
 
-            return new RedirectResponse('/'); // TODO: use a correct redirect route/path to login
+            return $userNotFoundEvent->getResponse();
         }
 
         $user->setEnabled(true);

@@ -1,4 +1,17 @@
 connectholland_user:
+    flash_message:
+        register:
+            flash:
+                success: 'Check your e-mail to complete your registration.'
+        registrationConfirm:
+            flash:
+                danger: 'User was not found'
+        resetPassword:
+            flash:
+                danger: 'Not possible to reset password, please request a reset again.'
+        reset:
+            flash:
+                notice: 'Check your e-mail to complete your password reset'
     registration:
         email: 'Email address'
         plain_password: 'Password'

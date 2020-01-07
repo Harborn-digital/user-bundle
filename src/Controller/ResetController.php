@@ -12,6 +12,8 @@ namespace ConnectHolland\UserBundle\Controller;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
+use ConnectHolland\UserBundle\Event\PasswordResetFailedEvent;
+use ConnectHolland\UserBundle\Event\PostPasswordResetEvent;
 use ConnectHolland\UserBundle\Event\ResetUserEvent;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
 use ConnectHolland\UserBundle\Form\NewPasswordType;
@@ -36,6 +38,9 @@ use Twig\Environment;
  */
 final class ResetController
 {
+    private const PASSWORD_REQUEST_ACTION = 'reset';
+    private const PASSWORD_RESET_ACTION   = 'resetPassword';
+
     /**
      * @var RegistryInterface
      */
@@ -87,7 +92,9 @@ final class ResetController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_RESET, $userResetEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userResetEvent->isPropagationStopped() === false) {
-                    $this->session->getFlashBag()->add('notice', 'Check your e-mail to complete your password reset');
+                    $postPasswordResetEvent = new PostPasswordResetEvent('notice', self::PASSWORD_REQUEST_ACTION);
+                    /* @scrutinizer ignore-call */
+                    $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_COMPLETED, $postPasswordResetEvent);
 
                     $form = $formFactory->create(ResetType::class); // reset input
                 }
@@ -116,16 +123,22 @@ final class ResetController
         UriSigner $uriSigner
     ): Response {
         if ($uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
-            $this->session->getFlashBag()->add('danger', 'Not possible to reset password, please request a reset again.');
+            $defaultResponse          = new RedirectResponse($this->router->generate('connectholland_user_reset'));
+            $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', self::PASSWORD_RESET_ACTION);
+            /* @scrutinizer ignore-call */
+            $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
 
-            return new RedirectResponse($this->router->generate('connectholland_user_reset'));
+            return $passwordResetFailedEvent->getResponse();
         }
 
         $user = $this->registry->getRepository(UserInterface::class)->findOneBy(['passwordRequestToken' => $token, 'email' => $email]);
         if ($user instanceof UserInterface === false) {
-            $this->session->getFlashBag()->add('danger', 'Not possible to reset password, please request a reset again.');
+            $defaultResponse          = new RedirectResponse($this->router->generate('connectholland_user_reset'));
+            $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', self::PASSWORD_RESET_ACTION);
+            /* @scrutinizer ignore-call */
+            $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
 
-            return new RedirectResponse($this->router->generate('connectholland_user_reset'));
+            return $passwordResetFailedEvent->getResponse();
         }
 
         $form = $formFactory->create(NewPasswordType::class);
