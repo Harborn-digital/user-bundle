@@ -123,7 +123,7 @@ final class ResetController
         UriSigner $uriSigner
     ): Response {
         if ($uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
-            $defaultResponse = new RedirectResponse($this->router->generate('connectholland_user_reset'));
+            $defaultResponse          = new RedirectResponse($this->router->generate('connectholland_user_reset'));
             $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', self::PASSWORD_RESET_ACTION);
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
@@ -133,7 +133,7 @@ final class ResetController
 
         $user = $this->registry->getRepository(UserInterface::class)->findOneBy(['passwordRequestToken' => $token, 'email' => $email]);
         if ($user instanceof UserInterface === false) {
-            $defaultResponse = new RedirectResponse($this->router->generate('connectholland_user_reset'));
+            $defaultResponse          = new RedirectResponse($this->router->generate('connectholland_user_reset'));
             $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', self::PASSWORD_RESET_ACTION);
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);

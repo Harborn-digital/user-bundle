@@ -55,5 +55,4 @@ class UserNotFoundEvent extends /* @scrutinizer ignore-deprecated */ Event imple
     {
         return $this->action;
     }
-
 }

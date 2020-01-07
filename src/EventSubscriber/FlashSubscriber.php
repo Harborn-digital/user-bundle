@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\UserBundleEvents;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FlashSubscriber implements EventSubscriberInterface
@@ -33,6 +33,9 @@ class FlashSubscriber implements EventSubscriberInterface
         $this->translator = $translator;
     }
 
+    /**
+     * @codeCoverageIgnore No need to test this array 'config' method
+     */
     public static function getSubscribedEvents(): array
     {
         return [

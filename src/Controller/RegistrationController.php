@@ -88,7 +88,7 @@ final class RegistrationController
                 /* @scrutinizer ignore-call */
                 $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
                 if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
-                    $defaultResponse = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
+                    $defaultResponse       = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
                     $postRegistrationEvent = new PostRegistrationEvent('success', $defaultResponse, __FUNCTION__);
                     /* @scrutinizer ignore-call */
                     $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $postRegistrationEvent);
@@ -120,7 +120,7 @@ final class RegistrationController
         $user = $userRepository->findOneBy(['email' => $email, 'passwordRequestToken' => $token]);
 
         if (!($user instanceof UserInterface) || $uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
-            $defaultResponse = new RedirectResponse($this->router->generate('connectholland_user_registration'));
+            $defaultResponse   = new RedirectResponse($this->router->generate('connectholland_user_registration'));
             $userNotFoundEvent = new UserNotFoundEvent($defaultResponse, 'danger', __FUNCTION__);
             /* @scrutinizer ignore-call */
             $this->eventDispatcher->dispatch(UserBundleEvents::USER_NOT_FOUND, $userNotFoundEvent);
