@@ -41,6 +41,7 @@ class FlashSubscriberTest extends TestCase
         $translator
             ->expects($this->once())
             ->method('trans')
+            ->with('connectholland_user.flash_message.register.flash.success')
             ->willReturn('Check your e-mail to complete your registration.');
 
         $session
