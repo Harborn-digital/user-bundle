@@ -12,7 +12,7 @@ namespace ConnectHolland\UserBundle\Event;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 final class AuthenticateUserEvent extends /* @scrutinizer ignore-deprecated */ Event implements AuthenticateUserEventInterface
 {

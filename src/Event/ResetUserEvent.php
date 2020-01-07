@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 final class ResetUserEvent extends /* @scrutinizer ignore-deprecated */ Event implements ResetUserEventInterface
 {
