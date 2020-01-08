@@ -10,6 +10,10 @@ connectholland_user:
             new_password:
                 password:
                     repeat_invalid: 'The specified passwords do not match'
+            request:
+                email: 'Fill in an email address'
         registration:
+            email:
+                blank: 'Fill in an email address'
             terms:
                 is_true: 'In order to register you must agree to our terms and conditions'

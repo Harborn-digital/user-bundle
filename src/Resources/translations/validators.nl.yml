@@ -10,6 +10,10 @@ connectholland_user:
             new_password:
                 password:
                     repeat_invalid: 'De opgegeven wachtwoorden komen niet overeen'
+            request:
+                email: 'Vul je e-mailadres in'
         registration:
+            email:
+                blank: 'Vul je e-mailadres in'
             terms:
                 is_true: 'Om je te kunnen registreren moet je akkoord gaan met onze voorwaarden'

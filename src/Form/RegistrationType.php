@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore WIP
@@ -39,6 +40,11 @@ final class RegistrationType extends AbstractType
             ->add('email', EmailType::class, [
                 'label'              => 'connectholland_user.registration.email',
                 'translation_domain' => 'ConnecthollandUserBundle',
+                'constraints'        => [
+                    new NotBlank([
+                        'message' => 'connectholland_user.validation.registration.email.blank',
+                    ]),
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
