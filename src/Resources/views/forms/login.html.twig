@@ -13,6 +13,8 @@
         <a href='{{ path('connectholland_user_registration') }}'>{{ 'connectholland_user.security.login.register'|trans }}</a>
         <a href='{{ path('connectholland_user_reset') }}'>{{ 'connectholland_user.security.login.reset'|trans }}</a>
     {{ form_end(form) }}
-    {% embed "@HWIOAuth/Connect/login.html.twig" %}
-    {% endembed %}
+    {% block connectholland_user_login_oauth %}
+        {% embed "@HWIOAuth/Connect/login.html.twig" %}
+        {% endembed %}
+    {% endblock %}
 {% endblock %}
