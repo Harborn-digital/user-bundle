@@ -25,8 +25,13 @@ final class ResourceOwnerMapsPass implements CompilerPassInterface
 
         $resourceOwnerMaps = [];
         foreach (array_keys($config['firewalls']) as $firewall) {
-            $resourceOwnerMaps[$firewall] = new Reference(sprintf('hwi_oauth.resource_ownermap.%s', $firewall));
+            $definition = sprintf('hwi_oauth.resource_ownermap.%s', $firewall);
+            if ($container->hasDefinition($definition)) {
+                $resourceOwnerMaps[$firewall] = new Reference($definition);
+            }
         }
-        $container->getDefinition(OAuthRouteLoader::class)->replaceArgument('$resourceOwnerMaps', $resourceOwnerMaps);
+        if (!empty($resourceOwnerMaps)) {
+            $container->getDefinition(OAuthRouteLoader::class)->replaceArgument('$resourceOwnerMaps', $resourceOwnerMaps);
+        }
     }
 }
