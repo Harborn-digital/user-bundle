@@ -38,6 +38,10 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
             $loader->load('lexik_jwt_authentication.yaml');
         }
 
+        if (isset($container->getParameter('kernel.bundles')['HWIOAuthBundle'])) {
+            $loader->load('services_oauth.yaml');
+        }
+
         $loader->load('services.yaml');
     }
 

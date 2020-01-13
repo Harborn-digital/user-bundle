@@ -1,0 +1,7 @@
+connectholland_user_oauth:
+    resource: .
+    type: connectholland_user_oauth
+
+hwi_oauth_redirect:
+    resource: '@HWIOAuthBundle/Resources/config/routing/redirect.xml'
+    prefix:   /connect

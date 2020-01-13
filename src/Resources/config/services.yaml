@@ -122,10 +122,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    ConnectHolland\UserBundle\EventSubscriber\CreateOAuthUserSubscriber:
-        tags:
-            - { name: kernel.event_subscriber }
-
     ConnectHolland\UserBundle\EventSubscriber\UserLoginSubscriber:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'

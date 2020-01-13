@@ -1,7 +1,3 @@
-connectholland_user_oauth:
-    resource: .
-    type: connectholland_user_oauth
-
 connectholland_user_security:
     resource: '@ConnecthollandUserBundle/Controller/SecurityController.php'
     type: annotation
