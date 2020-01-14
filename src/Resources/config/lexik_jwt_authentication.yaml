@@ -1,0 +1,4 @@
+parameters:
+    env(JWT_SECRET_KEY): 'config/jwt/private.pem'
+    env(JWT_PUBLIC_KEY): 'config/jwt/public.pem'
+    env(JWT_PASSPHRASE): ~

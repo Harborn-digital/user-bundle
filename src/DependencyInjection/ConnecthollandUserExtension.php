@@ -32,6 +32,10 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
             new FileLocator(__DIR__.'/../Resources/config')
         );
 
+        if (isset($container->getParameter('kernel.bundles')['LexikJWTAuthenticationBundle'])) {
+            $loader->load('lexik_jwt_authentication.yaml');
+        }
+
         $loader->load('services.yaml');
     }
 
@@ -39,6 +43,22 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
     {
         $config = $this->getResourceOwnersConfiguration($container);
         $container->prependExtensionConfig('hwi_oauth', $config);
+
+        if ($container->hasExtension('lexik_jwt_authentication')) {
+            $config = $this->getJwtConfiguration($container);
+            $container->prependExtensionConfig('lexik_jwt_authentication', $config);
+        }
+    }
+
+    private function getJwtConfiguration(ContainerBuilder $container): array
+    {
+        $config = [
+            'secret_key'  => $container->resolveEnvPlaceholders($container->getParameter('env(JWT_SECRET_KEY)'), true),
+            'public_key'  => $container->resolveEnvPlaceholders($container->getParameter('env(JWT_PUBLIC_KEY)'), true),
+            'pass_phrase' => $container->resolveEnvPlaceholders($container->getParameter('env(JWT_PASSPHRASE)'), false),
+        ];
+
+        return $config;
     }
 
     private function createConfigForResourceOwners($resourceOwners): array
