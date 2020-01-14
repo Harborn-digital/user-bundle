@@ -11,13 +11,24 @@ namespace ConnectHolland\UserBundle\Tests\Form;
 
 use ConnectHolland\UserBundle\Form\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Validator\Validation;
 
 /**
  * @coversDefaultClass \ConnectHolland\UserBundle\Form\ResetType
  */
 class ResetTypeTest extends TypeTestCase
 {
+    protected function getExtensions(): ?array
+    {
+        $validator = Validation::createValidator();
+
+        return [
+            new ValidatorExtension($validator)
+        ];
+    }
+
     /**
      * @covers ::buildForm
      */

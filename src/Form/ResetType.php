@@ -13,6 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class ResetType extends AbstractType
 {
@@ -22,6 +23,11 @@ final class ResetType extends AbstractType
             ->add('email', EmailType::class, [
                 'label'              => 'connectholland_user.reset.request.email',
                 'translation_domain' => 'ConnecthollandUserBundle',
+                'constraints'        => [
+                    new NotBlank([
+                        'message' => 'connectholland_user.validation.reset.request.email',
+                    ]),
+                ],
             ])
         ;
     }
