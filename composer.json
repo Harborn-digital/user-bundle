@@ -56,6 +56,9 @@
         "sensiolabs/security-checker": "^6.0",
         "symfony/var-dumper": "^3.4 || ^4.3"
     },
+    "suggest": {
+        "lexik/jwt-authentication-bundle": "Add lexik/jwt-authentication-bundle to add JWT token support, run 'composer require lexik/jwt-authentication-bundle' to install."
+    },
     "config": {
         "preferred-install": {
             "*": "dist"

@@ -46,6 +46,27 @@ USERBUNDLE_OAUTH_GOOGLE_SCOPE='email profile'
 USERBUNDLE_OAUTH_GOOGLE_OPTIONS={"hd": "connectholland.nl"}
 ```
 
+## JTW Token support
+
+If the app needs JTW token support, the Lexik JWT Authentication bundle should be required and suitable configuration should be added.
+
+Intstall the bundle:
+``` bash
+composer require lexik/jwt-authentication-bundle
+```
+
+Generate public and secret keys as described in [Lexik JWT Authentication bunle documentation](https://github.com/lexik/LexikJWTAuthenticationBundle/blob/master/Resources/doc/index.md#installation).
+Set the location of the keys relative to the project root as environment variables `JWT_SECRET_KEY` and `JWT_PUBLIC_KEY` and set the passphrase used as `JWT_PASSPHRASE`
+
+For example:
+```dotenv
+###> lexik/jwt-authentication-bundle ###
+JWT_SECRET_KEY=config/jwt/private.pem
+JWT_PUBLIC_KEY=config/jwt/public.pem
+JWT_PASSPHRASE=DEVELOPMENT-KSZEW-YHMIE-XWWCL-DBGPQ-MSYCU-RJRWL-UIYBH-TPNXM-GJTVU-BRDQI-XWXHX
+###< lexik/jwt-authentication-bundle ###
+```
+
 ## Security configuration example
 
 ```yaml
