@@ -57,7 +57,8 @@
         "symfony/var-dumper": "^3.4 || ^4.3"
     },
     "suggest": {
-        "lexik/jwt-authentication-bundle": "Add lexik/jwt-authentication-bundle to add JWT token support, run 'composer require lexik/jwt-authentication-bundle' to install."
+        "lexik/jwt-authentication-bundle": "Add lexik/jwt-authentication-bundle to add JWT token support, run 'composer require lexik/jwt-authentication-bundle' to install.",
+        "nelmio/api-doc-bundle": "Add nelmio/api-doc-bundle to add comprehensive API documentation, run 'composer require nelmio/api-doc-bundle' to install the Nelmio API Doc bundle and follow the bundle installation and configuration instructions."
     },
     "config": {
         "preferred-install": {
