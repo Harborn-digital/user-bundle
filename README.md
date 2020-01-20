@@ -58,6 +58,52 @@ composer require lexik/jwt-authentication-bundle
 Generate public and secret keys as described in [Lexik JWT Authentication bunle documentation](https://github.com/lexik/LexikJWTAuthenticationBundle/blob/master/Resources/doc/index.md#installation).
 Set the location of the keys relative to the project root as environment variables `JWT_SECRET_KEY` and `JWT_PUBLIC_KEY` and set the passphrase used as `JWT_PASSPHRASE`
 
+## API Support
+
+To add API support, [install the API Platform](https://api-platform.com/docs/core/getting-started/) and [JWT Authentication](https://api-platform.com/docs/core/jwt/#jwt-authentication) configure the firewall and add an authentication route.
+
+``` bash
+composer req api-pack jwt-auth
+```
+
+``` yaml
+# Example of the security settings for your project.
+# config/packages/security.yaml
+    firewalls:
+        api_login:
+            pattern: ^/api/users/authenticate
+            stateless: true
+            anonymous: true
+            provider: app_user_provider
+            json_login:
+                check_path:                 /api/users/authenticate
+                success_handler:            lexik_jwt_authentication.handler.authentication_success
+                failure_handler:            lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session:   false
+
+        api:
+            pattern: ^/api
+            stateless: true
+            anonymous: true
+            provider: app_user_provider
+            json_login:
+                check_path:                 /api/users/authenticate
+                success_handler:            lexik_jwt_authentication.handler.authentication_success
+                failure_handler:            lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session:   false
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+    access_control:
+        - { path: ^/api, roles: ROLE_USER }
+
+``` yaml
+# config/routes.yaml
+api_authenticate:
+    path: /api/users/authenticate
+```
+
 For example:
 ```dotenv
 ###> lexik/jwt-authentication-bundle ###
