@@ -53,8 +53,8 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
     private function getJwtConfiguration(ContainerBuilder $container): array
     {
         $config = [
-            'secret_key'  => $container->resolveEnvPlaceholders($container->getParameter('env(JWT_SECRET_KEY)'), true),
-            'public_key'  => $container->resolveEnvPlaceholders($container->getParameter('env(JWT_PUBLIC_KEY)'), true),
+            'secret_key'  => '%kernel.project_dir%/'.$container->resolveEnvPlaceholders($container->getParameter('env(JWT_SECRET_KEY)'), true),
+            'public_key'  => '%kernel.project_dir%/'.$container->resolveEnvPlaceholders($container->getParameter('env(JWT_PUBLIC_KEY)'), true),
             'pass_phrase' => $container->resolveEnvPlaceholders($container->getParameter('env(JWT_PASSPHRASE)'), false),
         ];
 
