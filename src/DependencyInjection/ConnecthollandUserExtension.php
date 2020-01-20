@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\DependencyInjection;
 
+use ConnectHolland\UserBundle\Message\Authenticate;
 use HaydenPierce\ClassFinder\ClassFinder;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AbstractResourceOwner;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner;
@@ -44,21 +45,32 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
         $config = $this->getResourceOwnersConfiguration($container);
         $container->prependExtensionConfig('hwi_oauth', $config);
 
-        if ($container->hasExtension('lexik_jwt_authentication')) {
-            $config = $this->getJwtConfiguration($container);
-            $container->prependExtensionConfig('lexik_jwt_authentication', $config);
+        $this->prependJwtConfiguration($container);
+        $this->prependApiPlatformConfiguration($container);
+    }
+
+    private function prependApiPlatformConfiguration(ContainerBuilder $container): void
+    {
+        if ($container->hasExtension('api_platform')) {
+            $config = [
+                'mapping'  => [
+                    'paths' => [dirname((new \ReflectionClass(Authenticate::class))->getFileName())],
+                ],
+            ];
+            $container->prependExtensionConfig('api_platform', $config);
         }
     }
 
-    private function getJwtConfiguration(ContainerBuilder $container): array
+    private function prependJwtConfiguration(ContainerBuilder $container): void
     {
-        $config = [
-            'secret_key'  => '%kernel.project_dir%/'.$container->resolveEnvPlaceholders($container->getParameter('env(JWT_SECRET_KEY)'), true),
-            'public_key'  => '%kernel.project_dir%/'.$container->resolveEnvPlaceholders($container->getParameter('env(JWT_PUBLIC_KEY)'), true),
-            'pass_phrase' => $container->resolveEnvPlaceholders($container->getParameter('env(JWT_PASSPHRASE)'), false),
-        ];
-
-        return $config;
+        if ($container->hasExtension('lexik_jwt_authentication')) {
+            $config = [
+                'secret_key'  => sprintf('%%kernel.project_dir%%/%s', $container->resolveEnvPlaceholders($container->getParameter('env(JWT_SECRET_KEY)'), true)),
+                'public_key'  => sprintf('%%kernel.project_dir%%/%s', $container->resolveEnvPlaceholders($container->getParameter('env(JWT_PUBLIC_KEY)'), true)),
+                'pass_phrase' => $container->resolveEnvPlaceholders($container->getParameter('env(JWT_PASSPHRASE)'), false),
+            ];
+            $container->prependExtensionConfig('lexik_jwt_authentication', $config);
+        }
     }
 
     private function createConfigForResourceOwners($resourceOwners): array
