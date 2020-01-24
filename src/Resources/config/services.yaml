@@ -187,3 +187,15 @@ services:
         arguments:
             $client: '@httplug.client'
             $logger: '@logger'
+
+    ConnectHolland\UserBundle\Security\Voter\Owner:
+        arguments:
+            $decisionManager: '@security.access.decision_manager'
+        tags:
+            - { name: 'security.voter' }
+
+    ConnectHolland\UserBundle\EventSubscriber\Doctrine\OwnableSubscriber:
+        arguments:
+            $tokenStorage: '@security.token_storage'
+        tags:
+            - { name: 'doctrine.event_subscriber' }
