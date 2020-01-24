@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Event;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpFoundation\Response;
 
 class PasswordResetFailedEvent extends /* @scrutinizer ignore-deprecated */ Event implements ResponseEventInterface, PasswordResetFailedEventInterface
 {
