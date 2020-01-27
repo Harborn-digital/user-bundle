@@ -14,5 +14,13 @@ connectholland_user_reset:
     resource: '@ConnecthollandUserBundle/Controller/ResetController.php'
     type: annotation
 
+connectholland_user_account_profile:
+    resource: '@ConnecthollandUserBundle/Controller/Account/ProfileController.php'
+    type: annotation
+
+connectholland_user_account_detail:
+    resource: '@ConnecthollandUserBundle/Controller/Account/AccountController.php'
+    type: annotation
+
 connectholland_user_logout:
     path: /logout

@@ -1,0 +1,10 @@
+{% extends 'emails/base.html.twig' %}
+{% trans_default_domain 'ConnecthollandUserBundle' %}
+
+{% block connectholland_user_email_title %}{{ 'connectholland_user.emails.revalidate.title'|trans }}{% endblock %}
+
+{% block connectholland_user_email_content %}
+    <h1>{{ 'connectholland_user.emails.revalidate.title'|trans }}</h1>
+    <p>{{ 'connectholland_user.emails.revalidate.body'|trans({'%username%': user.username})|nl2br}}</p>
+    <a href='{{ link }}'>{{ 'connectholland_user.emails.revalidate.confirm'|trans }}</a>
+{% endblock %}

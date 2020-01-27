@@ -18,6 +18,12 @@ connectholland_user:
         submit: 'Registreren'
         terms: 'Voorwaarden'
         title: 'Registreren'
+    account:
+        submit: 'Opslaan'
+        account:
+            title: 'Account aanpassen'
+        profile:
+            title: 'Profiel aanpassen'
     reset:
         request:
             email: 'E-mailadres'
@@ -38,3 +44,15 @@ connectholland_user:
             submit: 'Inloggen'
             title: 'Inloggen'
             username: 'Gebruikersnaam'
+    emails:
+        registration:
+            title: 'Registratie'
+            body: ''
+            confirm: 'Bevestig registratie'
+
+        revalidate:
+            title: 'Bevestig gebruikersnaam'
+            body: |
+                Je hebt een nieuwe gebruikersnaam (%username%) aangevraagd.
+                Je kunt pas weer inloggen wanneer je gebruikersnaam is bevestigd.
+            confirm: 'Bevestig nieuwe gebruikersnaam'

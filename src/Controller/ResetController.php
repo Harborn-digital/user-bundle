@@ -76,7 +76,7 @@ final class ResetController
     }
 
     /**
-     * @Route("/wachtwoord-vergeten", name="connectholland_user_reset", methods={"GET", "POST"})
+     * @Route({"en": "/password-reset", "nl": "/wachtwoord-vergeten"}, name="connectholland_user_reset", methods={"GET", "POST"})
      */
     public function reset(Request $request, FormFactoryInterface $formFactory): Response
     {

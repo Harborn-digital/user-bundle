@@ -28,6 +28,11 @@ services:
             - '@router'
             - '@Symfony\Component\HttpKernel\UriSigner'
 
+    ConnectHolland\UserBundle\Mailer\ValidateUsernameEmail:
+        arguments:
+            - '@router'
+            - '@Symfony\Component\HttpKernel\UriSigner'
+
     ConnectHolland\UserBundle\Mailer\ResetEmail:
         arguments:
             - '@router'
@@ -47,6 +52,21 @@ services:
             - '@session'
             - '@event_dispatcher'
             - '@router'
+            - '@twig'
+        tags:
+            - { name: controller.service_arguments }
+
+    ConnectHolland\UserBundle\Controller\Account\ProfileController:
+        arguments:
+            - '@event_dispatcher'
+            - '@twig'
+        tags:
+            - { name: controller.service_arguments }
+
+    ConnectHolland\UserBundle\Controller\Account\AccountController:
+        arguments:
+            - '@security.user_password_encoder.generic'
+            - '@event_dispatcher'
             - '@twig'
         tags:
             - { name: controller.service_arguments }
@@ -134,6 +154,19 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    ConnectHolland\UserBundle\EventSubscriber\UpdatePersistSubscriber:
+        arguments:
+            $registry: '@doctrine'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    ConnectHolland\UserBundle\EventSubscriber\UsernameUpdatedSubscriber:
+        arguments:
+            - '@ConnectHolland\UserBundle\Mailer\ValidateUsernameEmail'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
     ConnectHolland\UserBundle\Security\OAuthUserProvider:
         arguments:
             $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
@@ -153,6 +186,21 @@ services:
     ConnectHolland\UserBundle\Form\RegistrationType:
         public: true
         arguments:
+            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+        tags:
+            - { name: 'form.type' }
+
+    ConnectHolland\UserBundle\Form\Account\ProfileType:
+        public: true
+        arguments:
+            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+        tags:
+            - { name: 'form.type' }
+
+    ConnectHolland\UserBundle\Form\Account\AccountType:
+        public: true
+        arguments:
+            $passwordConstraints: '@ConnectHolland\UserBundle\Security\PasswordConstraints'
             $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
         tags:
             - { name: 'form.type' }

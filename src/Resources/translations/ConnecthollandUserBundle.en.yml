@@ -18,6 +18,12 @@ connectholland_user:
         submit: 'Register'
         terms: 'Terms'
         title: 'Register'
+    account:
+        submit: 'Save'
+        account:
+            title: 'Edit account'
+        profile:
+            title: 'Edit profile'
     reset:
         request:
             email: 'Email address'

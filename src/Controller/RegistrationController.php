@@ -72,7 +72,7 @@ final class RegistrationController
     }
 
     /**
-     * @Route("/registreren", name="connectholland_user_registration", methods={"GET", "POST"})
+     * @Route({"en": "/register", "nl": "/registreren"}, name="connectholland_user_registration", methods={"GET", "POST"})
      */
     public function register(Request $request, FormFactoryInterface $formFactory): Response
     {
