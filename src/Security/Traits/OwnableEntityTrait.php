@@ -23,7 +23,7 @@ trait OwnableEntityTrait
      */
     protected $owner;
 
-    public function getOwner(): ?User
+    public function getOwner(): ?UserInterface
     {
         return $this->owner;
     }
