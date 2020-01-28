@@ -16,16 +16,16 @@ use Doctrine\Common\Collections\Collection;
 trait OwnableEntityTrait
 {
     /**
-     * @ORM\ManyToOne(targetEntity="ConnectHolland\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="ConnectHolland\UserBundle\Entity\UserInterface")
      * @ORM\JoinColumn(nullable=true)
      *
-     * @var ConnectHolland\UserBundle\Entity\User|null
+     * @var UserInterface|null
      */
     protected $owner;
 
     public function getOwner(): ?User
     {
-        return $this->user;
+        return $this->owner;
     }
 
     public function setOwner(?UserInterface $owner): self
