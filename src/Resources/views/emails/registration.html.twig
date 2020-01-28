@@ -1,8 +1,10 @@
 {% extends 'emails/base.html.twig' %}
+{% trans_default_domain 'ConnecthollandUserBundle' %}
 
-{% block connectholland_user_email_title %}Registration{% endblock %}
+{% block connectholland_user_email_title %}{{ 'connectholland_user.emails.registration.title'|trans }}{% endblock %}
 
 {% block connectholland_user_email_content %}
-    <h1>Registration</h1>
-    <a href='{{ link }}'>Confirm registation</a>
+    <h1>{{ 'connectholland_user.emails.registration.title'|trans }}</h1>
+    <p>{{ 'connectholland_user.emails.registration.body'|trans }}</p>
+    <a href='{{ link }}'>{{ 'connectholland_user.emails.registration.confirm'|trans }}</a>
 {% endblock %}
