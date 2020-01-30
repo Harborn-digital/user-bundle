@@ -44,3 +44,17 @@ connectholland_user:
             submit: 'Login'
             title: 'Login'
             username: 'Username'
+    emails:
+        registration:
+            title: 'Registration'
+            body: ''
+            confirm: 'Confirm registration'
+        reset:
+            title: 'Reset password'
+            confirm: 'Choose a new password'
+        revalidate:
+            title: 'Confirm username'
+            body: |
+                You have requested a new username (%username%).
+                You can login when you have confirmed your username.
+            confirm: 'Confirm new username'
