@@ -1,8 +1,10 @@
-{% extends 'emails/base.html.twig' %}
+{% extends '@ConnecthollandUser/emails/base.html.twig' %}
+
+{% trans_default_domain 'ConnecthollandUserBundle' %}
 
 {% block connectholland_user_email_title %}Reset Password{% endblock %}
 
 {% block connectholland_user_email_content %}
-    <h1>Reset Password</h1>
-    <a href='{{ link }}'>Choose a new password</a>
+    <h1>{{ 'connectholland_user.emails.reset.title'|trans }}</h1>
+    <a href='{{ link }}'>{{ 'connectholland_user.emails.reset.confirm'|trans }}</a>
 {% endblock %}

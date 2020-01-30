@@ -49,7 +49,9 @@ connectholland_user:
             title: 'Registratie'
             body: ''
             confirm: 'Bevestig registratie'
-
+        reset:
+            title: 'Wachtwoord resetten'
+            confirm: 'Kies een nieuw wachtwoord'
         revalidate:
             title: 'Bevestig gebruikersnaam'
             body: |
