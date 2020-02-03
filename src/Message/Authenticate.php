@@ -26,7 +26,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *              "produces" = {
  *                  "application/json"
  *              },
- *              "route_name"      = "api_authenticate",
+ *              "route_name"      = "connectholland_user_login.api",
  *              "swagger_context" = {
  *                  "summary"         = "Authenticate with the API.",
  *                  "responses"       = {
