@@ -16,13 +16,12 @@ use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\PostRegistrationEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Event\UserNotFoundEvent;
-use ConnectHolland\UserBundle\Form\RegistrationType;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,13 +71,11 @@ final class RegistrationController
     }
 
     /**
-     * @Route({"en": "/register", "nl": "/registreren"}, name="connectholland_user_registration", methods={"GET", "POST"})
+     * @Route("/registreren", name="connectholland_user_registration", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"})
+     * @Route("/api/register", name="connectholland_user_registration.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"})
      */
-    public function register(Request $request, FormFactoryInterface $formFactory): Response
+    public function register(Request $request, FormInterface $form): Response
     {
-        $form = $formFactory->create(RegistrationType::class);
-        $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $createUserEvent = new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData());
             /* @scrutinizer ignore-call */
@@ -98,18 +95,22 @@ final class RegistrationController
             }
         }
 
+        $status = ($form->isSubmitted() && !$form->isValid()) ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK;
+
         return new Response(
             $this->twig->render(
                 '@ConnecthollandUser/forms/register.html.twig',
                 [
                     'form' => $form->createView(),
                 ]
-            )
+            ),
+            $status
         );
     }
 
     /**
      * @Route("/registreren/bevestigen/{email}/{token}", name="connectholland_user_registration_confirm", methods={"GET", "POST"})
+     * @Route("/api/register/confirm/{email}/{token}", name="connectholland_user_registration_confirm.api", methods={"GET", "POST"})
      */
     public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
     {

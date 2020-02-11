@@ -25,7 +25,7 @@ class ResetTypeTest extends TypeTestCase
         $validator = Validation::createValidator();
 
         return [
-            new ValidatorExtension($validator)
+            new ValidatorExtension($validator),
         ];
     }
 

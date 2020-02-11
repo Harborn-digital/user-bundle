@@ -247,3 +247,10 @@ services:
             $tokenStorage: '@security.token_storage'
         tags:
             - { name: 'doctrine.event_subscriber' }
+
+
+    ConnectHolland\UserBundle\ArgumentResolver\FormValueResolver:
+        arguments:
+            $formFactory: '@form.factory'
+        tags:
+            - { name: 'controller.argument_value_resolver', priority: 50 }
