@@ -12,13 +12,13 @@ namespace ConnectHolland\UserBundle\Message;
 use ApiPlatform\Core\Annotation as Api;
 
 /**
- * Authentication resource.
+ * User registration resource.
  *
  * @Api\ApiResource(
  *     attributes={"pagination_enabled"=false},
  *     messenger=true,
  *     collectionOperations={
- *         "authenticate" = {
+ *         "password-register" = {
  *              "method"   = "POST",
  *              "consumes" = {
  *                  "application/json"
@@ -26,12 +26,12 @@ use ApiPlatform\Core\Annotation as Api;
  *              "produces" = {
  *                  "application/json"
  *              },
- *              "route_name"      = "connectholland_user_login.api",
+ *              "route_name"      = "connectholland_user_registration.api",
  *              "swagger_context" = {
- *                  "summary"         = "Authenticate with the API.",
+ *                  "summary"         = "Register password with the API.",
  *                  "responses"       = {
  *                      "200" = {
- *                          "description" = "Succesful authenticated, a JWT token will be provided.",
+ *                          "description" = "The user is registered succesfully",
  *                          "schema"      = {
  *                              "type" = "object",
  *                              "properties" = {
@@ -42,23 +42,8 @@ use ApiPlatform\Core\Annotation as Api;
  *                          }
  *                      },
  *                      "400" = {
- *                          "description" = "Authentication failed, an error will be provided.",
- *                          "schema"      = {
- *                              "type" = "object",
- *                              "properties" = {
- *                                  "code"  = {
- *                                      "type"    = "integer",
- *                                      "default" = 400
- *                                  },
- *                                  "message" = {
- *                                      "type" = "string"
- *                                  },
- *                                  "exception" = {
- *                                      "type" = "object"
- *                                  }
- *                              }
- *                          }
- *                      }
+ *                          "description" = "The user could not be registered"
+ *                      },
  *                  },
  *              },
  *         }
@@ -66,15 +51,20 @@ use ApiPlatform\Core\Annotation as Api;
  *     itemOperations={}
  * )
  */
-class Authenticate
+class Register
 {
     /**
      * @var string
      */
-    public $username;
+    public $email;
 
     /**
      * @var string
      */
-    public $password;
+    public $plainPassword;
+
+    /**
+     * @var bool
+     */
+    public $terms;
 }

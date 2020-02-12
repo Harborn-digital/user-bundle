@@ -14,7 +14,6 @@ use ConnectHolland\UserBundle\Event\UpdateEvent;
 use ConnectHolland\UserBundle\Event\UsernameUpdatedEvent;
 use ConnectHolland\UserBundle\Form\Account\AccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
