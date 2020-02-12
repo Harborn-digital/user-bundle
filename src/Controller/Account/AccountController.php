@@ -70,6 +70,7 @@ final class AccountController
                 $user->setPasswordRequestToken(bin2hex(random_bytes(32)));
                 $user->setEnabled(false);
                 $event = new UsernameUpdatedEvent($user);
+                $event->setArgument('request', $request);
                 $this->eventDispatcher->dispatch($event);
             }
 
