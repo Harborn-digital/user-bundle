@@ -35,7 +35,7 @@ class DeleteAccountSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @codeCoverageIgnore No need to test this array 'config' method
      */
     public static function getSubscribedEvents(): array
     {
