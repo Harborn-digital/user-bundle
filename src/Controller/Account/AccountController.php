@@ -10,15 +10,19 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Controller\Account;
 
 use ConnectHolland\UserBundle\Entity\User;
+use ConnectHolland\UserBundle\Event\DeleteAccountEvent;
 use ConnectHolland\UserBundle\Event\UpdateEvent;
 use ConnectHolland\UserBundle\Event\UsernameUpdatedEvent;
 use ConnectHolland\UserBundle\Form\Account\AccountType;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
@@ -44,11 +48,23 @@ final class AccountController
      */
     private $eventDispatcher;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, EventDispatcherInterface $eventDispatcher, Environment $twig)
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    public function __construct(UserPasswordEncoderInterface $encoder, EventDispatcherInterface $eventDispatcher, Environment $twig, ManagerRegistry $registry, TokenStorageInterface $tokenStorage)
     {
         $this->encoder         = $encoder;
         $this->eventDispatcher = $eventDispatcher;
         $this->twig            = $twig;
+        $this->registry        = $registry;
+        $this->tokenStorage    = $tokenStorage;
     }
 
     /**
@@ -85,6 +101,34 @@ final class AccountController
         return new Response(
             $this->twig->render(
                 '@ConnecthollandUser/forms/account/account.html.twig',
+                [
+                    'form' => $form->createView(),
+                ]
+            )
+        );
+    }
+
+    /**
+     * @Route({"en": "/delete", "nl": "/verwijderen"}, name="_delete", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\AccountDeleteType"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function delete(UserInterface $user, Request $request, FormInterface $form): Response
+    {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->registry->getManagerForClass(User::class)->remove($user);
+            $this->registry->getManagerForClass(User::class)->flush();
+
+            $this->tokenStorage->setToken(null);
+            $request->getSession()->invalidate();
+
+            $event = new DeleteAccountEvent($form->getData());
+            $this->eventDispatcher->dispatch($event);
+
+            return $event->getResponse();
+        }
+
+        return new Response(
+            $this->twig->render('@ConnecthollandUser/forms/account/delete.html.twig',
                 [
                     'form' => $form->createView(),
                 ]

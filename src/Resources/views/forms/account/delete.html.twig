@@ -1,0 +1,14 @@
+{% extends '@ConnecthollandUser/base.html.twig' %}
+
+{% trans_default_domain 'ConnecthollandUserBundle' %}
+
+{% block connectholland_user_content %}
+    <h1>{{ 'connectholland_user.account.delete.title'|trans }}</h1>
+
+    {{ form_start(form) }}
+        {% block connectholland_user_account_delete_form_fields %}
+            {{ form_widget(form) }}
+        {% endblock %}
+    <button type="submit" class="btn">{{ 'connectholland_user.account.submit'|trans }}</button>
+    {{ form_end(form) }}
+{% endblock %}

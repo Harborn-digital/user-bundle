@@ -24,6 +24,9 @@ connectholland_user:
             title: 'Account aanpassen'
         profile:
             title: 'Profiel aanpassen'
+        delete:
+            title: 'Account verwijderen'
+        delete_account_check: 'Verwijder mijn account en alle daarbij horende gegevens.'
     reset:
         request:
             email: 'E-mailadres'
@@ -45,6 +48,9 @@ connectholland_user:
             title: 'Inloggen'
             username: 'Gebruikersnaam'
     emails:
+        delete:
+            title: 'Account verwijderd'
+            confirm: 'Je account is verwijderd.'
         registration:
             title: 'Registratie'
             body: ''

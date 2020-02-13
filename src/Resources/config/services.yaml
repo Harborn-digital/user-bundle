@@ -38,6 +38,8 @@ services:
             - '@router'
             - '@Symfony\Component\HttpKernel\UriSigner'
 
+    ConnectHolland\UserBundle\Mailer\DeleteEmail:
+
     ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
@@ -68,6 +70,8 @@ services:
             - '@security.user_password_encoder.generic'
             - '@event_dispatcher'
             - '@twig'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@security.token_storage'
         tags:
             - { name: controller.service_arguments }
 
@@ -167,6 +171,13 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
+    ConnectHolland\UserBundle\EventSubscriber\DeleteAccountSubscriber:
+        arguments:
+            - '@ConnectHolland\UserBundle\Mailer\DeleteEmail'
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }
+
     ConnectHolland\UserBundle\Security\OAuthUserProvider:
         arguments:
             $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
@@ -202,6 +213,14 @@ services:
         arguments:
             $passwordConstraints: '@ConnectHolland\UserBundle\Security\PasswordConstraints'
             $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+        tags:
+            - { name: 'form.type' }
+
+    ConnectHolland\UserBundle\Form\AccountDeleteType:
+        public: true
+        arguments:
+            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $tokenStorage: '@security.token_storage'
         tags:
             - { name: 'form.type' }
 

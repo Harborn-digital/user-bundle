@@ -1,0 +1,11 @@
+{% extends '@ConnecthollandUser/emails/base.html.twig' %}
+
+{% trans_default_domain 'ConnecthollandUserBundle' %}
+
+{% block connectholland_user_email_title %}{{ 'connectholland_user.emails.delete.title'|trans }}{% endblock %}
+
+{% block connectholland_user_email_content %}
+    <p>
+        {{ 'connectholland_user.emails.delete.confirm'|trans }}
+    </p>
+{% endblock %}
