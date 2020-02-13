@@ -13,6 +13,8 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\UsernameUpdatedEvent;
 use ConnectHolland\UserBundle\Mailer\ValidateUsernameEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UsernameUpdatedSubscriber implements EventSubscriberInterface
 {
@@ -21,9 +23,15 @@ class UsernameUpdatedSubscriber implements EventSubscriberInterface
      */
     private $email;
 
-    public function __construct(ValidateUsernameEmail $email)
+    /**
+     * @var TokenStorageInterface|null
+     */
+    private $tokenStorage;
+
+    public function __construct(ValidateUsernameEmail $email, TokenStorageInterface $tokenStorage = null)
     {
-        $this->email = $email;
+        $this->email        = $email;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public static function getSubscribedEvents()
@@ -39,6 +47,17 @@ class UsernameUpdatedSubscriber implements EventSubscriberInterface
         $user = $event->getSubject();
         if ($user->isEnabled() === false) {
             $this->email->send($user);
+        }
+
+        if ($this->tokenStorage !== null) {
+            $this->tokenStorage->setToken(null);
+        }
+
+        if ($event->hasArgument('request')) {
+            $request = $event->getArgument('request');
+            if ($request instanceof Request) {
+                $request->getSession()->invalidate();
+            }
         }
     }
 }

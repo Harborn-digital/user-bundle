@@ -163,7 +163,7 @@ services:
     ConnectHolland\UserBundle\EventSubscriber\UsernameUpdatedSubscriber:
         arguments:
             - '@ConnectHolland\UserBundle\Mailer\ValidateUsernameEmail'
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@security.token_storage'
         tags:
             - { name: 'kernel.event_subscriber' }
 
