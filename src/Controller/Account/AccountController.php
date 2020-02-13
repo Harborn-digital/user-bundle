@@ -68,7 +68,7 @@ final class AccountController
     }
 
     /**
-     * @Route({"en": "/details", "nl": "/gegevens"}, name="_account", methods={"GET", "POST"})
+     * @Route("/gegevens", name="_account", methods={"GET", "POST"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit(UserInterface $user, Request $request, FormFactoryInterface $formFactory): Response
@@ -110,7 +110,7 @@ final class AccountController
     }
 
     /**
-     * @Route({"en": "/delete", "nl": "/verwijderen"}, name="_delete", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\AccountDeleteType"})
+     * @Route("/verwijderen", name="_delete", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\AccountDeleteType"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete(UserInterface $user, Request $request, FormInterface $form): Response

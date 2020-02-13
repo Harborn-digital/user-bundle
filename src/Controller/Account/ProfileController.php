@@ -43,7 +43,7 @@ final class ProfileController
     }
 
     /**
-     * @Route({"en": "/profile", "nl": "/profiel"}, name="_profile", methods={"GET", "POST"})
+     * @Route("/profiel", name="_profile", methods={"GET", "POST"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit(Request $request, FormFactoryInterface $formFactory): Response
