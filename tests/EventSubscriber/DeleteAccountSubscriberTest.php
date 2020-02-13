@@ -24,6 +24,7 @@ class DeleteAccountSubscriberTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::onDeleteAccountEvent
+     * @covers ::sendMail
      */
     public function testOnDeleteAccountEvent(): void
     {

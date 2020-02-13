@@ -46,11 +46,7 @@ class DeleteAccountSubscriber implements EventSubscriberInterface
 
     public function onDeleteAccountEvent(DeleteAccountEvent $event): void
     {
-        if (($user = $event->getUser()) instanceof UserInterface === false) {
-            return;
-        }
-
-        $this->sendMail($user);
+        $this->sendMail($event->getUser());
         $event->setResponse(new RedirectResponse($this->router->generate('connectholland_user_login')));
     }
 
