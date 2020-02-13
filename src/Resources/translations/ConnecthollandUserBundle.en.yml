@@ -24,6 +24,9 @@ connectholland_user:
             title: 'Edit account'
         profile:
             title: 'Edit profile'
+        delete:
+            title: 'Delete account'
+        delete_account_check: 'Delete my account and all related account data.'
     reset:
         request:
             email: 'Email address'
@@ -45,6 +48,9 @@ connectholland_user:
             title: 'Login'
             username: 'Username'
     emails:
+        delete:
+            title: 'Account deleted'
+            confirm: 'Your account has been deleted.'
         registration:
             title: 'Registration'
             body: ''
