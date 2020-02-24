@@ -12,24 +12,27 @@ namespace ConnectHolland\UserBundle\Controller\Account;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\UpdateEvent;
 use ConnectHolland\UserBundle\Form\Account\ProfileType;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-/**
- * @codeCoverageIgnore WIP
- * @Route("/account", name="connectholland_user_account")
- */
 final class ProfileController
 {
     /**
      * @var Environment
      */
     private $twig;
+
+    /**
+     * @var array
+     */
+    private $groups = ['account'];
 
     /**
      * @var EventDispatcherInterface
@@ -43,10 +46,11 @@ final class ProfileController
     }
 
     /**
-     * @Route("/profiel", name="_profile", methods={"GET", "POST"})
+     * @Route("/account/profiel", name="connectholland_user_account_profile", methods={"GET", "POST"})
+     * @Route("/api/account/profile", name="connectholland_user_account_profile.api", methods={"GET", "POST"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function edit(Request $request, FormFactoryInterface $formFactory): Response
+    public function edit(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormFactoryInterface $formFactory): ResultInterface
     {
         $form = $formFactory->create(ProfileType::class);
         $form->handleRequest($request);
@@ -56,13 +60,20 @@ final class ProfileController
             $this->eventDispatcher->dispatch($event);
         }
 
-        return new Response(
-            $this->twig->render(
-                '@ConnecthollandUser/forms/account/profile.html.twig',
-                [
-                    'form' => $form->createView(),
-                ]
-            )
+        return $resultServiceLocator
+            ->getResult(
+                $request,
+                new ResultData(
+                    'profile',
+                    [
+                        'form' => $form->createView(),
+                        'user' => $form->getData(),
+                    ],
+                    [
+                        'template' => '@ConnecthollandUser/forms/account/profile.html.twig',
+                        'groups'   => $this->groups,
+                    ]
+                )
         );
     }
 }

@@ -7,7 +7,7 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\UserBundle\Message;
+namespace ConnectHolland\UserBundle\ApiPlatform\Message;
 
 use ApiPlatform\Core\Annotation as Api;
 
@@ -29,6 +29,7 @@ use ApiPlatform\Core\Annotation as Api;
  *              "route_name"      = "connectholland_user_login.api",
  *              "swagger_context" = {
  *                  "summary"         = "Authenticate with the API.",
+ *                  "tags"            = {"Account"},
  *                  "responses"       = {
  *                      "200" = {
  *                          "description" = "Succesful authenticated, a JWT token will be provided.",

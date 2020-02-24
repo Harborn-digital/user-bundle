@@ -29,6 +29,7 @@ use ApiPlatform\Core\Annotation as Api;
  *              "route_name"      = "connectholland_user_registration.api",
  *              "swagger_context" = {
  *                  "summary"         = "Register password with the API.",
+ *                  "tags"            = {"Register"},
  *                  "responses"       = {
  *                      "200" = {
  *                          "description" = "The user is registered succesfully",

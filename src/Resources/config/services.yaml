@@ -213,6 +213,7 @@ services:
         arguments:
             $passwordConstraints: '@ConnectHolland\UserBundle\Security\PasswordConstraints'
             $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $tokenStorage: '@security.token_storage'
         tags:
             - { name: 'form.type' }
 
