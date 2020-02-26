@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType as BasePasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -35,10 +36,16 @@ class AccountType extends AbstractType
      */
     private $passwordConstraints;
 
-    public function __construct(RegistryInterface $doctrine, PasswordConstraints $passwordConstraints)
+    /**
+     * @var TokenStorageInterface|null
+     */
+    private $tokenStorage;
+
+    public function __construct(RegistryInterface $doctrine, PasswordConstraints $passwordConstraints, TokenStorageInterface $tokenStorage = null)
     {
         $this->doctrine            = $doctrine;
         $this->passwordConstraints = $passwordConstraints;
+        $this->tokenStorage        = $tokenStorage;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -80,8 +87,9 @@ class AccountType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class'         => $this->doctrine->getRepository(UserInterface::class)->getClassName(),
-            'translation_domain' => 'ConnecthollandUserBundle',
+            'data_class'          => $this->doctrine->getRepository(UserInterface::class)->getClassName(),
+            'data'                => $this->getUser(),
+            'translation_domain'  => 'ConnecthollandUserBundle',
         ]);
     }
 
@@ -104,5 +112,15 @@ class AccountType extends AbstractType
         }
 
         return $constraints;
+    }
+
+    private function getUser(): ?UserInterface
+    {
+        $user = null;
+        if ($this->tokenStorage !== null && $this->tokenStorage->getToken() !== null && $this->tokenStorage->getToken()->getUser() instanceof UserInterface) {
+            $user = $this->tokenStorage->getToken()->getUser();
+        }
+
+        return $user;
     }
 }

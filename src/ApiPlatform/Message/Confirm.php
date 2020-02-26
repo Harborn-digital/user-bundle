@@ -7,38 +7,33 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\UserBundle\Message;
+namespace ConnectHolland\UserBundle\ApiPlatform\Message;
 
-use ApiPlatform\Core\Annotation as Api;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
- * Password reset resource.
+ * User confirmation resource.
  *
- * @Api\ApiResource(
+ * @ApiResource(
  *     attributes={"pagination_enabled"=false},
  *     messenger=true,
  *     collectionOperations={
- *         "password-reset" = {
- *              "method"   = "POST",
+ *         "password-confirm" = {
+ *              "method"   = "GET",
  *              "consumes" = {
  *                  "application/json"
  *              },
  *              "produces" = {
  *                  "application/json"
  *              },
- *              "route_name"      = "connectholland_user_reset.api",
+ *              "route_name"      = "connectholland_user_registration_confirm.api",
  *              "swagger_context" = {
- *                  "summary"         = "Reset password with the API.",
+ *                  "summary"         = "Confirm user e-mail with the API.",
+ *                  "tags"            = {"Register"},
  *                  "responses"       = {
  *                      "200" = {
- *                          "description" = "The password reset is requested succesfully",
+ *                          "description" = "The user e-mail is confirmed succesfully",
  *                          "schema"      = {
- *                              "type" = "object",
- *                              "properties" = {
- *                                  "token" = {
- *                                      "type" = "string"
- *                                  }
- *                              }
  *                          }
  *                      },
  *                  },
@@ -48,10 +43,15 @@ use ApiPlatform\Core\Annotation as Api;
  *     itemOperations={}
  * )
  */
-class Reset
+class Confirm
 {
     /**
      * @var string
      */
-    public $username;
+    public $email;
+
+    /**
+     * @var string
+     */
+    public $token;
 }

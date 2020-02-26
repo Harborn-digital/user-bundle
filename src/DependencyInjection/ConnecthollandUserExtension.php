@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\DependencyInjection;
 
-use ConnectHolland\UserBundle\Message\Authenticate;
+use ConnectHolland\UserBundle\ApiPlatform\Message\Authenticate;
 use HaydenPierce\ClassFinder\ClassFinder;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AbstractResourceOwner;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner;

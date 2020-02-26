@@ -13,11 +13,12 @@ use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\DeleteAccountEvent;
 use ConnectHolland\UserBundle\Event\UpdateEvent;
 use ConnectHolland\UserBundle\Event\UsernameUpdatedEvent;
-use ConnectHolland\UserBundle\Form\Account\AccountType;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,6 @@ use Twig\Environment;
 
 /**
  * @codeCoverageIgnore WIP
- * @Route("/account", name="connectholland_user_account")
  */
 final class AccountController
 {
@@ -58,6 +58,11 @@ final class AccountController
      */
     private $tokenStorage;
 
+    /**
+     * @var array
+     */
+    private $groups = ['account'];
+
     public function __construct(UserPasswordEncoderInterface $encoder, EventDispatcherInterface $eventDispatcher, Environment $twig, ManagerRegistry $registry, TokenStorageInterface $tokenStorage)
     {
         $this->encoder         = $encoder;
@@ -68,18 +73,15 @@ final class AccountController
     }
 
     /**
-     * @Route("/gegevens", name="_account", methods={"GET", "POST"})
+     * @Route("/account/gegevens", name="connectholland_user_account_account", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\Account\AccountType"})
+     * @Route("/api/account/details", name="connectholland_user_account_account.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\Account\AccountType"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function edit(UserInterface $user, Request $request, FormFactoryInterface $formFactory): Response
+    public function edit(ResultServiceLocatorInterface $resultServiceLocator, UserInterface $user, Request $request, FormInterface $form): ResultInterface
     {
-        /** @var \ConnectHolland\UserBundle\Entity\UserInterface $user */
-        $email = $user->getEmail();
-        $form  = $formFactory->create(AccountType::class);
-        $form->setData($user);
-        $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var \ConnectHolland\UserBundle\Entity\UserInterface $user */
+            $email         = $user->getEmail();
             $plainPassword = $form->get('plainPassword')->getData();
 
             if ($email !== $user->getEmail()) {
@@ -99,18 +101,25 @@ final class AccountController
             $this->eventDispatcher->dispatch($event);
         }
 
-        return new Response(
-            $this->twig->render(
-                '@ConnecthollandUser/forms/account/account.html.twig',
-                [
-                    'form' => $form->createView(),
-                ]
-            )
+        return $resultServiceLocator
+            ->getResult(
+                $request,
+                new ResultData(
+                    'profile',
+                    [
+                        'form' => $form->createView(),
+                        'user' => $form->getData(),
+                    ],
+                    [
+                        'template' => '@ConnecthollandUser/forms/account/account.html.twig',
+                        'groups'   => $this->groups,
+                    ]
+                )
         );
     }
 
     /**
-     * @Route("/verwijderen", name="_delete", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\AccountDeleteType"})
+     * @Route("/account/verwijderen", name="connectholland_user_account_delete", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\AccountDeleteType"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete(UserInterface $user, Request $request, FormInterface $form): Response
@@ -135,5 +144,10 @@ final class AccountController
                 ]
             )
         );
+    }
+
+    public function setGroups(array $groups): void
+    {
+        $this->groups = $groups;
     }
 }

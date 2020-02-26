@@ -9,30 +9,37 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Message;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation as Api;
 
 /**
- * User confirmation resource.
+ * Password reset resource.
  *
- * @ApiResource(
+ * @Api\ApiResource(
  *     attributes={"pagination_enabled"=false},
  *     messenger=true,
  *     collectionOperations={
- *         "password-confirm" = {
- *              "method"   = "GET",
+ *         "password-reset" = {
+ *              "method"   = "POST",
  *              "consumes" = {
  *                  "application/json"
  *              },
  *              "produces" = {
  *                  "application/json"
  *              },
- *              "route_name"      = "connectholland_user_registration_confirm.api",
+ *              "route_name"      = "connectholland_user_reset.api",
  *              "swagger_context" = {
- *                  "summary"         = "Confirm user e-mail with the API.",
+ *                  "summary"         = "Reset password through the API.",
+ *                  "tags"            = {"Account"},
  *                  "responses"       = {
  *                      "200" = {
- *                          "description" = "The user e-mail is confirmed succesfully",
+ *                          "description" = "The password reset is requested succesfully",
  *                          "schema"      = {
+ *                              "type" = "object",
+ *                              "properties" = {
+ *                                  "token" = {
+ *                                      "type" = "string"
+ *                                  }
+ *                              }
  *                          }
  *                      },
  *                  },
@@ -42,15 +49,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *     itemOperations={}
  * )
  */
-class Confirm
+class Reset
 {
     /**
      * @var string
      */
-    public $email;
-
-    /**
-     * @var string
-     */
-    public $token;
+    public $username;
 }
