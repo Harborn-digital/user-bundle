@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
-
-final class UsernameUpdatedEvent extends GenericEvent implements UsernameUpdatedEventInterface
+interface UsernameUpdatedEventInterface
 {
 }
