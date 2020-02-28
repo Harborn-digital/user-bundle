@@ -46,13 +46,14 @@ final class ProfileController
     }
 
     /**
-     * @Route("/account/profiel", name="connectholland_user_account_profile", methods={"GET", "POST"})
+     * @Route("/account/profiel", name="connectholland_user_account_profile", methods={"GET", "POST"}, defaults={"connectholland_user_account_profile_template"="@ConnecthollandUser/forms/account/profile.html.twig"})
      * @Route("/api/account/profile", name="connectholland_user_account_profile.api", methods={"GET", "POST"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormFactoryInterface $formFactory): ResultInterface
     {
-        $form = $formFactory->create(ProfileType::class);
+        $template = $request->get('connectholland_user_account_profile_template');
+        $form     = $formFactory->create(ProfileType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -70,7 +71,7 @@ final class ProfileController
                         'user' => $form->getData(),
                     ],
                     [
-                        'template' => '@ConnecthollandUser/forms/account/profile.html.twig',
+                        'template' => $template,
                         'groups'   => $this->groups,
                     ]
                 )
