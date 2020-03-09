@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,11 +35,11 @@ final class UserCreateCommand extends Command
     private $eventDispatcher;
 
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $doctrine;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, RegistryInterface $doctrine)
+    public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $doctrine)
     {
         parent::__construct();
 

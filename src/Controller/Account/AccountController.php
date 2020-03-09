@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\DeleteAccountEvent;
 use ConnectHolland\UserBundle\Event\UpdateEvent;
 use ConnectHolland\UserBundle\Event\UsernameUpdatedEvent;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
@@ -73,8 +73,8 @@ final class AccountController
     }
 
     /**
-     * @Route("/account/gegevens", name="connectholland_user_account_account", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\Account\AccountType"})
-     * @Route("/api/account/details", name="connectholland_user_account_account.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\Account\AccountType"})
+     * @Route("/account/gegevens", name="connectholland_user_account_account", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\Account\AccountType"})
+     * @Route("/api/account/details", name="connectholland_user_account_account.api", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\Account\AccountType"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit(ResultServiceLocatorInterface $resultServiceLocator, UserInterface $user, Request $request, FormInterface $form): ResultInterface
@@ -119,7 +119,7 @@ final class AccountController
     }
 
     /**
-     * @Route("/account/verwijderen", name="connectholland_user_account_delete", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\AccountDeleteType"})
+     * @Route("/account/verwijderen", name="connectholland_user_account_delete", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\AccountDeleteType"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete(UserInterface $user, Request $request, FormInterface $form): Response

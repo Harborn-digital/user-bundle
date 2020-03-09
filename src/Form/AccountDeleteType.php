@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Form;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 class AccountDeleteType extends AbstractType
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $doctrine;
 
@@ -30,7 +30,7 @@ class AccountDeleteType extends AbstractType
      */
     private $tokenStorage;
 
-    public function __construct(RegistryInterface $doctrine, TokenStorageInterface $tokenStorage)
+    public function __construct(ManagerRegistry $doctrine, TokenStorageInterface $tokenStorage)
     {
         $this->doctrine     = $doctrine;
         $this->tokenStorage = $tokenStorage;

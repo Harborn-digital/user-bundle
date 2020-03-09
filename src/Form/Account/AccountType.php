@@ -11,7 +11,7 @@ namespace ConnectHolland\UserBundle\Form\Account;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Security\PasswordConstraints;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType as BasePasswordType;
@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class AccountType extends AbstractType
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $doctrine;
 
@@ -41,7 +41,7 @@ class AccountType extends AbstractType
      */
     private $tokenStorage;
 
-    public function __construct(RegistryInterface $doctrine, PasswordConstraints $passwordConstraints, TokenStorageInterface $tokenStorage = null)
+    public function __construct(ManagerRegistry $doctrine, PasswordConstraints $passwordConstraints, TokenStorageInterface $tokenStorage = null)
     {
         $this->doctrine            = $doctrine;
         $this->passwordConstraints = $passwordConstraints;

@@ -7,7 +7,7 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\UserBundle\Message;
+namespace ConnectHolland\UserBundle\ApiPlatform\Message;
 
 use ApiPlatform\Core\Annotation as Api;
 

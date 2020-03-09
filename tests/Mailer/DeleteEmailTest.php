@@ -7,7 +7,7 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\UserBundle\Tests\Event;
+namespace ConnectHolland\UserBundle\Tests\Mailer;
 
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Mailer\DeleteEmail;

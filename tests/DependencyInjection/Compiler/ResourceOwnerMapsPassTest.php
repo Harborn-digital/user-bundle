@@ -7,7 +7,7 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\UserBundle\Tests\DependencyInjection\Compiler\PasswordRequirementsInjectorPassTest;
+namespace ConnectHolland\UserBundle\Tests\DependencyInjection\Compiler;
 
 use ConnectHolland\UserBundle\DependencyInjection\Compiler\ResourceOwnerMapsPass;
 use ConnectHolland\UserBundle\Routing\OAuthRouteLoader;
