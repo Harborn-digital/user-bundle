@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\DependencyInjection;
 
 use ConnectHolland\UserBundle\ApiPlatform\Message\Authenticate;
+use ConnectHolland\UserBundle\Entity\UserInterface;
 use HaydenPierce\ClassFinder\ClassFinder;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AbstractResourceOwner;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner;
@@ -47,6 +48,7 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
 
         $this->prependJwtConfiguration($container);
         $this->prependApiPlatformConfiguration($container);
+        $this->prependDoctrineConfiguration($container);
     }
 
     private function prependApiPlatformConfiguration(ContainerBuilder $container): void
@@ -153,5 +155,21 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
         }
 
         return $resourceOwners;
+    }
+
+    private function prependDoctrineConfiguration(ContainerBuilder $container): void
+    {
+        if ($container->hasExtension('doctrine')) {
+            $chUserConfig = (new Processor())->processConfiguration(new Configuration(), $container->getExtensionConfig(Configuration::CONFIG_ROOT_KEY));
+
+            $config = [
+                'orm' => [
+                    'resolve_target_entities' => [
+                        UserInterface::class => $chUserConfig['user_class'],
+                    ],
+                ],
+            ];
+            $container->prependExtensionConfig('doctrine', $config);
+        }
     }
 }
