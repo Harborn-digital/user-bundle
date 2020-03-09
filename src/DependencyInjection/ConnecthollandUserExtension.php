@@ -47,12 +47,18 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
 
     public function prepend(ContainerBuilder $container)
     {
-        $config = $this->getResourceOwnersConfiguration($container);
-        $container->prependExtensionConfig('hwi_oauth', $config);
-
         $this->prependJwtConfiguration($container);
         $this->prependApiPlatformConfiguration($container);
         $this->prependDoctrineConfiguration($container);
+        $this->prependHwiOAuthConfiguration($container);
+    }
+
+    private function prependHwiOAuthConfiguration(ContainerBuilder $container): void
+    {
+        if ($container->hasExtension('hwi_oauth')) {
+            $config = $this->getResourceOwnersConfiguration($container);
+            $container->prependExtensionConfig('hwi_oauth', $config);
+        }
     }
 
     private function prependApiPlatformConfiguration(ContainerBuilder $container): void
