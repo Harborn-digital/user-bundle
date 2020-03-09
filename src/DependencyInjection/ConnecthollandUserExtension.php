@@ -38,17 +38,27 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
             $loader->load('lexik_jwt_authentication.yaml');
         }
 
+        if (isset($container->getParameter('kernel.bundles')['HWIOAuthBundle'])) {
+            $loader->load('services_oauth.yaml');
+        }
+
         $loader->load('services.yaml');
     }
 
     public function prepend(ContainerBuilder $container)
     {
-        $config = $this->getResourceOwnersConfiguration($container);
-        $container->prependExtensionConfig('hwi_oauth', $config);
-
         $this->prependJwtConfiguration($container);
         $this->prependApiPlatformConfiguration($container);
         $this->prependDoctrineConfiguration($container);
+        $this->prependHwiOAuthConfiguration($container);
+    }
+
+    private function prependHwiOAuthConfiguration(ContainerBuilder $container): void
+    {
+        if ($container->hasExtension('hwi_oauth')) {
+            $config = $this->getResourceOwnersConfiguration($container);
+            $container->prependExtensionConfig('hwi_oauth', $config);
+        }
     }
 
     private function prependApiPlatformConfiguration(ContainerBuilder $container): void

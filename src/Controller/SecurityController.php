@@ -62,6 +62,7 @@ final class SecurityController
                     'form'          => $form->createView(),
                     'last_username' => $lastUsername,
                     'error'         => $error,
+                    'add_oauth'     => $this->twig->getLoader()->exists('@HWIOAuth/Connect/login.html.twig'),
                 ]
             )
         );

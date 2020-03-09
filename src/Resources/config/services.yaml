@@ -122,10 +122,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    ConnectHolland\UserBundle\EventSubscriber\CreateOAuthUserSubscriber:
-        tags:
-            - { name: kernel.event_subscriber }
-
     ConnectHolland\UserBundle\EventSubscriber\UserLoginSubscriber:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
@@ -177,22 +173,6 @@ services:
             - '@router'
         tags:
             - { name: kernel.event_subscriber }
-
-    ConnectHolland\UserBundle\Security\OAuthUserProvider:
-        arguments:
-            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
-            $eventDispatcher: '@event_dispatcher'
-
-
-    ConnectHolland\UserBundle\Routing\OAuthRouteLoader:
-        lazy: true
-        public: true
-        arguments:
-            $resourceOwnerMaps: []
-        tags:
-            - { name: 'routing.loader' }
-
-    connectholland_user.routing_oauth_route_loader: '@ConnectHolland\UserBundle\Routing\OAuthRouteLoader'
 
     ConnectHolland\UserBundle\Form\RegistrationType:
         public: true

@@ -37,7 +37,16 @@ To create a new user run:
 
 ## OAuth
 
-To use OAuth login add environment variables to enable a specific OAuth provider (resource). E.g. for google:
+If the app needs OAuth login the HWI OAuth bundle should be required and suitable configuration should be added.
+
+Install the bundle:
+```bash
+composer require hwi/oauth-bundle php-http/guzzle6-adapter:^1.0 php-http/httplug-bundle
+```
+
+Uncomment the oauth include in the routing.
+
+Add environment variables to enable a specific OAuth provider (resource). E.g. for google:
 ```dotenv
 USERBUNDLE_OAUTH_GOOGLE_ID=xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
 USERBUNDLE_OAUTH_GOOGLE_SECRET=XXXXXXXXXXX-xx_xx_xxxxx
