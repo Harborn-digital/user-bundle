@@ -41,7 +41,7 @@ If the app needs OAuth login the HWI OAuth bundle should be required and suitabl
 
 Install the bundle:
 ```bash
-composer require hwi/oauth-bundle php-http/guzzle6-adapter:^1.0 php-http/httplug-bundle
+composer require hwi/oauth-bundle 
 ```
 
 Uncomment the oauth include in the routing.
