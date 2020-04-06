@@ -19,6 +19,9 @@ use ConnectHolland\UserBundle\Event\UserNotFoundEvent;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
@@ -29,7 +32,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Environment;
 
 /**
  * @codeCoverageIgnore WIP
@@ -56,25 +58,19 @@ final class RegistrationController
      */
     private $router;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    public function __construct(RegistryInterface $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router, Environment $twig)
+    public function __construct(RegistryInterface $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router)
     {
         $this->registry        = $registry;
         $this->session         = $session;
         $this->eventDispatcher = $eventDispatcher;
         $this->router          = $router;
-        $this->twig            = $twig;
     }
 
     /**
      * @Route("/registreren", name="connectholland_user_registration", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"})
      * @Route("/api/register", name="connectholland_user_registration.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"})
      */
-    public function register(Request $request, FormInterface $form): Response
+    public function register(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormInterface $form): ResultInterface
     {
         if ($form->isSubmitted() && $form->isValid()) {
             $createUserEvent = new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData());
@@ -90,21 +86,31 @@ final class RegistrationController
                     /* @scrutinizer ignore-call */
                     $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $postRegistrationEvent);
 
-                    return $postRegistrationEvent->getResponse();
+                    return $postRegistrationEvent;
                 }
             }
         }
 
         $status = ($form->isSubmitted() && !$form->isValid()) ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK;
+        $errors = [];
+        /** @var \Symfony\Component\Form\FormError $error */
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[$error->getMessageTemplate()] = $error->getMessage();
+        }
 
-        return new Response(
-            $this->twig->render(
-                '@ConnecthollandUser/forms/register.html.twig',
-                [
-                    'form' => $form->createView(),
-                ]
-            ),
-            $status
+        return $resultServiceLocator
+            ->getResult(
+                $request,
+                new ResultData(
+                    'profile',
+                    [
+                        'form'   => $form->createView(),
+                        'errors' => $errors,
+                    ],
+                    [
+                        'template' => '@ConnecthollandUser/forms/register.html.twig',
+                    ]
+                )
         );
     }
 
