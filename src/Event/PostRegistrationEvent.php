@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Event;
 
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultDataInterface;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostRegistrationEvent extends /* @scrutinizer ignore-deprecated */ Event implements PostRegistrationEventInterface, ResponseEventInterface
+class PostRegistrationEvent extends /* @scrutinizer ignore-deprecated */ Event implements PostRegistrationEventInterface, ResponseEventInterface, ResultInterface
 {
     /**
      * @var string
@@ -28,6 +30,11 @@ class PostRegistrationEvent extends /* @scrutinizer ignore-deprecated */ Event i
      * @var string
      */
     private $action;
+
+    /**
+     * @var ResultDataInterface
+     */
+    private $resultData;
 
     public function __construct(string $state, Response $response, string $action)
     {
@@ -54,5 +61,17 @@ class PostRegistrationEvent extends /* @scrutinizer ignore-deprecated */ Event i
     public function getAction(): string
     {
         return $this->action;
+    }
+
+    public function setResultData(ResultDataInterface $resultData): ResultInterface
+    {
+        $this->resultData = $resultData;
+
+        return $this;
+    }
+
+    public function getResultData(): ?ResultDataInterface
+    {
+        return $this->resultData;
     }
 }

@@ -20,7 +20,7 @@ final class ResourceOwnerMapsPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->hasDefinition(OAuthRouteLoader::class) ) {
+        if ($container->hasDefinition(OAuthRouteLoader::class)) {
             $configuration = new Configuration();
             $config        = (new Processor())->processConfiguration($configuration, $container->getExtensionConfig(Configuration::CONFIG_ROOT_KEY));
 
