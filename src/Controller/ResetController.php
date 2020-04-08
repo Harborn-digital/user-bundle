@@ -19,8 +19,8 @@ use ConnectHolland\UserBundle\Event\UserResetEvent;
 use ConnectHolland\UserBundle\Form\NewPasswordType;
 use ConnectHolland\UserBundle\Form\ResetType;
 use ConnectHolland\UserBundle\UserBundleEvents;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -42,7 +42,7 @@ final class ResetController
     private const PASSWORD_RESET_ACTION   = 'resetPassword';
 
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $registry;
 
@@ -66,7 +66,7 @@ final class ResetController
      */
     private $twig;
 
-    public function __construct(RegistryInterface $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router, Environment $twig)
+    public function __construct(ManagerRegistry $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router, Environment $twig)
     {
         $this->registry        = $registry;
         $this->session         = $session;

@@ -14,10 +14,10 @@ use ConnectHolland\UserBundle\Entity\UserOAuth;
 use ConnectHolland\UserBundle\Event\CreateOAuthUserEvent;
 use ConnectHolland\UserBundle\Event\OAuthUserCreatedEvent;
 use ConnectHolland\UserBundle\Repository\UserRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 final class OAuthUserProvider implements OAuthAwareUserProviderInterface
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $doctrine;
 
@@ -36,7 +36,7 @@ final class OAuthUserProvider implements OAuthAwareUserProviderInterface
      */
     private $eventDispatcher;
 
-    public function __construct(RegistryInterface $doctrine, EventDispatcherInterface $eventDispatcher)
+    public function __construct(ManagerRegistry $doctrine, EventDispatcherInterface $eventDispatcher)
     {
         $this->doctrine        = $doctrine;
         $this->eventDispatcher = $eventDispatcher;

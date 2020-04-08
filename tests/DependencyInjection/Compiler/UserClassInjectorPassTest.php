@@ -7,7 +7,7 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\UserBundle\Tests\DependencyInjection\Compiler\PasswordRequirementsInjectorPassTest;
+namespace ConnectHolland\UserBundle\Tests\DependencyInjection\Compiler;
 
 use ConnectHolland\UserBundle\DependencyInjection\Compiler\UserClassInjectorPass;
 use ConnectHolland\UserBundle\DependencyInjection\Configuration;

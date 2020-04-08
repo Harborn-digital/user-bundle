@@ -7,16 +7,16 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\UserBundle\Tests\Event;
+namespace ConnectHolland\UserBundle\Tests\EventSubscriber;
 
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
 use ConnectHolland\UserBundle\EventSubscriber\UserResetSubscriber;
 use ConnectHolland\UserBundle\Mailer\ResetEmailInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @coversDefaultClass \ConnectHolland\UserBundle\EventSubscriber\UserResetSubscriber
@@ -29,7 +29,7 @@ class UserResetSubscriberTest extends TestCase
      */
     public function testOnUserReset()
     {
-        $registry   = $this->createMock(RegistryInterface::class);
+        $registry   = $this->createMock(ManagerRegistry::class);
         $repository = $this->createMock(ObjectRepository::class);
         $email      = $this->createMock(ResetEmailInterface::class);
 

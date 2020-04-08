@@ -12,8 +12,8 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\CreateUserEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -27,11 +27,11 @@ final class CreateUserSubscriber implements CreateUserSubscriberInterface
     private $passwordEncoder;
 
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $registry;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, RegistryInterface $registry)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, ManagerRegistry $registry)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->registry        = $registry;

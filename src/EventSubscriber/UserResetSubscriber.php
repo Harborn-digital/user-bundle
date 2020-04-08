@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\UserResetEventInterface;
 use ConnectHolland\UserBundle\Mailer\ResetEmailInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 final class UserResetSubscriber implements UserResetSubscriberInterface
 {
@@ -23,11 +23,11 @@ final class UserResetSubscriber implements UserResetSubscriberInterface
     private $email;
 
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $registry;
 
-    public function __construct(ResetEmailInterface $email, RegistryInterface $registry)
+    public function __construct(ResetEmailInterface $email, ManagerRegistry $registry)
     {
         $this->email    = $email;
         $this->registry = $registry;

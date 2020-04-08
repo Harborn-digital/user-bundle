@@ -7,7 +7,7 @@ declare(strict_types=1);
  * (c) Connect Holland.
  */
 
-namespace ConnectHolland\UserBundle\Tests\Event;
+namespace ConnectHolland\UserBundle\Tests\EventSubscriber;
 
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
