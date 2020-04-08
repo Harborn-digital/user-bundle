@@ -52,6 +52,10 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
         $this->prependApiPlatformConfiguration($container);
         $this->prependDoctrineConfiguration($container);
         $this->prependHwiOAuthConfiguration($container);
+
+        if (!$container->hasExtension('response_content_negotiation')) {
+            throw new MissingResponseContentNegotiationBundleException();
+        }
     }
 
     private function prependHwiOAuthConfiguration(ContainerBuilder $container): void
