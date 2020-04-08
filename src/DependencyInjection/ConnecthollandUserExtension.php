@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\DependencyInjection;
 
 use ConnectHolland\UserBundle\ApiPlatform\Message\Authenticate;
+use ConnectHolland\UserBundle\ApiPlatform\Refresh\Message\Refresh;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use HaydenPierce\ClassFinder\ClassFinder;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AbstractResourceOwner;
@@ -64,9 +65,15 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
     private function prependApiPlatformConfiguration(ContainerBuilder $container): void
     {
         if ($container->hasExtension('api_platform')) {
+            $paths = [dirname((new \ReflectionClass(Authenticate::class))->getFileName())];
+
+            if ($container->hasExtension('gesdinet_jwt_refresh_token')) {
+                $paths[] = dirname((new \ReflectionClass(Refresh::class))->getFileName());
+            }
+
             $config = [
                 'mapping'  => [
-                    'paths' => [dirname((new \ReflectionClass(Authenticate::class))->getFileName())],
+                    'paths' => $paths,
                 ],
             ];
             $container->prependExtensionConfig('api_platform', $config);
