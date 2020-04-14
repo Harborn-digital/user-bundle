@@ -17,7 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * @codeCoverageIgnore WIP
  */
-final class RegistrationEmail extends BaseEmail
+final class RegistrationEmail extends BaseEmail implements RegistrationEmailInterface
 {
     /**
      * @var RouterInterface
