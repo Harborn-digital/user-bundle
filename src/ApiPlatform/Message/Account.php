@@ -72,7 +72,6 @@ class Account
      *    attributes = {
      *        "swagger_context" = {
      *           "type"= "object",
-     *           "required" = true,
      *           "properties" = {
      *               "first" = {
      *                   "type"     = "string",
