@@ -75,14 +75,10 @@ class Account
      *           "required" = true,
      *           "properties" = {
      *               "first" = {
-     *                   "name"     = "first",
      *                   "type"     = "string",
-     *                   "required" = true
      *               },
      *               "second" = {
-     *                   "name"     = "second",
      *                   "type"     = "string",
-     *                   "required" = true
      *               }
      *           }
      *        }

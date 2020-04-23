@@ -29,6 +29,20 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *              "route_name"      = "connectholland_user_registration_confirm.api",
  *              "swagger_context" = {
  *                  "summary"         = "Confirm user e-mail with the API.",
+ *                  "parameters" = {
+ *                      {
+ *                          "name" = "email",
+ *                          "in" = "path",
+ *                          "required" = true,
+ *                          "type" = "string"
+ *                      },
+ *                      {
+ *                          "name" = "token",
+ *                          "in" = "path",
+ *                          "required" = true,
+ *                          "type" = "string"
+ *                      },
+ *                  },
  *                  "tags"            = {"Register"},
  *                  "responses"       = {
  *                      "200" = {
