@@ -123,6 +123,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    ConnectHolland\UserBundle\EventSubscriber\PasswordResetFailedSubscriber:
+        arguments:
+            - '@GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\FormatNegotiator'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_subscriber }
+
     ConnectHolland\UserBundle\EventSubscriber\CreateUserSubscriber:
         arguments:
             - '@security.user_password_encoder.generic'
