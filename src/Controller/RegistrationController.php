@@ -44,7 +44,7 @@ final class RegistrationController
     private $registry;
 
     /**
-     * @var Session
+     * @var Session<mixed>
      */
     private $session;
 
@@ -58,6 +58,9 @@ final class RegistrationController
      */
     private $router;
 
+    /**
+     * @param Session<mixed> $session
+     */
     public function __construct(ManagerRegistry $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router)
     {
         $this->registry        = $registry;
@@ -69,6 +72,8 @@ final class RegistrationController
     /**
      * @Route("/registreren", name="connectholland_user_registration", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\RegistrationType"})
      * @Route("/api/register", name="connectholland_user_registration.api", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\RegistrationType"})
+     *
+     * @param FormInterface<mixed> $form
      */
     public function register(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormInterface $form): ResultInterface
     {
@@ -91,7 +96,6 @@ final class RegistrationController
             }
         }
 
-        $status = ($form->isSubmitted() && !$form->isValid()) ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK;
         $errors = [];
         /** @var \Symfony\Component\Form\FormError $error */
         foreach ($form->getErrors(true, true) as $error) {

@@ -68,6 +68,8 @@ class FormValueResolver implements ArgumentValueResolverInterface
 
     /**
      * Resolve the form as argument and let the form handle the request.
+     *
+     * @return Generator<FormInterface>
      */
     public function resolve(Request $request, ArgumentMetadata $argument): Generator
     {
@@ -81,6 +83,8 @@ class FormValueResolver implements ArgumentValueResolverInterface
 
     /**
      * Return the form for the given request.
+     *
+     * @return FormInterface<mixed> $form
      */
     private function getForm(Request $request): ?FormInterface
     {
@@ -95,14 +99,18 @@ class FormValueResolver implements ArgumentValueResolverInterface
 
     /**
      * Let the given form handle the given request data.
+     *
+     * @param FormInterface<mixed> $form
      */
     private function handleRequest(Request $request, FormInterface $form): void
     {
-        $form->handleRequest($request);
-
-        $content = json_decode($request->getContent(), true);
+        $content = json_decode((string) $request->getContent(), true);
         if ($content) {
             $form->submit($content);
+
+            return;
         }
+
+        $form->handleRequest($request);
     }
 }
