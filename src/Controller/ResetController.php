@@ -16,13 +16,16 @@ use ConnectHolland\UserBundle\Event\PasswordResetFailedEvent;
 use ConnectHolland\UserBundle\Event\PostPasswordResetEvent;
 use ConnectHolland\UserBundle\Event\ResetUserEvent;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
-use ConnectHolland\UserBundle\Form\NewPasswordType;
 use ConnectHolland\UserBundle\Form\ResetType;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +50,7 @@ final class ResetController
     private $registry;
 
     /**
-     * @var Session
+     * @var Session<mixed>
      */
     private $session;
 
@@ -66,6 +69,9 @@ final class ResetController
      */
     private $twig;
 
+    /**
+     * @param Session<mixed> $session
+     */
     public function __construct(ManagerRegistry $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router, Environment $twig)
     {
         $this->registry        = $registry;
@@ -76,14 +82,13 @@ final class ResetController
     }
 
     /**
-     * @Route("/wachtwoord-vergeten", name="connectholland_user_reset", methods={"GET", "POST"})
-     * @Route("/api/account/password-reset", name="connectholland_user_reset.api", methods={"GET", "POST"})
+     * @Route("/wachtwoord-vergeten", name="connectholland_user_reset", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\ResetType"})
+     * @Route("/api/account/password-reset", name="connectholland_user_reset.api", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\ResetType"})
+     *
+     * @param FormInterface<mixed> $form
      */
-    public function reset(Request $request, FormFactoryInterface $formFactory): Response
+    public function reset(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormInterface $form, FormFactoryInterface $formFactory): ResultInterface
     {
-        $form = $formFactory->create(ResetType::class);
-        $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $resetUserEvent = new ResetUserEvent($form->get('email')->getData());
             /* @scrutinizer ignore-call */
@@ -102,25 +107,40 @@ final class ResetController
             }
         }
 
-        return new Response(
-            $this->twig->render(
-                '@ConnecthollandUser/forms/reset.html.twig',
-                [
-                    'form' => $form->createView(),
-                ]
-            )
+        $errors = [];
+        /** @var \Symfony\Component\Form\FormError $error */
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[$error->getMessageTemplate()] = $error->getMessage();
+        }
+
+        return $resultServiceLocator
+            ->getResult(
+                $request,
+                new ResultData(
+                    'password-reset-request',
+                    [
+                        'form'   => $form->createView(),
+                        'errors' => $errors,
+                    ],
+                    [
+                        'template' => '@ConnecthollandUser/forms/reset.html.twig',
+                    ]
+                )
         );
     }
 
     /**
-     * @Route("/wachtwoord-vergeten/{email}/{token}", name="connectholland_user_reset_confirm", methods={"GET", "POST"})
-     * @Route("/api/password-reset-confirm/{email}/{token}", name="connectholland_user_reset_confirm.api", methods={"GET", "POST"})
+     * @Route("/wachtwoord-vergeten/{email}/{token}", name="connectholland_user_reset_confirm", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\NewPasswordType"})
+     * @Route("/api/password-reset-confirm/{email}/{token}", name="connectholland_user_reset_confirm.api", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\NewPasswordType"})
+     *
+     * @param FormInterface<mixed> $form
      */
     public function resetPassword(
+        ResultServiceLocatorInterface $resultServiceLocator,
         Request $request,
         string $email,
         string $token,
-        FormFactoryInterface $formFactory,
+        FormInterface $form,
         UserPasswordEncoderInterface $encoder,
         UriSigner $uriSigner
     ): Response {
@@ -143,9 +163,6 @@ final class ResetController
             return $passwordResetFailedEvent->getResponse();
         }
 
-        $form = $formFactory->create(NewPasswordType::class);
-        $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('password')->getData();
             $password      = $encoder->encodePassword($user, $plainPassword);
@@ -167,13 +184,25 @@ final class ResetController
             }
         }
 
-        return new Response(
-            $this->twig->render(
-                '@ConnecthollandUser/forms/new_password.html.twig',
-                [
-                    'form' => $form->createView(),
-                ]
-            )
-        );
+        $errors = [];
+        /** @var \Symfony\Component\Form\FormError $error */
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[$error->getMessageTemplate()] = $error->getMessage();
+        }
+
+        return $resultServiceLocator
+            ->getResult(
+                $request,
+                new ResultData(
+                    'password-reset',
+                    [
+                        'form'   => $form->createView(),
+                        'errors' => $errors,
+                    ],
+                    [
+                        'template' => '@ConnecthollandUser/forms/new_password.html.twig',
+                    ]
+                )
+        )->getResponse();
     }
 }
