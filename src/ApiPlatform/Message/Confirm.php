@@ -46,9 +46,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *                  "tags"            = {"Register"},
  *                  "responses"       = {
  *                      "200" = {
- *                          "description" = "The user e-mail is confirmed succesfully",
- *                          "schema"      = {
- *                          }
+ *                          "description" = "The user e-mail is confirmed succesfully"
  *                      },
  *                  },
  *              },
