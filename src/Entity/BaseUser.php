@@ -57,6 +57,13 @@ abstract class BaseUser implements UserInterface
     protected $password;
 
     /**
+     * @ORM\Column(type="boolean", options={"default":0})
+     *
+     * @var bool
+     */
+    protected $blocked = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="ConnectHolland\UserBundle\Entity\UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     protected $oauths;
@@ -178,6 +185,18 @@ abstract class BaseUser implements UserInterface
                 $oauth->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isBlocked(): bool
+    {
+        return $this->blocked;
+    }
+
+    public function setBlocked(bool $blocked): UserInterface
+    {
+        $this->blocked = $blocked;
 
         return $this;
     }
