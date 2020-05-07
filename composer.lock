@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c45783cacd1c68a7c1cff995bb104e05",
+    "content-hash": "54efa000faa8da2404865f741d91dfa1",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1341,16 +1341,16 @@
         },
         {
             "name": "gisostallenberg/response-content-negotiation-bundle",
-            "version": "0.7.0",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gisostallenberg/response-content-negotiation-bundle.git",
-                "reference": "97c5205847823a30e13f64e3177cbd2507436dfb"
+                "reference": "ac3acf6f2cf1488d2df322df084765a476019d24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gisostallenberg/response-content-negotiation-bundle/zipball/97c5205847823a30e13f64e3177cbd2507436dfb",
-                "reference": "97c5205847823a30e13f64e3177cbd2507436dfb",
+                "url": "https://api.github.com/repos/gisostallenberg/response-content-negotiation-bundle/zipball/ac3acf6f2cf1488d2df322df084765a476019d24",
+                "reference": "ac3acf6f2cf1488d2df322df084765a476019d24",
                 "shasum": ""
             },
             "require": {
@@ -1395,7 +1395,7 @@
                 }
             ],
             "description": "A bundle that allows creating various Response types from a controller, based on content negotiation",
-            "time": "2020-04-24T11:30:00+00:00"
+            "time": "2020-05-08T08:36:04+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
