@@ -36,6 +36,11 @@ class PostRegistrationEvent extends /* @scrutinizer ignore-deprecated */ Event i
      */
     private $resultData;
 
+    /**
+     * @var int
+     */
+    private $statusCode = Response::HTTP_OK;
+
     public function __construct(string $state, Response $response, string $action)
     {
         $this->state    = $state;
@@ -73,5 +78,17 @@ class PostRegistrationEvent extends /* @scrutinizer ignore-deprecated */ Event i
     public function getResultData(): ?ResultDataInterface
     {
         return $this->resultData;
+    }
+
+    public function setStatusCode(int $statusCode): ResultInterface
+    {
+        $this->statusCode = $statusCode;
+
+        return $this;
+    }
+
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
     }
 }

@@ -99,6 +99,7 @@ class FormValueResolver implements ArgumentValueResolverInterface
 
     /**
      * Let the given form handle the given request data.
+     * Do not clear missing fields, to allow clients to only send fields that need updating.
      *
      * @param FormInterface<mixed> $form
      */
@@ -106,7 +107,7 @@ class FormValueResolver implements ArgumentValueResolverInterface
     {
         $content = json_decode((string) $request->getContent(), true);
         if ($content) {
-            $form->submit($content);
+            $form->submit($content, false); // do not clear missing fields
 
             return;
         }

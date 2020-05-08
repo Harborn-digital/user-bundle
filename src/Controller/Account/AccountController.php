@@ -137,10 +137,17 @@ final class AccountController
             return $event->getResponse();
         }
 
+        $errors = [];
+        /** @var \Symfony\Component\Form\FormError $error */
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[$error->getMessageTemplate()] = $error->getMessage();
+        }
+
         return new Response(
             $this->twig->render('@ConnecthollandUser/forms/account/delete.html.twig',
                 [
-                    'form' => $form->createView(),
+                    'form'   => $form->createView(),
+                    'errors' => $errors,
                 ]
             )
         );
