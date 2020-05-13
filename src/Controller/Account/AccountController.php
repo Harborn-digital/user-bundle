@@ -101,6 +101,12 @@ final class AccountController
             $this->eventDispatcher->dispatch($event);
         }
 
+        $errors = [];
+        /** @var \Symfony\Component\Form\FormError $error */
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[$error->getMessageTemplate()] = $error->getMessage();
+        }
+
         return $resultServiceLocator
             ->getResult(
                 $request,
@@ -109,6 +115,7 @@ final class AccountController
                     [
                         'form' => $form->createView(),
                         'user' => $form->getData(),
+                        'errors' => $errors,
                     ],
                     [
                         'template' => '@ConnecthollandUser/forms/account/account.html.twig',
