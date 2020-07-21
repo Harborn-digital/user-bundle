@@ -27,12 +27,16 @@ services:
         arguments:
             - '@router'
             - '@Symfony\Component\HttpKernel\UriSigner'
+            - '@GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\FormatNegotiator'
+            - '@request_stack'
     ConnectHolland\UserBundle\Mailer\RegistrationEmailInterface: '@ConnectHolland\UserBundle\Mailer\RegistrationEmail'
 
     ConnectHolland\UserBundle\Mailer\ValidateUsernameEmail:
         arguments:
             - '@router'
             - '@Symfony\Component\HttpKernel\UriSigner'
+            - '@GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\FormatNegotiator'
+            - '@request_stack'
 
     ConnectHolland\UserBundle\Mailer\ResetEmail:
         arguments:
