@@ -82,7 +82,11 @@ final class ResetController
     }
 
     /**
-     * @Route("/wachtwoord-vergeten", name="connectholland_user_reset", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\ResetType"})
+     * @Route({
+     *     "en": "/en/password-reset",
+     *     "nl": "/wachtwoord-vergeten"
+     * }, name="connectholland_user_reset", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\ResetType"})
+     *
      * @Route("/api/account/password-reset", name="connectholland_user_reset.api", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\ResetType"})
      *
      * @param FormInterface<mixed> $form
