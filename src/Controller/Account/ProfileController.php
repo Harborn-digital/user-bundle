@@ -46,7 +46,7 @@ final class ProfileController
 
     /**
      * @Route({
-     *     "en": "/account/profile",
+     *     "en": "/en/account/profile",
      *     "nl": "/account/profiel"
      * }, name="connectholland_user_account_profile", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\Account\ProfileType"})
      * @Route("/api/account/profile", name="connectholland_user_account_profile.api", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\Account\ProfileType"})

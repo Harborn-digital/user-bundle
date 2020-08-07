@@ -46,7 +46,7 @@ final class SecurityController
     /**
      * @Route("/api/authenticate", name="connectholland_user_login.api", methods={"GET", "POST"})
      * @Route({
-     *     "en": "/login",
+     *     "en": "/en/login",
      *     "nl": "/inloggen"
      * }, name="connectholland_user_login", methods={"GET", "POST"})
      */
