@@ -70,8 +70,12 @@ final class RegistrationController
     }
 
     /**
-     * @Route("/registreren", name="connectholland_user_registration", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\RegistrationType"})
      * @Route("/api/register", name="connectholland_user_registration.api", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\RegistrationType"})
+     *
+     * @Route({
+     *     "en": "/en/register",
+     *     "nl": "/registreren"
+     * }, name="connectholland_user_registration", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\RegistrationType"})
      *
      * @param FormInterface<mixed> $form
      */
@@ -119,8 +123,11 @@ final class RegistrationController
     }
 
     /**
-     * @Route("/registreren/bevestigen/{email}/{token}", name="connectholland_user_registration_confirm", methods={"GET", "POST"})
      * @Route("/api/register/confirm/{email}/{token}", name="connectholland_user_registration_confirm.api", methods={"GET", "POST"})
+     * @Route({
+     *     "en": "/en/register/confirm/{email}/{token}",
+     *     "nl": "/registreren/bevestigen/{email}/{token}"
+     * }, name="connectholland_user_registration_confirm", methods={"GET", "POST"})
      */
     public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
     {
