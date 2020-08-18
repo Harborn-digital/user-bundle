@@ -14,8 +14,10 @@ use ConnectHolland\UserBundle\Event\UsernameUpdatedEvent;
 use ConnectHolland\UserBundle\EventSubscriber\UsernameUpdatedSubscriber;
 use ConnectHolland\UserBundle\Mailer\MailerInterface;
 use ConnectHolland\UserBundle\Mailer\ValidateUsernameEmail;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\NegotiatorInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\RouterInterface;
@@ -94,7 +96,9 @@ class UsernameUpdatedSubscriberTest extends TestCase
         $mailer       = $this->createMock(MailerInterface::class);
         $router       = $this->createMock(RouterInterface::class);
         $uriSigner    = $this->createMock(UriSigner::class);
-        $email        = new ValidateUsernameEmail($router, $uriSigner);
+        $negotiator   = $this->createMock(NegotiatorInterface::class);
+        $stack        = $this->createMock(RequestStack::class);
+        $email        = new ValidateUsernameEmail($router, $uriSigner, $negotiator, $stack);
         $tokenStorage = $this->createMock(TokenStorageInterface::class);
 
         $email->setMailer($mailer);

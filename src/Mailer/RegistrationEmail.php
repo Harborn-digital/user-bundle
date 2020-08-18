@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Mailer;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
+use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\NegotiatorInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -29,15 +31,28 @@ final class RegistrationEmail extends BaseEmail implements RegistrationEmailInte
      */
     private $uriSigner;
 
-    public function __construct(RouterInterface $router, UriSigner $uriSigner)
+    /**
+     * @var NegotiatorInterface
+     */
+    private $negotiator;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(RouterInterface $router, UriSigner $uriSigner, NegotiatorInterface $negotiator, RequestStack $requestStack)
     {
-        $this->router    = $router;
-        $this->uriSigner = $uriSigner;
+        $this->router       = $router;
+        $this->uriSigner    = $uriSigner;
+        $this->negotiator   = $negotiator;
+        $this->requestStack = $requestStack;
     }
 
     public function send(UserInterface $user): \Swift_Message
     {
-        $link = $this->router->generate('connectholland_user_registration_confirm', ['token' => $user->getPasswordRequestToken(), 'email' => $user->getEmail()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $route = $this->getRoute();
+        $link  = $this->router->generate($route, ['token' => $user->getPasswordRequestToken(), 'email' => $user->getEmail()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $this->mailer->createMessageAndSend(
             'registration',
@@ -47,5 +62,15 @@ final class RegistrationEmail extends BaseEmail implements RegistrationEmailInte
                 'link' => $this->uriSigner->sign($link),
             ]
         );
+    }
+
+    private function getRoute(): string
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request !== null && $this->negotiator->getResult($request) === 'json') {
+            return 'connectholland_user_registration_confirm.api';
+        }
+
+        return 'connectholland_user_registration_confirm';
     }
 }
