@@ -73,11 +73,11 @@ final class AccountController
     }
 
     /**
-     * @Route({
-     *     "en": "/en/account/details",
-     *     "nl": "/account/gegevens"
-     * }, name="connectholland_user_account_account", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\Account\AccountType"})
-     * @Route("/api/account/details", name="connectholland_user_account_account.api", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\Account\AccountType"})
+     * @Route({"en"="/en/account/details",
+     *     "nl"="/account/gegevens"}, name="connectholland_user_account_account",
+     *     methods={"GET", "POST"},
+     * defaults={"formName"="ConnectHolland\UserBundle\Form\Account\AccountType"})
+     * @Route("/api/account/details", name="connectholland_user_account_account.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\Account\AccountType"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit(ResultServiceLocatorInterface $resultServiceLocator, UserInterface $user, Request $request, FormInterface $form): ResultInterface
@@ -129,10 +129,10 @@ final class AccountController
     }
 
     /**
-     * @Route({
-     *     "en": "/en/account/delete",
-     *     "nl": "/account/verwijderen"
-     * }, name="connectholland_user_account_delete", methods={"GET", "POST"}, defaults={"formName":"ConnectHolland\UserBundle\Form\AccountDeleteType"})
+     * @Route({"en"="/en/account/delete",
+     *     "nl"="/account/verwijderen"}, name="connectholland_user_account_delete",
+     *     methods={"GET", "POST"},
+     * defaults={"formName"="ConnectHolland\UserBundle\Form\AccountDeleteType"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete(UserInterface $user, Request $request, FormInterface $form): Response
