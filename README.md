@@ -4,7 +4,7 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/build-status/master)
 
-User bundle for Symfony 4 projects
+User bundle for Symfony 4 and 5 projects
 
 ## Functionality
 
@@ -12,12 +12,12 @@ This bundle will be extendible and provide:
 
 - [x] Simple registration form
 - [x] Simple login form
-- [ ] Ability to 'switch on' MFA
 - [x] A Command to create users with their roles
 - [x] An e-mail message with a secure link to complete account registration
 - [x] Recover password functionality
-- [ ] Being API accessable
 - [x] Ability to 'switch on' OAuth (Google/GitHub/Facebook/etc)
+- [ ] Ability to 'switch on' MFA
+- [ ] Being API accessable
 
 ## Environment
 
