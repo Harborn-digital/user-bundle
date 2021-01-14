@@ -18,7 +18,7 @@ use ConnectHolland\UserBundle\Event\ResetUserEvent;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
 use ConnectHolland\UserBundle\Form\ResetType;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;

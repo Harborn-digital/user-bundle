@@ -18,7 +18,7 @@ use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Event\UserNotFoundEvent;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
@@ -127,7 +127,6 @@ final class RegistrationController
      * @Route({"en"="/en/register/confirm/{email}/{token}",
      *     "nl"="/registreren/bevestigen/{email}/{token}"}, name="connectholland_user_registration_confirm",
      *     methods={"GET", "POST"})
-     *
      */
     public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
     {

@@ -47,7 +47,7 @@ services:
 
     ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
         arguments:
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Doctrine\Persistence\ManagerRegistry'
             - '@router'
             - '@security.csrf.token_manager'
             - '@security.user_password_encoder.generic'
@@ -55,7 +55,7 @@ services:
 
     ConnectHolland\UserBundle\Controller\RegistrationController:
         arguments:
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Doctrine\Persistence\ManagerRegistry'
             - '@session'
             - '@event_dispatcher'
             - '@router'
@@ -75,14 +75,14 @@ services:
             - '@security.user_password_encoder.generic'
             - '@event_dispatcher'
             - '@twig'
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Doctrine\Persistence\ManagerRegistry'
             - '@security.token_storage'
         tags:
             - { name: controller.service_arguments }
 
     ConnectHolland\UserBundle\Controller\ResetController:
         arguments:
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Doctrine\Persistence\ManagerRegistry'
             - '@session'
             - '@event_dispatcher'
             - '@router'
@@ -100,7 +100,7 @@ services:
 
     ConnectHolland\UserBundle\Repository\UserRepository:
         arguments:
-            $registry: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $registry: '@Doctrine\Persistence\ManagerRegistry'
             $class: ~
         tags:
             - { name: doctrine.repository_service }
@@ -109,7 +109,7 @@ services:
         public: true
         arguments:
             $eventDispatcher: '@event_dispatcher'
-            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $doctrine: '@Doctrine\Persistence\ManagerRegistry'
         tags:
             - { name: console.command }
 
@@ -137,13 +137,13 @@ services:
     ConnectHolland\UserBundle\EventSubscriber\CreateUserSubscriber:
         arguments:
             - '@security.user_password_encoder.generic'
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Doctrine\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
 
     ConnectHolland\UserBundle\EventSubscriber\UserLoginSubscriber:
         arguments:
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Doctrine\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -155,14 +155,14 @@ services:
 
     ConnectHolland\UserBundle\EventSubscriber\ResetUserSubscriber:
         arguments:
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Doctrine\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
 
     ConnectHolland\UserBundle\EventSubscriber\UserResetSubscriber:
         arguments:
             - '@ConnectHolland\UserBundle\Mailer\ResetEmail'
-            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Doctrine\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -196,14 +196,14 @@ services:
     ConnectHolland\UserBundle\Form\RegistrationType:
         public: true
         arguments:
-            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $doctrine: '@Doctrine\Persistence\ManagerRegistry'
         tags:
             - { name: 'form.type' }
 
     ConnectHolland\UserBundle\Form\Account\ProfileType:
         public: true
         arguments:
-            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $doctrine: '@Doctrine\Persistence\ManagerRegistry'
         tags:
             - { name: 'form.type' }
 
@@ -211,7 +211,7 @@ services:
         public: true
         arguments:
             $passwordConstraints: '@ConnectHolland\UserBundle\Security\PasswordConstraints'
-            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $doctrine: '@Doctrine\Persistence\ManagerRegistry'
             $tokenStorage: '@security.token_storage'
         tags:
             - { name: 'form.type' }
@@ -219,7 +219,7 @@ services:
     ConnectHolland\UserBundle\Form\AccountDeleteType:
         public: true
         arguments:
-            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $doctrine: '@Doctrine\Persistence\ManagerRegistry'
             $tokenStorage: '@security.token_storage'
         tags:
             - { name: 'form.type' }

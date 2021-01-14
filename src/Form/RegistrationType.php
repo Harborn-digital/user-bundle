@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Form;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

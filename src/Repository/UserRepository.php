@@ -11,7 +11,7 @@ namespace ConnectHolland\UserBundle\Repository;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
 
 /**
