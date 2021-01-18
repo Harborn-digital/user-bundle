@@ -12,7 +12,7 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\CreateUserEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 

@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\UserResetEventInterface;
 use ConnectHolland\UserBundle\Mailer\ResetEmailInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 final class UserResetSubscriber implements UserResetSubscriberInterface
 {

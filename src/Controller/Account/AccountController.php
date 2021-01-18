@@ -116,8 +116,8 @@ final class AccountController
                 new ResultData(
                     'profile',
                     [
-                        'form' => $form->createView(),
-                        'user' => $form->getData(),
+                        'form'   => $form->createView(),
+                        'user'   => $form->getData(),
                         'errors' => $errors,
                     ],
                     [

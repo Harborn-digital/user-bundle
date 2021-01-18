@@ -10,7 +10,7 @@ services:
 
     ConnectHolland\UserBundle\Security\OAuthUserProvider:
         arguments:
-            $doctrine: '@Doctrine\Common\Persistence\ManagerRegistry'
+            $doctrine: '@Doctrine\Persistence\ManagerRegistry'
             $eventDispatcher: '@event_dispatcher'
 
     ConnectHolland\UserBundle\Routing\OAuthRouteLoader:

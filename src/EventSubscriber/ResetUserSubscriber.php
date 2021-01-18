@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\ResetUserEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class ResetUserSubscriber implements ResetUserSubscriberInterface

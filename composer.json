@@ -15,7 +15,7 @@
         "doctrine/collections": "^1.6",
         "doctrine/doctrine-bundle": "^1.11 || ^2.0",
         "doctrine/orm": "^2.6",
-        "doctrine/persistence": "^1.1",
+        "doctrine/persistence": "^1.1 || ^2.0",
         "gisostallenberg/response-content-negotiation-bundle": "^0.8",
         "haydenpierce/class-finder": "^0.4.0",
         "league/html-to-markdown": "^4.8",
@@ -82,7 +82,8 @@
     "autoload": {
         "psr-4": {
             "ConnectHolland\\UserBundle\\": "src"
-        }
+        },
+        "files": [ "doctrine-persistence-bc-layer.php" ]
     },
     "autoload-dev": {
         "psr-4": {

@@ -13,9 +13,9 @@ use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\ResetUserEvent;
 use ConnectHolland\UserBundle\EventSubscriber\ResetUserSubscriber;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
 
 /**
