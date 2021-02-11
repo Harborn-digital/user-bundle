@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\ApiPlatform\Refresh\Message;
 
 use ApiPlatform\Core\Annotation as Api;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * Authentication resource.
@@ -71,6 +72,8 @@ class Refresh
 {
     /**
      * @var string
+     *
+     * @SerializedName("refresh_token")
      */
     public $refreshToken;
 }
