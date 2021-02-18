@@ -64,6 +64,7 @@ class Account
 {
     /**
      * @var string
+     * @Api\ApiProperty(identifier=true)
      */
     public $email;
 

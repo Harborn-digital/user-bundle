@@ -73,6 +73,7 @@ class Refresh
     /**
      * @var string
      *
+     * @Api\ApiProperty(identifier=true)
      * @SerializedName("refresh_token")
      */
     public $refreshToken;

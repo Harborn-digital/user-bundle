@@ -56,6 +56,7 @@ class Register
 {
     /**
      * @var string
+     * @Api\ApiProperty(identifier=true)
      */
     public $email;
 

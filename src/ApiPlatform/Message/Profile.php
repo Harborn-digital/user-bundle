@@ -45,6 +45,7 @@ class Profile
 {
     /**
      * @var string
+     * @Api\ApiProperty(identifier=true)
      */
     public $email;
 

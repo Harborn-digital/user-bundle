@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\ApiPlatform\Message;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation as Api;
 
 /**
  * User confirmation resource.
  *
- * @ApiResource(
+ * @Api\ApiResource(
  *     attributes={"pagination_enabled"=false},
  *     messenger=true,
  *     collectionOperations={
@@ -59,6 +59,7 @@ class Confirm
 {
     /**
      * @var string
+     * @Api\ApiProperty(identifier=true)
      */
     public $email;
 
