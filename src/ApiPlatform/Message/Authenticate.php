@@ -71,6 +71,7 @@ class Authenticate
 {
     /**
      * @var string
+     * @Api\ApiProperty(identifier=true)
      */
     public $username;
 

@@ -53,6 +53,7 @@ class Reset
 {
     /**
      * @var string
+     * @Api\ApiProperty(identifier=true)
      */
     public $username;
 }
