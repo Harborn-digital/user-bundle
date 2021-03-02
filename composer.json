@@ -54,7 +54,7 @@
         "ergebnis/composer-normalize": "^2.0.1",
         "friendsofphp/php-cs-fixer": "^2.15",
         "hwi/oauth-bundle": "^0.6.3 || ^1.0",
-        "icanhazstring/composer-unused": "^0.5.6",
+        "icanhazstring/composer-unused": "^0.7.5",
         "maglnet/composer-require-checker": "^2.0",
         "nikic/php-parser": "^4.9",
         "php-http/guzzle6-adapter": "^1.0 || ^2.0",
@@ -86,7 +86,9 @@
         "psr-4": {
             "ConnectHolland\\UserBundle\\": "src"
         },
-        "files": [ "doctrine-persistence-bc-layer.php" ]
+        "files": [
+            "doctrine-persistence-bc-layer.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
