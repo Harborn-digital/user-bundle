@@ -27,14 +27,10 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder(self::CONFIG_ROOT_KEY);
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            $rootNode = /* @scrutinizer ignore-deprecated */ $treeBuilder->root(self::CONFIG_ROOT_KEY); // Sf < 4.2 support
-        }
+        $rootNode    = $treeBuilder->getRootNode();
 
         $rootNode
-            ->/* @scrutinizer ignore-call */addDefaultsIfNotSet()
+            ->addDefaultsIfNotSet()
             ->beforeNormalization()
                 ->ifTrue(function ($v) { return !isset($v['password_requirements']); })
                 ->then(function ($v) {

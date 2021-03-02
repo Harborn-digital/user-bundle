@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class UserNotFoundEvent extends /* @scrutinizer ignore-deprecated */ Event implements UserNotFoundEventInterface, ResponseEventInterface
+class UserNotFoundEvent extends Event implements UserNotFoundEventInterface, ResponseEventInterface
 {
     /**
      * @var Response

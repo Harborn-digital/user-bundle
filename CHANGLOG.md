@@ -3,3 +3,4 @@
 ## 0.4.0
 
 - Normalize international routing
+- Drop support for unsupported symfony versions

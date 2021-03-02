@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\Event\UpdateEvent;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdatePersistSubscriber implements EventSubscriberInterface

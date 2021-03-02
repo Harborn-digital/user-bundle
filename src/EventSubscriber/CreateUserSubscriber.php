@@ -12,8 +12,8 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\CreateUserEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**

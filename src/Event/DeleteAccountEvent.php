@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class DeleteAccountEvent extends /* @scrutinizer ignore-deprecated */ Event implements DeleteAccountEventInterface
+class DeleteAccountEvent extends Event implements DeleteAccountEventInterface
 {
     /**
      * @var UserInterface

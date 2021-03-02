@@ -11,9 +11,9 @@ namespace ConnectHolland\UserBundle\Event;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contract\EventDispatcher\Event;
 
-final class OAuthUserCreatedEvent extends /* @scrutinizer ignore-deprecated */ Event implements OAuthUserCreatedEventInterface
+final class OAuthUserCreatedEvent extends Event implements OAuthUserCreatedEventInterface
 {
     /**
      * @var UserInterface

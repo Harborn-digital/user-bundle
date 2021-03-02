@@ -18,12 +18,11 @@ use ConnectHolland\UserBundle\Event\ResetUserEvent;
 use ConnectHolland\UserBundle\Event\UserResetEvent;
 use ConnectHolland\UserBundle\Form\ResetType;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,6 +33,7 @@ use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 
 /**
@@ -96,16 +96,13 @@ final class ResetController
     {
         if ($form->isSubmitted() && $form->isValid()) {
             $resetUserEvent = new ResetUserEvent($form->get('email')->getData());
-            /* @scrutinizer ignore-call */
-            $this->eventDispatcher->dispatch(UserBundleEvents::RESET_USER, $resetUserEvent);
-            if (/* @scrutinizer ignore-deprecated */ $resetUserEvent->isPropagationStopped() === false) {
+            $this->eventDispatcher->dispatch($resetUserEvent, UserBundleEvents::RESET_USER);
+            if ($resetUserEvent->isPropagationStopped() === false) {
                 $userResetEvent = new UserResetEvent($resetUserEvent->getEmail());
-                /* @scrutinizer ignore-call */
-                $this->eventDispatcher->dispatch(UserBundleEvents::USER_RESET, $userResetEvent);
-                if (/* @scrutinizer ignore-deprecated */ $userResetEvent->isPropagationStopped() === false) {
+                $this->eventDispatcher->dispatch($userResetEvent, UserBundleEvents::USER_RESET);
+                if ($userResetEvent->isPropagationStopped() === false) {
                     $postPasswordResetEvent = new PostPasswordResetEvent('notice', self::PASSWORD_REQUEST_ACTION);
-                    /* @scrutinizer ignore-call */
-                    $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_COMPLETED, $postPasswordResetEvent);
+                    $this->eventDispatcher->dispatch($postPasswordResetEvent, UserBundleEvents::PASSWORD_RESET_COMPLETED);
 
                     $form = $formFactory->create(ResetType::class); // reset input
                 }
@@ -157,8 +154,7 @@ final class ResetController
         if ($uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
             $defaultResponse          = new RedirectResponse($this->router->generate('connectholland_user_reset'));
             $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', self::PASSWORD_RESET_ACTION);
-            /* @scrutinizer ignore-call */
-            $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
+            $this->eventDispatcher->dispatch($passwordResetFailedEvent, UserBundleEvents::PASSWORD_RESET_FAILED);
 
             return $passwordResetFailedEvent->getResponse();
         }
@@ -167,8 +163,7 @@ final class ResetController
         if ($user instanceof UserInterface === false) {
             $defaultResponse          = new RedirectResponse($this->router->generate('connectholland_user_reset'));
             $passwordResetFailedEvent = new PasswordResetFailedEvent($defaultResponse, 'danger', self::PASSWORD_RESET_ACTION);
-            /* @scrutinizer ignore-call */
-            $this->eventDispatcher->dispatch(UserBundleEvents::PASSWORD_RESET_FAILED, $passwordResetFailedEvent);
+            $this->eventDispatcher->dispatch($passwordResetFailedEvent, UserBundleEvents::PASSWORD_RESET_FAILED);
 
             return $passwordResetFailedEvent->getResponse();
         }
@@ -187,8 +182,7 @@ final class ResetController
             $userManager->flush();
 
             $authenticateUserEvent = new AuthenticateUserEvent($user, $request);
-            /* @scrutinizer ignore-call */
-            $this->eventDispatcher->dispatch(UserBundleEvents::AUTHENTICATE_USER, $authenticateUserEvent);
+            $this->eventDispatcher->dispatch($authenticateUserEvent, UserBundleEvents::AUTHENTICATE_USER);
             if (null !== $authenticateUserEvent->getResponse()) {
                 return $authenticateUserEvent->getResponse();
             }
