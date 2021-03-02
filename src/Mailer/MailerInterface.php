@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Mailer;
 
+use Symfony\Component\Mime\Email;
+
 interface MailerInterface
 {
-    public function createMessageAndSend(string $name, $to, array $parameters = []): \Swift_Message;
+    public function createMessageAndSend(string $name, $to, array $parameters = []): Email;
 }

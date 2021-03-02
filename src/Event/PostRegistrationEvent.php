@@ -11,10 +11,10 @@ namespace ConnectHolland\UserBundle\Event;
 
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultDataInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class PostRegistrationEvent extends /* @scrutinizer ignore-deprecated */ Event implements PostRegistrationEventInterface, ResponseEventInterface, ResultInterface
+class PostRegistrationEvent extends Event implements PostRegistrationEventInterface, ResponseEventInterface, ResultInterface
 {
     /**
      * @var string

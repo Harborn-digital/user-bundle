@@ -15,10 +15,10 @@ use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 
 final class ProfileController
@@ -45,10 +45,12 @@ final class ProfileController
     }
 
     /**
-     * @Route({"en"="/en/account/profile",
-     *     "nl"="/account/profiel"}, name="connectholland_user_account_profile",
+     * @Route(
+     *     {"en"="/account/profile", "nl"="/account/profiel"},
+     *     name="connectholland_user_account_profile",
      *     methods={"GET", "POST"},
-     * defaults={"formName"="ConnectHolland\UserBundle\Form\Account\ProfileType"})
+     *     defaults={"formName"="ConnectHolland\UserBundle\Form\Account\ProfileType"
+     * })
      * @Route("/api/account/profile", name="connectholland_user_account_profile.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\Account\ProfileType"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */

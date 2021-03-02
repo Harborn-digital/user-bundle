@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Event;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
-final class CreateUserEvent extends /* @scrutinizer ignore-deprecated */ Event implements CreateUserEventInterface
+final class CreateUserEvent extends Event implements CreateUserEventInterface
 {
     /**
      * @var UserInterface

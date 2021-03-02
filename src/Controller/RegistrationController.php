@@ -18,12 +18,11 @@ use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\Event\UserNotFoundEvent;
 use ConnectHolland\UserBundle\Repository\UserRepository;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +31,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @codeCoverageIgnore WIP
@@ -70,12 +70,13 @@ final class RegistrationController
     }
 
     /**
-     * @Route("/api/register", name="connectholland_user_registration.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"})
-     *
-     * @Route({"en"="/en/register",
-     *     "nl"="/registreren"}, name="connectholland_user_registration",
+     * @Route(
+     *     {"en"="/register", "nl"="/registreren"},
+     *     name="connectholland_user_registration",
      *     methods={"GET", "POST"},
-     * defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"})
+     *     defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"}
+     * )
+     * @Route("/api/register", name="connectholland_user_registration.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"})
      *
      * @param FormInterface<mixed> $form
      */
@@ -83,17 +84,14 @@ final class RegistrationController
     {
         if ($form->isSubmitted() && $form->isValid()) {
             $createUserEvent = new CreateUserEvent($form->getData(), $form->get('plainPassword')->getData());
-            /* @scrutinizer ignore-call */
-            $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, $createUserEvent);
-            if (/* @scrutinizer ignore-deprecated */ $createUserEvent->isPropagationStopped() === false) {
+            $this->eventDispatcher->dispatch($createUserEvent, UserBundleEvents::CREATE_USER);
+            if ($createUserEvent->isPropagationStopped() === false) {
                 $userCreatedEvent = new UserCreatedEvent($createUserEvent->getUser());
-                /* @scrutinizer ignore-call */
-                $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
-                if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
+                $this->eventDispatcher->dispatch($userCreatedEvent, UserBundleEvents::USER_CREATED);
+                if ($userCreatedEvent->isPropagationStopped() === false) {
                     $defaultResponse       = new RedirectResponse($this->router->generate($request->attributes->get('_route')));
                     $postRegistrationEvent = new PostRegistrationEvent('success', $defaultResponse, __FUNCTION__);
-                    /* @scrutinizer ignore-call */
-                    $this->eventDispatcher->dispatch(UserBundleEvents::REGISTRATION_COMPLETED, $postRegistrationEvent);
+                    $this->eventDispatcher->dispatch($postRegistrationEvent, UserBundleEvents::REGISTRATION_COMPLETED);
 
                     return $postRegistrationEvent;
                 }
@@ -123,10 +121,12 @@ final class RegistrationController
     }
 
     /**
+     * @Route(
+     *     {"en"="/register/confirm/{email}/{token}", "nl"="/registreren/bevestigen/{email}/{token}"},
+     *     name="connectholland_user_registration_confirm",
+     *     methods={"GET", "POST"}
+     * )
      * @Route("/api/register/confirm/{email}/{token}", name="connectholland_user_registration_confirm.api", methods={"GET", "POST"})
-     * @Route({"en"="/en/register/confirm/{email}/{token}",
-     *     "nl"="/registreren/bevestigen/{email}/{token}"}, name="connectholland_user_registration_confirm",
-     *     methods={"GET", "POST"})
      */
     public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
     {
@@ -139,8 +139,7 @@ final class RegistrationController
         if (!($user instanceof UserInterface) || $uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
             $defaultResponse   = new RedirectResponse($this->router->generate('connectholland_user_registration'));
             $userNotFoundEvent = new UserNotFoundEvent($defaultResponse, 'danger', __FUNCTION__);
-            /* @scrutinizer ignore-call */
-            $this->eventDispatcher->dispatch(UserBundleEvents::USER_NOT_FOUND, $userNotFoundEvent);
+            $this->eventDispatcher->dispatch($userNotFoundEvent, UserBundleEvents::USER_NOT_FOUND);
 
             return $userNotFoundEvent->getResponse();
         }
@@ -153,8 +152,7 @@ final class RegistrationController
         $userManager->flush();
 
         $authenticateUserEvent = new AuthenticateUserEvent($user, $request);
-        /* @scrutinizer ignore-call */
-        $this->eventDispatcher->dispatch(UserBundleEvents::AUTHENTICATE_USER, $authenticateUserEvent);
+        $this->eventDispatcher->dispatch($authenticateUserEvent, UserBundleEvents::AUTHENTICATE_USER);
         if (null !== $authenticateUserEvent->getResponse()) {
             return $authenticateUserEvent->getResponse();
         }

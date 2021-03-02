@@ -4,7 +4,7 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ConnectHolland/user-bundle/build-status/master)
 
-User bundle for Symfony 4 and 5 projects
+User bundle for Symfony 4.4 and 5 projects
 
 ## Functionality
 
@@ -16,8 +16,8 @@ This bundle will be extendible and provide:
 - [x] An e-mail message with a secure link to complete account registration
 - [x] Recover password functionality
 - [x] Ability to 'switch on' OAuth (Google/GitHub/Facebook/etc)
+- [x] Being API accessable
 - [ ] Ability to 'switch on' MFA
-- [ ] Being API accessable
 
 ## Environment
 
@@ -160,11 +160,8 @@ security:
                     service: ConnectHolland\UserBundle\Security\OAuthUserProvider
 
     access_control:
-        - { path: ^/inloggen, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/registreren, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login/oauth-check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(login|inloggen|register|registreren|password-reset|wachtwoord-vergeten), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(api/authenticate), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [ROLE_OAUTH, ROLE_ADMIN ] }
 ```
 

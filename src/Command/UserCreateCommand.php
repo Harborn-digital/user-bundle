@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @codeCoverageIgnore WIP
@@ -77,13 +77,11 @@ EOT
         $userClass       = $this->doctrine->getRepository(UserInterface::class)->getClassName();
         $user            = new $userClass();
         $createUserEvent = new CreateUserEvent($user->setEmail($email)->setEnabled($enable)->setRoles($roles), $password);
-        /* @scrutinizer ignore-call */
-        $this->eventDispatcher->dispatch(UserBundleEvents::CREATE_USER, $createUserEvent);
-        if (/* @scrutinizer ignore-deprecated */ $createUserEvent->isPropagationStopped() === false) {
+        $this->eventDispatcher->dispatch($createUserEvent, UserBundleEvents::CREATE_USER);
+        if ($createUserEvent->isPropagationStopped() === false) {
             $userCreatedEvent = new UserCreatedEvent($createUserEvent->getUser());
-            /* @scrutinizer ignore-call */
-            $this->eventDispatcher->dispatch(UserBundleEvents::USER_CREATED, $userCreatedEvent);
-            if (/* @scrutinizer ignore-deprecated */ $userCreatedEvent->isPropagationStopped() === false) {
+            $this->eventDispatcher->dispatch($userCreatedEvent, UserBundleEvents::USER_CREATED);
+            if ($userCreatedEvent->isPropagationStopped() === false) {
                 $output->writeln(sprintf('Created user <comment>%s</comment>', $email));
             }
         }

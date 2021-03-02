@@ -42,6 +42,9 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
         if (isset($container->getParameter('kernel.bundles')['HWIOAuthBundle'])) {
             $loader->load('services_oauth.yaml');
         }
+        if (isset($container->getParameter('kernel.bundles')['StofDoctrineExtensionsBundle'])) {
+            $loader->load('services_doctrine_extensions.yaml');
+        }
 
         $loader->load('services.yaml');
     }
@@ -76,7 +79,7 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
             }
 
             $config = [
-                'mapping'  => [
+                'mapping' => [
                     'paths' => $paths,
                 ],
             ];

@@ -13,6 +13,7 @@ use ConnectHolland\UserBundle\Entity\UserInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\NegotiatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -49,7 +50,7 @@ final class ValidateUsernameEmail extends BaseEmail
         $this->requestStack = $requestStack;
     }
 
-    public function send(UserInterface $user): \Swift_Message
+    public function send(UserInterface $user): Email
     {
         $route = $this->getRoute();
         $link  = $this->router->generate($route, ['token' => $user->getPasswordRequestToken(), 'email' => $user->getEmail()], UrlGeneratorInterface::ABSOLUTE_URL);

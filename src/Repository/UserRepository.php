@@ -11,8 +11,8 @@ namespace ConnectHolland\UserBundle\Repository;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)

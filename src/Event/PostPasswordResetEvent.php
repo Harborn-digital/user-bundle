@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class PostPasswordResetEvent extends /* @scrutinizer ignore-deprecated */ Event implements PostPasswordResetEventInterface
+class PostPasswordResetEvent extends Event implements PostPasswordResetEventInterface
 {
     /**
      * @var string
