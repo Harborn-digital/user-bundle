@@ -38,7 +38,6 @@
         "symfony/http-kernel": "^4.4 || ^5.0",
         "symfony/mailer": "^4.4 || ^5.0",
         "symfony/options-resolver": "^4.4 || ^5.0",
-        "symfony/proxy-manager-bridge": "^5.2",
         "symfony/routing": "^4.4 || ^5.0",
         "symfony/security-bundle": "^4.4 || ^5.0",
         "symfony/security-core": "^4.4 || ^5.0",
