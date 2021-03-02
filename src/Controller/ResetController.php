@@ -83,7 +83,7 @@ final class ResetController
 
     /**
      * @Route(
-     *     {"en"="/en/password-reset", "nl"="/wachtwoord-vergeten"},
+     *     {"en"="/password-reset", "nl"="/wachtwoord-vergeten"},
      *     name="connectholland_user_reset",
      *     methods={"GET", "POST"},
      *     defaults={"formName"="ConnectHolland\UserBundle\Form\ResetType"}
@@ -133,7 +133,7 @@ final class ResetController
 
     /**
      * @Route(
-     *     {"en"="/en/password-reset/{email}/{token}", "nl"="/wachtwoord-vergeten/{email}/{token}"},
+     *     {"en"="/password-reset/{email}/{token}", "nl"="/wachtwoord-vergeten/{email}/{token}"},
      *     name="connectholland_user_reset_confirm",
      *     methods={"GET", "POST"},
      *     defaults={"formName"="ConnectHolland\UserBundle\Form\NewPasswordType"}
