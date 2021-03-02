@@ -62,6 +62,12 @@ class UsernameUpdatedSubscriberTest extends TestCase
             ->willReturn($session)
         ;
 
+        $router
+            ->expects($this->once())
+            ->method('generate')
+            ->willReturn('/link-with-token')
+        ;
+
         $mailer
             ->expects($this->once())
             ->method('createMessageAndSend')

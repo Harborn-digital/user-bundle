@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FlashSubscriber implements EventSubscriberInterface
