@@ -160,7 +160,7 @@ security:
                     service: ConnectHolland\UserBundle\Security\OAuthUserProvider
 
     access_control:
-        - { path: ^/(login|inloggen|register|registreren), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(login|inloggen|register|registreren|password-reset|wachtwoord-vergeten), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(api/authenticate), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [ROLE_OAUTH, ROLE_ADMIN ] }
 ```

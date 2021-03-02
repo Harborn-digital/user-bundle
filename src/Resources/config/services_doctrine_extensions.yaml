@@ -1,0 +1,5 @@
+services:
+    connectholland_user.gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
