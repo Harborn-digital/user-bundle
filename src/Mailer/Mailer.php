@@ -11,6 +11,8 @@ namespace ConnectHolland\UserBundle\Mailer;
 
 use League\HTMLToMarkdown\HtmlConverter;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Mailer\Mailer as BaseMailer;
+use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
 /**
@@ -19,7 +21,7 @@ use Twig\Environment;
 final class Mailer implements MailerInterface
 {
     /**
-     * @var \Swift_Mailer
+     * @var BaseMailer
      */
     private $mailer;
 
@@ -33,14 +35,14 @@ final class Mailer implements MailerInterface
      */
     private $twig;
 
-    public function __construct(\Swift_Mailer $mailer, string $fromEmail, Environment $twig)
+    public function __construct(BaseMailer $mailer, string $fromEmail, Environment $twig)
     {
         $this->mailer    = $mailer;
         $this->fromEmail = $fromEmail;
         $this->twig      = $twig;
     }
 
-    public function createMessageAndSend(string $name, $to, array $parameters = []): \Swift_Message
+    public function createMessageAndSend(string $name, $to, array $parameters = []): Email
     {
         return $this->doSend($to, $this->createHTMLBody($name, $parameters), $parameters);
     }
@@ -54,26 +56,22 @@ final class Mailer implements MailerInterface
         return $html;
     }
 
-    private function doSend($to, string $body, array $parameters): \Swift_Message
+    private function doSend($to, string $body, array $parameters): Email
     {
-        /** @var \Swift_Message $message */
-        $message = $this->mailer->createMessage();
-
         $crawler = new Crawler($body);
-        $message->setSubject($crawler->filter('head > title')->text());
-        $message->setFrom($this->fromEmail);
-        $message->setTo($to);
-        $message->setBody((new HtmlConverter())->convert($crawler->filter('body')->html()));
-        $message->addPart($crawler->html(), 'text/html');
+
+        $message = (new Email())
+            ->subject($crawler->filter('head > title')->text())
+            ->from($this->fromEmail)
+            ->to($to)
+            ->text((new HtmlConverter())->convert($crawler->filter('body')->html()))
+            ->html($crawler->html());
 
         if (isset($parameters['attachment'])) {
             $message->attach($parameters['attachment']);
         }
 
-        $sent = ($this->mailer->send($message) === 1);
-        if ($sent === false) {
-            throw new \RuntimeException(sprintf('Could not send %s email', $parameters['name']));
-        }
+        $this->mailer->send($message);
 
         return $message;
     }

@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Mailer;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
+use Symfony\Component\Mime\Email;
 
 class DeleteEmail extends BaseEmail implements DeleteEmailInterface
 {
-    public function send(UserInterface $user): \Swift_Message
+    public function send(UserInterface $user): Email
     {
         return $this->mailer->createMessageAndSend(
             'delete',

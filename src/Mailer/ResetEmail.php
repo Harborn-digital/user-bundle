@@ -11,6 +11,7 @@ namespace ConnectHolland\UserBundle\Mailer;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -32,7 +33,7 @@ final class ResetEmail extends BaseEmail implements ResetEmailInterface
         $this->uriSigner = $uriSigner;
     }
 
-    public function send(UserInterface $user): \Swift_Message
+    public function send(UserInterface $user): Email
     {
         $link = $this->router->generate('connectholland_user_reset_confirm', ['token' => $user->getPasswordRequestToken(), 'email' => $user->getEmail()], UrlGeneratorInterface::ABSOLUTE_URL);
 
