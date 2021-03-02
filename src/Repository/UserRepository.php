@@ -38,7 +38,7 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
             ->getOneOrNullResult();
     }
 
-    public function findOneByOAuthUsername(string $resource, string $oauthUsername): ?UserInterface
+    public function findOneByOAuthUsername(string $resource, $oauthUsername): ?UserInterface
     {
         return $this->createQueryBuilder('user')
             ->leftJoin('user.oauths', 'oauths', Expr\Join::WITH, 'oauths.oauthUsername = :oauthUsername')

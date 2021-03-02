@@ -62,7 +62,7 @@ class OAuthRouteLoader extends Loader
             $firewallName,
             $resourceName
         );
-
+        
         $path = sprintf('/login/oauth-check-%s', $resourceName);
 
         $routes->add($routeName, new Route($path));

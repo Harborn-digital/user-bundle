@@ -55,6 +55,14 @@ USERBUNDLE_OAUTH_GOOGLE_SCOPE='email profile'
 USERBUNDLE_OAUTH_GOOGLE_OPTIONS={"hd": "connectholland.nl"}
 ```
 
+Add (automated) routing configuration:
+```yaml
+# config/routes/connectholland_user.yaml
+connectholland_user_oauth:
+    resource: '@ConnecthollandUserBundle/Resources/config/routing_oauth.yaml'
+    prefix: '/'
+```
+
 ## JTW Token support
 
 If the app needs JTW token support, the Lexik JWT Authentication bundle should be required and suitable configuration should be added.
@@ -71,11 +79,11 @@ Set the location of the keys relative to the project root as environment variabl
 
 To add API support, [install the API Platform](https://api-platform.com/docs/core/getting-started/) and [JWT Authentication](https://api-platform.com/docs/core/jwt/#jwt-authentication) configure the firewall and add an authentication route.
 
-``` bash
+```bash
 composer req api-pack jwt-auth
 ```
 
-``` yaml
+```yaml
 # Example of the security settings for your project.
 # config/packages/security.yaml
     firewalls:
@@ -105,9 +113,11 @@ composer req api-pack jwt-auth
                     - lexik_jwt_authentication.jwt_token_authenticator
 
     access_control:
+        - { path: ^/api/authenticate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: ROLE_USER }
+```
 
-``` yaml
+```yaml
 # config/routes.yaml
 api_authenticate:
     path: /api/users/authenticate
@@ -161,7 +171,6 @@ security:
 
     access_control:
         - { path: ^/(login|inloggen|register|registreren|password-reset|wachtwoord-vergeten), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(api/authenticate), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [ROLE_OAUTH, ROLE_ADMIN ] }
 ```
 

@@ -53,12 +53,12 @@ class UserOAuth implements UserOAuthInterface
         return $this;
     }
 
-    public function getOAuthUsername(): ?string
+    public function getOAuthUsername()
     {
         return $this->oauthUsername;
     }
 
-    public function setOAuthUsername(string $oauthUsername)
+    public function setOAuthUsername($oauthUsername)
     {
         $this->oauthUsername = $oauthUsername;
 
