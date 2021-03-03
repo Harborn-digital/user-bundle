@@ -15,9 +15,9 @@ interface UserOAuthInterface
 
     public function setResource(string $resource);
 
-    public function getOAuthUsername(): ?string;
+    public function getOAuthUsername();
 
-    public function setOAuthUsername(string $oauthUsername);
+    public function setOAuthUsername($oauthUsername);
 
     public function getUser(): ?UserInterface;
 

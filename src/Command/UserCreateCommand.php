@@ -65,7 +65,7 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var string $email */
         $email    = $input->getArgument('email');
@@ -85,6 +85,8 @@ EOT
                 $output->writeln(sprintf('Created user <comment>%s</comment>', $email));
             }
         }
+
+        return Command::SUCCESS;
     }
 
     /**
