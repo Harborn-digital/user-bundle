@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23794f24894c7e5471188131384926d6",
+    "content-hash": "37c132fd7af62ce5c39056879dae8365",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1586,27 +1586,28 @@
         },
         {
             "name": "gisostallenberg/response-content-negotiation-bundle",
-            "version": "0.8.1",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gisostallenberg/response-content-negotiation-bundle.git",
-                "reference": "75ab4e3363f6da7d41c446df1cca893860a085d9"
+                "reference": "3118aba02a684e71c38f56bfd22ec87f614f0e83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gisostallenberg/response-content-negotiation-bundle/zipball/75ab4e3363f6da7d41c446df1cca893860a085d9",
-                "reference": "75ab4e3363f6da7d41c446df1cca893860a085d9",
+                "url": "https://api.github.com/repos/gisostallenberg/response-content-negotiation-bundle/zipball/3118aba02a684e71c38f56bfd22ec87f614f0e83",
+                "reference": "3118aba02a684e71c38f56bfd22ec87f614f0e83",
                 "shasum": ""
             },
             "require": {
                 "friendsofsymfony/rest-bundle": "^2.7 || 3.0@dev || ^3.0",
                 "php": "^7.3",
                 "symfony/config": "^4.4 || ^5.0",
-                "symfony/contracts": "^1.1 || ^2.0",
                 "symfony/dependency-injection": "^4.4 || ^5.0",
                 "symfony/event-dispatcher": "^4.4 || ^5.0",
+                "symfony/event-dispatcher-contracts": "^1.1 || ^2.0",
                 "symfony/http-foundation": "^4.4 || ^5.0",
                 "symfony/http-kernel": "^4.4 || ^5.0",
+                "symfony/service-contracts": "^1.1 || ^2.0",
                 "symfony/twig-bundle": "^4.4 || ^5.0",
                 "twig/twig": "^2.0 || ^3.0",
                 "willdurand/negotiation": "^2.3 || ^3.0"
@@ -1642,9 +1643,9 @@
             "description": "A bundle that allows creating various Response types from a controller, based on content negotiation",
             "support": {
                 "issues": "https://github.com/gisostallenberg/response-content-negotiation-bundle/issues",
-                "source": "https://github.com/gisostallenberg/response-content-negotiation-bundle/tree/0.8.1"
+                "source": "https://github.com/gisostallenberg/response-content-negotiation-bundle/tree/0.9.0"
             },
-            "time": "2021-01-20T08:16:02+00:00"
+            "time": "2021-03-04T09:30:30+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3632,80 +3633,6 @@
                 }
             ],
             "time": "2021-01-28T22:06:19+00:00"
-        },
-        {
-            "name": "symfony/contracts",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/contracts.git",
-                "reference": "d3636025e8253c6144358ec0a62773cae588395b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/d3636025e8253c6144358ec0a62773cae588395b",
-                "reference": "d3636025e8253c6144358ec0a62773cae588395b",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3"
-            },
-            "require-dev": {
-                "psr/cache": "^1.0",
-                "psr/container": "^1.0",
-                "symfony/polyfill-intl-idn": "^1.10"
-            },
-            "suggest": {
-                "psr/cache": "When using the Cache contracts",
-                "psr/container": "When using the Service contracts",
-                "symfony/cache-contracts-implementation": "",
-                "symfony/event-dispatcher-implementation": "",
-                "symfony/http-client-contracts-implementation": "",
-                "symfony/service-contracts-implementation": "",
-                "symfony/translation-contracts-implementation": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Contracts\\": ""
-                },
-                "exclude-from-classmap": [
-                    "**/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "A set of abstractions extracted out of the Symfony components",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "abstractions",
-                "contracts",
-                "decoupling",
-                "interfaces",
-                "interoperability",
-                "standards"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/contracts/tree/master"
-            },
-            "time": "2019-04-27T14:29:50+00:00"
         },
         {
             "name": "symfony/css-selector",
