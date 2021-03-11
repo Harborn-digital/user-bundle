@@ -3,12 +3,10 @@
 {% trans_default_domain 'ConnecthollandUserBundle' %}
 
 {% block connectholland_user_content %}
-    <h1>{{ 'connectholland_user.reset.request.title'|trans }}</h1>
-
+    {% embed '@ConnecthollandUser/forms/_title.html.twig' with {'context': 'reset', 'text': 'connectholland_user.reset.request.title'} only  %}{% endembed %}
     {{ form_start(form) }}
-    {{ form_row(form.email) }}
-
-    <button type="submit" class="btn">{{ 'connectholland_user.reset.request.submit'|trans }}</button>
-    <a href='{{ path('connectholland_user_login') }}'>{{ 'connectholland_user.reset.request.login'|trans }}</a>
+        {{ form_row(form.email) }}
+        {% embed '@ConnecthollandUser/forms/_button.html.twig' with {'context': 'reset', 'type': 'submit', 'text': 'connectholland_user.reset.request.submit', 'class': 'btn'} only  %}{% endembed %}
+        {% embed '@ConnecthollandUser/forms/_link.html.twig' with {'context': 'reset', 'route': 'connectholland_user_login', 'text': 'connectholland_user.reset.request.login'} only %}{% endembed %}
     {{ form_end(form) }}
 {% endblock %}

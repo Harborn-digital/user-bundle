@@ -3,15 +3,13 @@
 {% trans_default_domain 'ConnecthollandUserBundle' %}
 
 {% block connectholland_user_content %}
-    <h1>{{ 'connectholland_user.security.login.title'|trans }}</h1>
-
+    {% embed '@ConnecthollandUser/forms/_title.html.twig' with {'context': 'login', 'text': 'connectholland_user.security.login.title'} only  %}{% endembed %}
     {{ form_start(form) }}
         {{ form_row(form._username) }}
         {{ form_row(form._password) }}
-
-        <button type="submit" class="btn">{{ 'connectholland_user.security.login.submit'|trans }}</button>
-        <a href='{{ path('connectholland_user_registration') }}'>{{ 'connectholland_user.security.login.register'|trans }}</a>
-        <a href='{{ path('connectholland_user_reset') }}'>{{ 'connectholland_user.security.login.reset'|trans }}</a>
+        {% embed '@ConnecthollandUser/forms/_button.html.twig' with {'context': 'login', 'type': 'submit', 'text': 'connectholland_user.security.login.submit', 'class': 'btn'} only  %}{% endembed %}
+        {% embed '@ConnecthollandUser/forms/_link.html.twig' with {'context': 'login', 'route': 'connectholland_user_registration', 'text': 'connectholland_user.security.login.register'} only %}{% endembed %}
+        {% embed '@ConnecthollandUser/forms/_link.html.twig' with {'context': 'login', 'route': 'connectholland_user_reset', 'text': 'connectholland_user.security.login.reset'} only %}{% endembed %}
     {{ form_end(form) }}
     {% if add_oauth %}
         {% embed "@HWIOAuth/Connect/login.html.twig" %}

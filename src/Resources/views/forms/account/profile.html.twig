@@ -3,12 +3,11 @@
 {% trans_default_domain 'ConnecthollandUserBundle' %}
 
 {% block connectholland_user_content %}
-    <h1>{{ 'connectholland_user.account.profile.title'|trans }}</h1>
-
+    {% embed '@ConnecthollandUser/forms/_title.html.twig' with {'context': 'profile', 'text': 'connectholland_user.account.profile.title'} only  %}{% endembed %}
     {{ form_start(form) }}
         {% block connectholland_user_account_profile_form_fields %}
             {{ form_widget(form) }}
         {% endblock %}
-        <button type="submit" class="btn">{{ 'connectholland_user.account.submit'|trans }}</button>
+        {% embed '@ConnecthollandUser/forms/_button.html.twig' with {'context': 'profile', 'type': 'submit', 'text': 'connectholland_user.account.submit', 'class': 'btn'} only %}{% endembed %}
     {{ form_end(form) }}
 {% endblock %}
