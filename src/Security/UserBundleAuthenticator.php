@@ -90,7 +90,7 @@ final class UserBundleAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         /** @var UserInterface|null $user */
-        $user = $this->registry->getRepository(\ConnectHolland\UserBundle\Entity\UserInterface::class)->findOneBy(['email' => $credentials['username'], 'enabled' => true]);
+        $user = $this->registry->getRepository(\ConnectHolland\UserBundle\Entity\UserInterface::class)->findOneBy(['email' => $credentials['username'], 'enabled' => true, 'blocked' => false]);
 
         if ($user instanceof UserInterface === false) {
             // fail authentication with a custom error
