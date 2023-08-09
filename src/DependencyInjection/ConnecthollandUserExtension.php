@@ -103,7 +103,7 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
     {
         $configForResourceOwners = [];
         foreach ($resourceOwners as $resourceOwner => $resourceOwnerConfig) {
-            $options = json_decode($resourceOwnerConfig['options'] ?? '{}', true);
+            $options = json_decode($resourceOwnerConfig['options'] ?? '{}', true, 512, JSON_THROW_ON_ERROR);
 
             $name   = $options['name'] ?? $resourceOwner;
             $id     = $resourceOwnerConfig['id'] ?? $options['id'] ?? '';
@@ -120,7 +120,7 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
                 'type'          => $resourceOwner,
                 'client_id'     => $id,
                 'client_secret' => $secret,
-                'scope'         => trim($scope, "'"),
+                'scope'         => trim((string) $scope, "'"),
                 'options'       => $options,
             ];
         }

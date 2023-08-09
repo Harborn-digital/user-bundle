@@ -14,14 +14,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class UserCreatedEvent extends Event implements UserCreatedEventInterface
 {
-    /**
-     * @var UserInterface
-     */
-    private $user;
-
-    public function __construct(UserInterface $user)
+    public function __construct(private UserInterface $user)
     {
-        $this->user = $user;
     }
 
     public function getUser(): UserInterface

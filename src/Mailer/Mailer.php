@@ -21,24 +21,12 @@ use Twig\Environment;
 final class Mailer implements MailerInterface
 {
     /**
-     * @var BaseMailer
-     */
-    private $mailer;
-
-    /**
-     * @var string
-     */
-    private $fromEmail;
-
-    /**
      * @var Environment
      */
     private $twig;
 
-    public function __construct(BaseMailer $mailer, string $fromEmail, Environment $twig)
+    public function __construct(private readonly BaseMailer $mailer, private readonly string $fromEmail, Environment $twig)
     {
-        $this->mailer    = $mailer;
-        $this->fromEmail = $fromEmail;
         $this->twig      = $twig;
     }
 
@@ -49,7 +37,7 @@ final class Mailer implements MailerInterface
 
     private function createHTMLBody(string $name, array $parameters): string
     {
-        $parameters['name'] = isset($parameters['name']) ? $parameters['name'] : $name;
+        $parameters['name'] ??= $name;
 
         $html = $this->twig->render(sprintf('@ConnecthollandUser/emails/%s.html.twig', $name), $parameters);
 

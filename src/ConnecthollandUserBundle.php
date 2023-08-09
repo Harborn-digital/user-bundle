@@ -19,8 +19,6 @@ final class ConnecthollandUserBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        parent::build($container);
-
         $container->addCompilerPass(new ResourceOwnerMapsPass());
         $container->addCompilerPass(new UserClassInjectorPass());
         $container->addCompilerPass(new PasswordRequirementsInjectorPass());

@@ -18,17 +18,10 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class OAuthRouteLoader extends Loader
 {
-    private $isLoaded = false;
+    private bool $isLoaded = false;
 
-    /**
-     * @var array
-     */
-    private $resourceOwnerMaps;
-
-    public function __construct(
-        array $resourceOwnerMaps
-    ) {
-        $this->resourceOwnerMaps = $resourceOwnerMaps;
+    public function __construct(private readonly array $resourceOwnerMaps)
+    {
     }
 
     public function load($resource, $type = null): RouteCollection

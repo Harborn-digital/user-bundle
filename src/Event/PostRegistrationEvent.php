@@ -17,35 +17,20 @@ use Symfony\Contracts\EventDispatcher\Event;
 class PostRegistrationEvent extends Event implements PostRegistrationEventInterface, ResponseEventInterface, ResultInterface
 {
     /**
-     * @var string
-     */
-    private $state;
-
-    /**
      * @var Response
      */
     private $response;
-
-    /**
-     * @var string
-     */
-    private $action;
 
     /**
      * @var ResultDataInterface
      */
     private $resultData;
 
-    /**
-     * @var int
-     */
-    private $statusCode = Response::HTTP_OK;
+    private int $statusCode = Response::HTTP_OK;
 
-    public function __construct(string $state, Response $response, string $action)
+    public function __construct(private readonly string $state, Response $response, private readonly string $action)
     {
-        $this->state    = $state;
         $this->response = $response;
-        $this->action   = $action;
     }
 
     public function getState(): string

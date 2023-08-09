@@ -19,18 +19,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class DeleteAccountSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var DeleteEmail
-     */
-    private $deleteEmail;
-
-    /**
      * @var UrlGeneratorInterface
      */
     private $router;
 
-    public function __construct(DeleteEmail $deleteEmail, UrlGeneratorInterface $router)
+    public function __construct(private readonly DeleteEmail $deleteEmail, UrlGeneratorInterface $router)
     {
-        $this->deleteEmail = $deleteEmail;
         $this->router      = $router;
     }
 

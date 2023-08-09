@@ -18,18 +18,12 @@ use Doctrine\Persistence\ManagerRegistry;
 final class UserResetSubscriber implements UserResetSubscriberInterface
 {
     /**
-     * @var ResetEmailInterface
-     */
-    private $email;
-
-    /**
      * @var ManagerRegistry
      */
     private $registry;
 
-    public function __construct(ResetEmailInterface $email, ManagerRegistry $registry)
+    public function __construct(private readonly ResetEmailInterface $email, ManagerRegistry $registry)
     {
-        $this->email    = $email;
         $this->registry = $registry;
     }
 

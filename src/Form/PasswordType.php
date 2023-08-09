@@ -19,14 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PasswordType extends AbstractType
 {
-    /**
-     * @var PasswordConstraints
-     */
-    private $passwordConstraints;
-
-    public function __construct(PasswordConstraints $passwordConstraints)
+    public function __construct(private readonly PasswordConstraints $passwordConstraints)
     {
-        $this->passwordConstraints = $passwordConstraints;
     }
 
     public function getParent(): string
@@ -41,8 +35,8 @@ class PasswordType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
-        return null;
+        return '';
     }
 }

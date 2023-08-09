@@ -31,21 +31,9 @@ class AccountType extends AbstractType
      */
     private $doctrine;
 
-    /**
-     * @var PasswordConstraints
-     */
-    private $passwordConstraints;
-
-    /**
-     * @var TokenStorageInterface|null
-     */
-    private $tokenStorage;
-
-    public function __construct(ManagerRegistry $doctrine, PasswordConstraints $passwordConstraints, TokenStorageInterface $tokenStorage = null)
+    public function __construct(ManagerRegistry $doctrine, private readonly PasswordConstraints $passwordConstraints, private $tokenStorage = null)
     {
         $this->doctrine            = $doctrine;
-        $this->passwordConstraints = $passwordConstraints;
-        $this->tokenStorage        = $tokenStorage;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

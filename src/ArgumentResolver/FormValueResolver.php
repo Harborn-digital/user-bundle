@@ -9,27 +9,27 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\ArgumentResolver;
 
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Generator;
 use ReflectionClass;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Resolves a form as argument for a controller action
  * when the FORM_NAME_ATTRIBUTE is set in the routing.
  */
-class FormValueResolver implements ArgumentValueResolverInterface
+class FormValueResolver implements ValueResolverInterface
 {
     /**
      * Defines the key used to look up the form name in the request attributes.
      *
      * @var string
      */
-    const FORM_NAME_ATTRIBUTE = 'formName';
+    final public const FORM_NAME_ATTRIBUTE = 'formName';
 
     /**
      * The factory needed to create a new form when it should be created as controller action argument.
@@ -73,6 +73,10 @@ class FormValueResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): Generator
     {
+        if (!$this->supports($request, $argument)) {
+            return [];
+        }
+
         $form = $this->getForm($request);
         if ($form instanceof FormInterface) {
             $this->handleRequest($request, $form);
@@ -89,7 +93,7 @@ class FormValueResolver implements ArgumentValueResolverInterface
     private function getForm(Request $request): ?FormInterface
     {
         $form     = null;
-        $formName = $request->attributes->get(self::FORM_NAME_ATTRIBUTE);
+        $formName = (string) $request->attributes->get(self::FORM_NAME_ATTRIBUTE);
         if (class_exists($formName)) {
             $form = $this->formFactory->create($formName, null, ['allow_extra_fields' => true, 'csrf_protection' => false]);
         }
@@ -105,7 +109,12 @@ class FormValueResolver implements ArgumentValueResolverInterface
      */
     private function handleRequest(Request $request, FormInterface $form): void
     {
-        $content = json_decode((string) $request->getContent(), true);
+        try {
+            $content = json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            $content = null;
+        }
+
         if ($content) {
             $form->submit($content, false); // do not clear missing fields
 

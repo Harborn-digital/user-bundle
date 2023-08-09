@@ -11,26 +11,26 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FlashSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    public function __construct(SessionInterface $session, TranslatorInterface $translator)
+    public function __construct(RequestStack $requestStack, TranslatorInterface $translator)
     {
-        $this->session    = $session;
-        $this->translator = $translator;
+        $this->requestStack = $requestStack;
+        $this->translator   = $translator;
     }
 
     /**
@@ -49,7 +49,7 @@ class FlashSubscriber implements EventSubscriberInterface
     public function addFlashMessage(Event $event): void
     {
         $message = $this->translate(sprintf('connectholland_user.flash_message.%s.flash.%s', $event->getAction(), $event->getState()));
-        $this->session->getFlashBag()->add($event->getState(), $message);
+        $this->requestStack->getSession()->getFlashBag()->add($event->getState(), $message);
     }
 
     private function translate(string $message, array $parameters = []): string

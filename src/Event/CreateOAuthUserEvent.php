@@ -15,10 +15,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class CreateOAuthUserEvent extends Event implements CreateOAuthUserEventInterface
 {
-    /**
-     * @var UserInterface
-     */
-    private $user;
+    private readonly UserInterface $user;
 
     /**
      * @var UserResponseInterface

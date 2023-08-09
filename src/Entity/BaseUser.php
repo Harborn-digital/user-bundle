@@ -13,52 +13,39 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * @ORM\MappedSuperclass
- * @ORM\Table(name="connectholland_user_user")
- */
-abstract class BaseUser implements UserInterface
+#[ORM\MappedSuperclass]
+#[ORM\Table(name: 'connectholland_user_user')]
+abstract class BaseUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /*
      * Add timestampable behavior.
      */
     use TimestampableEntity;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     protected $email;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default"=0})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     protected $enabled = false;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     protected $passwordRequestToken;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $lastLogin;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     protected $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: 'string', nullable: true)]
     protected $password;
 
-    /**
-     * @ORM\OneToMany(targetEntity="ConnectHolland\UserBundle\Entity\UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: UserOAuth::class, mappedBy: 'user', orphanRemoval: true, cascade: ['persist'])]
     protected $oauths;
 
     public function __construct()
@@ -150,7 +137,7 @@ abstract class BaseUser implements UserInterface
     {
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 

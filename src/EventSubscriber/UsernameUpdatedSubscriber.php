@@ -18,20 +18,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class UsernameUpdatedSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ValidateUsernameEmail
-     */
-    private $email;
-
-    /**
-     * @var TokenStorageInterface|null
-     */
-    private $tokenStorage;
-
-    public function __construct(ValidateUsernameEmail $email, TokenStorageInterface $tokenStorage = null)
+    public function __construct(private readonly ValidateUsernameEmail $email, private $tokenStorage = null)
     {
-        $this->email        = $email;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public static function getSubscribedEvents()

@@ -20,22 +20,22 @@ class Owner extends Voter
     /**
      * @var string
      */
-    const VIEW = 'VIEW';
+    final public const VIEW = 'VIEW';
 
     /**
      * @var string
      */
-    const EDIT = 'EDIT';
+    final public const EDIT = 'EDIT';
 
     /**
      * @var string
      */
-    const CREATE = 'CREATE';
+    final public const CREATE = 'CREATE';
 
     /**
      * @var string
      */
-    const DELETE = 'DELETE';
+    final public const DELETE = 'DELETE';
 
     /**
      * @var array<string>
@@ -59,9 +59,8 @@ class Owner extends Voter
 
     /**
      * @param string $attribute
-     * @param mixed  $subject
      */
-    protected function supports($attribute, $subject): bool
+    protected function supports($attribute, mixed $subject): bool
     {
         // if the attribute isn't one we support, return false
         if (!in_array($attribute, $this->attributes)) {
@@ -78,9 +77,8 @@ class Owner extends Voter
 
     /**
      * @param string $attribute
-     * @param mixed  $subject
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
 
@@ -92,22 +90,13 @@ class Owner extends Voter
         if (!$this->decisionManager->decide($token, $this->roles)) {
             return false;
         }
-
-        // you know $subject is a Ownable object, thanks to supports
-        /* @var Ownable $subject */
-
-        switch ($attribute) {
-            case self::CREATE:
-                return $this->canCreate($subject, $user);
-            case self::VIEW:
-                return $this->canView($subject, $user);
-            case self::EDIT:
-                return $this->canEdit($subject, $user);
-            case self::DELETE:
-                return $this->canDelete($subject, $user);
-        }
-
-        throw new \LogicException(sprintf('Unable to handle attribute %2$s. The voter %1$s claimed support for unsupported attribute %2$s', __CLASS__, $attribute));
+        return match ($attribute) {
+            self::CREATE => $this->canCreate($subject, $user),
+            self::VIEW => $this->canView($subject, $user),
+            self::EDIT => $this->canEdit($subject, $user),
+            self::DELETE => $this->canDelete($subject, $user),
+            default => throw new \LogicException(sprintf('Unable to handle attribute %2$s. The voter %1$s claimed support for unsupported attribute %2$s', self::class, $attribute)),
+        };
     }
 
     private function canCreate(Ownable $subject, UserInterface $user): bool

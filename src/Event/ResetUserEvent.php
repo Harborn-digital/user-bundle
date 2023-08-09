@@ -13,14 +13,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class ResetUserEvent extends Event implements ResetUserEventInterface
 {
-    /**
-     * @var string
-     */
-    private $email;
-
-    public function __construct(string $email)
+    public function __construct(private string $email)
     {
-        $this->email = $email;
     }
 
     public function getEmail(): string

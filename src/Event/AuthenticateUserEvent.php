@@ -17,11 +17,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class AuthenticateUserEvent extends Event implements AuthenticateUserEventInterface
 {
     /**
-     * @var UserInterface
-     */
-    private $user;
-
-    /**
      * @var Request
      */
     private $request;
@@ -31,9 +26,8 @@ final class AuthenticateUserEvent extends Event implements AuthenticateUserEvent
      */
     private $response;
 
-    public function __construct(UserInterface $user, Request $request)
+    public function __construct(private readonly UserInterface $user, Request $request)
     {
-        $this->user    = $user;
         $this->request = $request;
     }
 

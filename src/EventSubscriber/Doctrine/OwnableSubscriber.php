@@ -18,14 +18,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class OwnableSubscriber implements EventSubscriber
 {
-    /**
-     * @var TokenStorageInterface|null
-     */
-    private $tokenStorage;
-
-    public function __construct(TokenStorageInterface $tokenStorage = null)
+    public function __construct(private $tokenStorage = null)
     {
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**

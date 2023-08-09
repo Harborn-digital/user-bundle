@@ -45,18 +45,9 @@ services:
 
     ConnectHolland\UserBundle\Mailer\DeleteEmail:
 
-    ConnectHolland\UserBundle\Security\UserBundleAuthenticator:
-        arguments:
-            - '@Doctrine\Persistence\ManagerRegistry'
-            - '@router'
-            - '@security.csrf.token_manager'
-            - '@security.user_password_encoder.generic'
-            - '@event_dispatcher'
-
     ConnectHolland\UserBundle\Controller\RegistrationController:
         arguments:
             - '@Doctrine\Persistence\ManagerRegistry'
-            - '@session'
             - '@event_dispatcher'
             - '@router'
             - '@twig'
@@ -72,7 +63,7 @@ services:
 
     ConnectHolland\UserBundle\Controller\Account\AccountController:
         arguments:
-            - '@security.user_password_encoder.generic'
+            - '@security.user_password_hasher'
             - '@event_dispatcher'
             - '@twig'
             - '@Doctrine\Persistence\ManagerRegistry'
@@ -83,7 +74,6 @@ services:
     ConnectHolland\UserBundle\Controller\ResetController:
         arguments:
             - '@Doctrine\Persistence\ManagerRegistry'
-            - '@session'
             - '@event_dispatcher'
             - '@router'
             - '@twig'
@@ -113,13 +103,6 @@ services:
         tags:
             - { name: console.command }
 
-    ConnectHolland\UserBundle\EventSubscriber\AuthenticateUserSubscriber:
-        arguments:
-            - '@security.authentication.guard_handler'
-            - '@ConnectHolland\UserBundle\Security\UserBundleAuthenticator'
-        tags:
-            - { name: kernel.event_subscriber }
-
     ConnectHolland\UserBundle\EventSubscriber\RegistrationSubscriber:
         arguments:
             - '@GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\FormatNegotiator'
@@ -136,7 +119,7 @@ services:
 
     ConnectHolland\UserBundle\EventSubscriber\CreateUserSubscriber:
         arguments:
-            - '@security.user_password_encoder.generic'
+            - '@security.user_password_hasher'
             - '@Doctrine\Persistence\ManagerRegistry'
         tags:
             - { name: kernel.event_subscriber }
@@ -168,7 +151,7 @@ services:
 
     ConnectHolland\UserBundle\EventSubscriber\FlashSubscriber:
         arguments:
-            - '@session'
+            - '@request_stack'
             - '@translator'
         tags:
             - { name: kernel.event_subscriber }

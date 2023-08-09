@@ -25,15 +25,9 @@ class AccountDeleteType extends AbstractType
      */
     private $doctrine;
 
-    /**
-     * @var TokenStorageInterface|null
-     */
-    private $tokenStorage;
-
-    public function __construct(ManagerRegistry $doctrine, TokenStorageInterface $tokenStorage)
+    public function __construct(ManagerRegistry $doctrine, private readonly TokenStorageInterface $tokenStorage)
     {
         $this->doctrine     = $doctrine;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

@@ -32,7 +32,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->beforeNormalization()
-                ->ifTrue(function ($v) { return !isset($v['password_requirements']); })
+                ->ifTrue(fn($v) => !isset($v['password_requirements']))
                 ->then(function ($v) {
                     $v['password_requirements'] = [];
 
@@ -53,9 +53,7 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('user_class')
                     ->defaultValue(User::class)
                     ->validate()
-                        ->ifTrue(function ($value) {
-                            return array_search(UserInterface::class, class_implements($value)) === false;
-                        })
+                        ->ifTrue(fn($value) => array_search(UserInterface::class, class_implements($value)) === false)
                         ->thenInvalid(sprintf('The class should implement %s', UserInterface::class))
                     ->end()
                     ->cannotBeEmpty()

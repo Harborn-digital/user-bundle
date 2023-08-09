@@ -13,20 +13,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PostPasswordResetEvent extends Event implements PostPasswordResetEventInterface
 {
-    /**
-     * @var string
-     */
-    private $state;
-
-    /**
-     * @var string
-     */
-    private $action;
-
-    public function __construct(string $state, string $action)
+    public function __construct(private readonly string $state, private readonly string $action)
     {
-        $this->state  = $state;
-        $this->action = $action;
     }
 
     public function getState(): string

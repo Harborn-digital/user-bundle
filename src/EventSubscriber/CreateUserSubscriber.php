@@ -14,7 +14,7 @@ use ConnectHolland\UserBundle\Event\CreateUserEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * @codeCoverageIgnore WIP
@@ -22,18 +22,18 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 final class CreateUserSubscriber implements CreateUserSubscriberInterface
 {
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private $passwordEncoder;
+    private $passwordHasher;
 
     /**
      * @var ManagerRegistry
      */
     private $registry;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, ManagerRegistry $registry)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, ManagerRegistry $registry)
     {
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->registry        = $registry;
     }
 
@@ -41,7 +41,7 @@ final class CreateUserSubscriber implements CreateUserSubscriberInterface
     {
         $user = $event->getUser();
         $user->setPassword(
-            $this->passwordEncoder->encodePassword($user, $event->getPlainPassword())
+            $this->passwordHasher->hashPassword($user, $event->getPlainPassword())
         );
         if ($user->isEnabled() === false) {
             $user->setPasswordRequestToken(bin2hex(random_bytes(32)));

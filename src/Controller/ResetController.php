@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Controller;
 
+use ConnectHolland\UserBundle\Form\NewPasswordType;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
@@ -28,11 +29,10 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 
@@ -50,11 +50,6 @@ final class ResetController
     private $registry;
 
     /**
-     * @var Session<mixed>
-     */
-    private $session;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -69,29 +64,20 @@ final class ResetController
      */
     private $twig;
 
-    /**
-     * @param Session<mixed> $session
-     */
-    public function __construct(ManagerRegistry $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router, Environment $twig)
+    public function __construct(ManagerRegistry $registry, EventDispatcherInterface $eventDispatcher, RouterInterface $router, Environment $twig)
     {
         $this->registry        = $registry;
-        $this->session         = $session;
         $this->eventDispatcher = $eventDispatcher;
         $this->router          = $router;
         $this->twig            = $twig;
     }
 
     /**
-     * @Route(
-     *     {"en"="/password-reset", "nl"="/wachtwoord-vergeten"},
-     *     name="connectholland_user_reset",
-     *     methods={"GET", "POST"},
-     *     defaults={"formName"="ConnectHolland\UserBundle\Form\ResetType"}
-     * )
-     * @Route("/api/account/password-reset", name="connectholland_user_reset.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\ResetType"})
      *
      * @param FormInterface<mixed> $form
      */
+    #[Route(path: ['en' => '/password-reset', 'nl' => '/wachtwoord-vergeten'], name: 'connectholland_user_reset', methods: ['GET', 'POST'], defaults: ['formName' => ResetType::class])]
+    #[Route(path: '/api/account/password-reset', name: 'connectholland_user_reset.api', methods: ['GET', 'POST'], defaults: ['formName' => ResetType::class])]
     public function reset(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormInterface $form, FormFactoryInterface $formFactory): ResultInterface
     {
         if ($form->isSubmitted() && $form->isValid()) {
@@ -132,23 +118,18 @@ final class ResetController
     }
 
     /**
-     * @Route(
-     *     {"en"="/password-reset/{email}/{token}", "nl"="/wachtwoord-vergeten/{email}/{token}"},
-     *     name="connectholland_user_reset_confirm",
-     *     methods={"GET", "POST"},
-     *     defaults={"formName"="ConnectHolland\UserBundle\Form\NewPasswordType"}
-     * )
-     * @Route("/api/password-reset-confirm/{email}/{token}", name="connectholland_user_reset_confirm.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\NewPasswordType"})
      *
      * @param FormInterface<mixed> $form
      */
+    #[Route(path: ['en' => '/password-reset/{email}/{token}', 'nl' => '/wachtwoord-vergeten/{email}/{token}'], name: 'connectholland_user_reset_confirm', methods: ['GET', 'POST'], defaults: ['formName' => NewPasswordType::class])]
+    #[Route(path: '/api/password-reset-confirm/{email}/{token}', name: 'connectholland_user_reset_confirm.api', methods: ['GET', 'POST'], defaults: ['formName' => NewPasswordType::class])]
     public function resetPassword(
         ResultServiceLocatorInterface $resultServiceLocator,
         Request $request,
         string $email,
         string $token,
         FormInterface $form,
-        UserPasswordEncoderInterface $encoder,
+        UserPasswordHasherInterface $hasher,
         UriSigner $uriSigner
     ): Response {
         if ($uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
@@ -170,7 +151,7 @@ final class ResetController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('password')->getData();
-            $password      = $encoder->encodePassword($user, $plainPassword);
+            $password      = $hasher->hashPassword($user, $plainPassword);
 
             $user->setPassword($password);
             $user->setPasswordRequestToken(null);

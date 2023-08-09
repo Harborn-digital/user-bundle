@@ -14,20 +14,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class CreateUserEvent extends Event implements CreateUserEventInterface
 {
-    /**
-     * @var UserInterface
-     */
-    private $user;
-
-    /**
-     * @var string
-     */
-    private $plainPassword;
-
-    public function __construct(UserInterface $user, string $plainPassword)
+    public function __construct(private UserInterface $user, private string $plainPassword)
     {
-        $this->user          = $user;
-        $this->plainPassword = $plainPassword;
     }
 
     public function getUser(): UserInterface

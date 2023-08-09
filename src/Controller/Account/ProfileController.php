@@ -9,12 +9,13 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Controller\Account;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use ConnectHolland\UserBundle\Form\Account\ProfileType;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\UpdateEvent;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,10 +29,7 @@ final class ProfileController
      */
     private $twig;
 
-    /**
-     * @var array
-     */
-    private $groups = ['account'];
+    private array $groups = ['account'];
 
     /**
      * @var EventDispatcherInterface
@@ -44,16 +42,9 @@ final class ProfileController
         $this->twig            = $twig;
     }
 
-    /**
-     * @Route(
-     *     {"en"="/account/profile", "nl"="/account/profiel"},
-     *     name="connectholland_user_account_profile",
-     *     methods={"GET", "POST"},
-     *     defaults={"formName"="ConnectHolland\UserBundle\Form\Account\ProfileType"
-     * })
-     * @Route("/api/account/profile", name="connectholland_user_account_profile.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\Account\ProfileType"})
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
+    #[IsGranted("IS_AUTHENTICATED_FULLY")]
+    #[Route(path: ['en' => '/account/profile', 'nl' => '/account/profiel'], name: 'connectholland_user_account_profile', methods: ['GET', 'POST'], defaults: ['formName' => ProfileType::class])]
+    #[Route(path: '/api/account/profile', name: 'connectholland_user_account_profile.api', methods: ['GET', 'POST'], defaults: ['formName' => ProfileType::class])]
     public function edit(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormInterface $form): ResultInterface
     {
         if ($form->isSubmitted() && $form->isValid()) {

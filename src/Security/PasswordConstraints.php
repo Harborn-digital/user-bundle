@@ -19,14 +19,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class PasswordConstraints
 {
-    /**
-     * @var array
-     */
-    private $passwordRequirements;
-
-    public function __construct(array $passwordRequirements)
+    public function __construct(private array $passwordRequirements)
     {
-        $this->passwordRequirements = $passwordRequirements;
     }
 
     public function getConstraints(): array
