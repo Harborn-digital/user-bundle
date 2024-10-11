@@ -15,7 +15,7 @@
         "doctrine/collections": "^1.8",
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/orm": "^2.16",
-        "doctrine/persistence": "^2.5",
+        "doctrine/persistence": "^2.5 || ^3.0",
         "gisostallenberg/response-content-negotiation-bundle": "^2.0",
         "haydenpierce/class-finder": "^0.5.3",
         "league/html-to-markdown": "^5.1",
