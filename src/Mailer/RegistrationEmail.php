@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Mailer;
 
+use Symfony\Component\HttpFoundation\Request;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\NegotiatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -22,32 +23,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 final class RegistrationEmail extends BaseEmail implements RegistrationEmailInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var UriSigner
-     */
-    private $uriSigner;
-
-    /**
-     * @var NegotiatorInterface
-     */
-    private $negotiator;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    public function __construct(RouterInterface $router, UriSigner $uriSigner, NegotiatorInterface $negotiator, RequestStack $requestStack)
+    public function __construct(private readonly RouterInterface $router, private readonly \Symfony\Component\HttpFoundation\UriSigner $uriSigner, private readonly NegotiatorInterface $negotiator, private readonly RequestStack $requestStack)
     {
-        $this->router       = $router;
-        $this->uriSigner    = $uriSigner;
-        $this->negotiator   = $negotiator;
-        $this->requestStack = $requestStack;
     }
 
     public function send(UserInterface $user): Email
@@ -68,7 +45,7 @@ final class RegistrationEmail extends BaseEmail implements RegistrationEmailInte
     private function getRoute(): string
     {
         $request = $this->requestStack->getCurrentRequest();
-        if ($request !== null && $this->negotiator->getResult($request) === 'json') {
+        if ($request instanceof Request && $this->negotiator->getResult($request) === 'json') {
             return 'connectholland_user_registration_confirm.api';
         }
 

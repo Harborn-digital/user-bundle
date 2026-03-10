@@ -15,22 +15,10 @@ use ConnectHolland\UserBundle\Mailer\ResetEmailInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class UserResetSubscriber implements UserResetSubscriberInterface
+final readonly class UserResetSubscriber implements UserResetSubscriberInterface
 {
-    /**
-     * @var ResetEmailInterface
-     */
-    private $email;
-
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    public function __construct(ResetEmailInterface $email, ManagerRegistry $registry)
+    public function __construct(private ResetEmailInterface $email, private ManagerRegistry $registry)
     {
-        $this->email    = $email;
-        $this->registry = $registry;
     }
 
     public function onUserReset(UserResetEventInterface $event): void

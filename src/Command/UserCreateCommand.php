@@ -14,6 +14,7 @@ use ConnectHolland\UserBundle\Event\CreateUserEvent;
 use ConnectHolland\UserBundle\Event\UserCreatedEvent;
 use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,26 +26,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @codeCoverageIgnore WIP
  */
+#[AsCommand(name: 'connectholland:user:create')]
 final class UserCreateCommand extends Command
 {
-    protected static $defaultName = 'connectholland:user:create';
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $doctrine)
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher, private readonly ManagerRegistry $doctrine)
     {
         parent::__construct();
-
-        $this->eventDispatcher = $eventDispatcher;
-        $this->doctrine        = $doctrine;
     }
 
     protected function configure()

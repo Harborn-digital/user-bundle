@@ -14,26 +14,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class UserNotFoundEvent extends Event implements UserNotFoundEventInterface, ResponseEventInterface
 {
-    /**
-     * @var Response
-     */
-    private $response;
-
-    /**
-     * @var string
-     */
-    private $state;
-
-    /**
-     * @var string
-     */
-    private $action;
-
-    public function __construct(Response $response, string $state, string $action)
+    public function __construct(private Response $response, private readonly string $state, private readonly string $action)
     {
-        $this->response = $response;
-        $this->state    = $state;
-        $this->action   = $action;
     }
 
     public function getResponse(): Response

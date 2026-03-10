@@ -19,16 +19,10 @@ use Symfony\Component\Security\Http\SecurityEvents;
 /**
  * @codeCoverageIgnore WIP
  */
-final class UserLoginSubscriber implements UserLoginSubscriberInterface
+final readonly class UserLoginSubscriber implements UserLoginSubscriberInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function onUserLogin(InteractiveLoginEvent $event): void

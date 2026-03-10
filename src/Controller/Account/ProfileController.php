@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Controller\Account;
 
+use ConnectHolland\UserBundle\Form\Account\ProfileType;
+use Symfony\Component\Form\FormError;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\UpdateEvent;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
@@ -24,33 +26,16 @@ use Twig\Environment;
 final class ProfileController
 {
     /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
      * @var array
      */
     private $groups = ['account'];
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, Environment $twig)
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher, private readonly Environment $twig)
     {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->twig            = $twig;
     }
 
-    #[Route(
-        path: ['en' => '/account/profile', 'nl' => '/account/profiel'],
-        name: 'connectholland_user_account_profile',
-        methods: ['GET', 'POST'],
-        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\Account\ProfileType']
-    )]
-    #[Route(path: '/api/account/profile', name: 'connectholland_user_account_profile.api', methods: ['GET', 'POST'], defaults: ['formName' => 'ConnectHolland\UserBundle\Form\Account\ProfileType'])]
+    #[Route(path: ['en' => '/account/profile', 'nl' => '/account/profiel'], name: 'connectholland_user_account_profile', defaults: ['formName' => ProfileType::class], methods: ['GET', 'POST'])]
+    #[Route(path: '/api/account/profile', name: 'connectholland_user_account_profile.api', defaults: ['formName' => ProfileType::class], methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormInterface $form): ResultInterface
     {
@@ -60,7 +45,7 @@ final class ProfileController
         }
 
         $errors = [];
-        /** @var \Symfony\Component\Form\FormError $error */
+        /** @var FormError $error */
         foreach ($form->getErrors(true, true) as $error) {
             $errors[$error->getMessageTemplate()] = $error->getMessage();
         }

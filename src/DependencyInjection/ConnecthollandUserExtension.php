@@ -167,11 +167,11 @@ class ConnecthollandUserExtension extends Extension implements ExtensionInterfac
             'options',
         ];
 
-        foreach ($resourceOwners as $resourceOwner => $options) {
+        foreach (array_keys($resourceOwners) as $resourceOwner) {
             foreach ($types as $type) {
-                $envVarName = sprintf('USERBUNDLE_OAUTH_%s_%s', strtoupper($resourceOwner), strtoupper($type));
+                $envVarName = sprintf('USERBUNDLE_OAUTH_%s_%s', strtoupper((string) $resourceOwner), strtoupper($type));
 
-                if (getenv($envVarName) !== false || isset($_ENV[$envVarName]) !== false) {
+                if (getenv($envVarName) !== false || isset($_ENV[$envVarName])) {
                     $parameterName                         = sprintf('env(%s)', $envVarName);
                     $resourceOwners[$resourceOwner][$type] = $container->resolveEnvPlaceholders($container->getParameter($parameterName), true);
                 }

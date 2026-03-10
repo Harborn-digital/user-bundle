@@ -24,17 +24,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 final class RegistrationType extends AbstractType
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(private readonly ManagerRegistry $doctrine)
     {
-        $this->doctrine = $doctrine;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
@@ -66,7 +60,7 @@ final class RegistrationType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => $this->doctrine->getRepository(UserInterface::class)->getClassName(),

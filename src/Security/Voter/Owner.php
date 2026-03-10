@@ -47,14 +47,8 @@ class Owner extends Voter
      */
     protected $roles = ['ROLE_USER'];
 
-    /**
-     * @var AccessDecisionManagerInterface
-     */
-    private $decisionManager;
-
-    public function __construct(AccessDecisionManagerInterface $decisionManager)
+    public function __construct(private readonly AccessDecisionManagerInterface $decisionManager)
     {
-        $this->decisionManager = $decisionManager;
     }
 
     /**
@@ -67,13 +61,8 @@ class Owner extends Voter
         if (!in_array($attribute, $this->attributes)) {
             return false;
         }
-
         // only vote on Ownable objects inside this voter
-        if (!$subject instanceof Ownable) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Ownable;
     }
 
     /**
@@ -92,22 +81,15 @@ class Owner extends Voter
         if (!$this->decisionManager->decide($token, $this->roles)) {
             return false;
         }
-
         // you know $subject is a Ownable object, thanks to supports
         /* @var Ownable $subject */
-
-        switch ($attribute) {
-            case self::CREATE:
-                return $this->canCreate($subject, $user);
-            case self::VIEW:
-                return $this->canView($subject, $user);
-            case self::EDIT:
-                return $this->canEdit($subject, $user);
-            case self::DELETE:
-                return $this->canDelete($subject, $user);
-        }
-
-        throw new \LogicException(sprintf('Unable to handle attribute %2$s. The voter %1$s claimed support for unsupported attribute %2$s', __CLASS__, $attribute));
+        return match ($attribute) {
+            self::CREATE => $this->canCreate($subject, $user),
+            self::VIEW => $this->canView($subject, $user),
+            self::EDIT => $this->canEdit($subject, $user),
+            self::DELETE => $this->canDelete($subject, $user),
+            default => throw new \LogicException(sprintf('Unable to handle attribute %2$s. The voter %1$s claimed support for unsupported attribute %2$s', self::class, $attribute)),
+        };
     }
 
     private function canCreate(Ownable $subject, UserInterface $user): bool
@@ -118,11 +100,7 @@ class Owner extends Voter
     private function canView(Ownable $subject, UserInterface $user): bool
     {
         // if they can edit, they can view
-        if ($this->canEdit($subject, $user)) {
-            return true;
-        }
-
-        return false;
+        return $this->canEdit($subject, $user);
     }
 
     /**
@@ -131,11 +109,7 @@ class Owner extends Voter
     private function canDelete(Ownable $subject, UserInterface $user)
     {
         // if they can edit, they can delete
-        if ($this->canEdit($subject, $user)) {
-            return true;
-        }
-
-        return false;
+        return $this->canEdit($subject, $user);
     }
 
     private function canEdit(Ownable $subject, UserInterface $user): bool

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Form\Account;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Security\PasswordConstraints;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,26 +27,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class AccountType extends AbstractType
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    /**
-     * @var PasswordConstraints
-     */
-    private $passwordConstraints;
-
-    /**
-     * @var TokenStorageInterface|null
-     */
-    private $tokenStorage;
-
-    public function __construct(ManagerRegistry $doctrine, PasswordConstraints $passwordConstraints, TokenStorageInterface $tokenStorage = null)
+    public function __construct(private readonly ManagerRegistry $doctrine, private readonly PasswordConstraints $passwordConstraints, private readonly ?TokenStorageInterface $tokenStorage = null)
     {
-        $this->doctrine            = $doctrine;
-        $this->passwordConstraints = $passwordConstraints;
-        $this->tokenStorage        = $tokenStorage;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -117,7 +100,7 @@ class AccountType extends AbstractType
     private function getUser(): ?UserInterface
     {
         $user = null;
-        if ($this->tokenStorage !== null && $this->tokenStorage->getToken() !== null && $this->tokenStorage->getToken()->getUser() instanceof UserInterface) {
+        if ($this->tokenStorage instanceof TokenStorageInterface && $this->tokenStorage->getToken() instanceof TokenInterface && $this->tokenStorage->getToken()->getUser() instanceof UserInterface) {
             $user = $this->tokenStorage->getToken()->getUser();
         }
 

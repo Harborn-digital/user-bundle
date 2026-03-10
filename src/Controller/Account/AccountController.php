@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Controller\Account;
 
+use ConnectHolland\UserBundle\Form\Account\AccountType;
+use ConnectHolland\UserBundle\Form\AccountDeleteType;
+use Symfony\Component\Form\FormError;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Event\DeleteAccountEvent;
 use ConnectHolland\UserBundle\Event\UpdateEvent;
@@ -34,51 +37,16 @@ use Twig\Environment;
 final class AccountController
 {
     /**
-     * @var UserPasswordHasherInterface
-     */
-    private $encoder;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
      * @var array
      */
     private $groups = ['account'];
 
-    public function __construct(UserPasswordHasherInterface $encoder, EventDispatcherInterface $eventDispatcher, Environment $twig, ManagerRegistry $registry, TokenStorageInterface $tokenStorage)
+    public function __construct(private readonly UserPasswordHasherInterface $encoder, private readonly EventDispatcherInterface $eventDispatcher, private readonly Environment $twig, private readonly ManagerRegistry $registry, private readonly TokenStorageInterface $tokenStorage)
     {
-        $this->encoder         = $encoder;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->twig            = $twig;
-        $this->registry        = $registry;
-        $this->tokenStorage    = $tokenStorage;
     }
 
-    #[Route(
-        path: ['en' => '/account/details', 'nl' => '/account/gegevens'],
-        name: 'connectholland_user_account_account',
-        methods: ['GET', 'POST'],
-        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\Account\AccountType']
-    )]
-    #[Route(path: '/api/account/details', name: 'connectholland_user_account_account.api', methods: ['GET', 'POST'], defaults: ['formName' => 'ConnectHolland\UserBundle\Form\Account\AccountType'])]
+    #[Route(path: ['en' => '/account/details', 'nl' => '/account/gegevens'], name: 'connectholland_user_account_account', defaults: ['formName' => AccountType::class], methods: ['GET', 'POST'])]
+    #[Route(path: '/api/account/details', name: 'connectholland_user_account_account.api', defaults: ['formName' => AccountType::class], methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(ResultServiceLocatorInterface $resultServiceLocator, UserInterface $user, Request $request, FormInterface $form): ResultInterface
     {
@@ -105,7 +73,7 @@ final class AccountController
         }
 
         $errors = [];
-        /** @var \Symfony\Component\Form\FormError $error */
+        /** @var FormError $error */
         foreach ($form->getErrors(true, true) as $error) {
             $errors[$error->getMessageTemplate()] = $error->getMessage();
         }
@@ -128,12 +96,7 @@ final class AccountController
         );
     }
 
-    #[Route(
-        path: ['en' => '/account/delete', 'nl' => '/account/verwijderen'],
-        name: 'connectholland_user_account_delete',
-        methods: ['GET', 'POST'],
-        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\AccountDeleteType']
-    )]
+    #[Route(path: ['en' => '/account/delete', 'nl' => '/account/verwijderen'], name: 'connectholland_user_account_delete', defaults: ['formName' => AccountDeleteType::class], methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(UserInterface $user, Request $request, FormInterface $form): Response
     {
@@ -151,7 +114,7 @@ final class AccountController
         }
 
         $errors = [];
-        /** @var \Symfony\Component\Form\FormError $error */
+        /** @var FormError $error */
         foreach ($form->getErrors(true, true) as $error) {
             $errors[$error->getMessageTemplate()] = $error->getMessage();
         }

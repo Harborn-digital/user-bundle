@@ -9,15 +9,14 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\MappedSuperclass
- * @ORM\Table(name="connectholland_user_user")
- */
+#[ORM\MappedSuperclass]
+#[ORM\Table(name: 'connectholland_user_user')]
 abstract class BaseUser implements UserInterface
 {
     /*
@@ -25,40 +24,28 @@ abstract class BaseUser implements UserInterface
      */
     use TimestampableEntity;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    protected $email;
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
+    protected ?string $email = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default"=0})
-     */
-    protected $enabled = false;
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    protected ?bool $enabled = false;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $passwordRequestToken;
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    protected ?string $passwordRequestToken = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $lastLogin;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $lastLogin = null;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: Types::JSON)]
     protected $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string", nullable=true)
      */
-    protected $password;
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    protected ?string $password = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="ConnectHolland\UserBundle\Entity\UserOAuth", mappedBy="user", orphanRemoval=true, cascade={"persist"})
-     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserOAuth::class, cascade: ['persist'], orphanRemoval: true)]
     protected $oauths;
 
     public function __construct()
@@ -156,7 +143,7 @@ abstract class BaseUser implements UserInterface
     {
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 

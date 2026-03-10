@@ -16,18 +16,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class OAuthUserCreatedEvent extends Event implements OAuthUserCreatedEventInterface
 {
     /**
-     * @var UserInterface
-     */
-    private $user;
-
-    /**
      * @var UserResponseInterface
      */
     private $response;
 
-    public function __construct(UserInterface $user, UserResponseInterface $response)
+    public function __construct(private readonly UserInterface $user, UserResponseInterface $response)
     {
-        $this->user     = $user;
         $this->response = $response;
     }
 

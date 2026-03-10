@@ -9,37 +9,25 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(
- *     name="connectholland_user_user_oauth",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="unique_oauth_username_resource",
- *             columns={"resource", "oauth_username"})
- *     }
- * )
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'connectholland_user_user_oauth')]
+#[ORM\UniqueConstraint(name: 'unique_oauth_username_resource', columns: ['resource', 'oauth_username'])]
 class UserOAuth implements UserOAuthInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=180)
-     */
-    private $resource;
+    #[ORM\Id]
+    #[ORM\Column(type: Types::STRING, length: 180)]
+    private ?string $resource = null;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=180)
-     */
-    private $oauthUsername;
+    #[ORM\Id]
+    #[ORM\Column(type: Types::STRING, length: 180)]
+    private ?string $oauthUsername = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ConnectHolland\UserBundle\Entity\UserInterface", inversedBy="oauths", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
+    #[ORM\ManyToOne(targetEntity: UserInterface::class, cascade: ['persist'], inversedBy: 'oauths')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?UserInterface $user = null;
 
     public function getResource(): ?string
     {

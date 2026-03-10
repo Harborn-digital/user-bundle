@@ -19,14 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProfileType extends AbstractType
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(private readonly ManagerRegistry $doctrine)
     {
-        $this->doctrine = $doctrine;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

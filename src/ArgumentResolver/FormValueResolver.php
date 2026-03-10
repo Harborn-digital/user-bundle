@@ -9,20 +9,19 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\ArgumentResolver;
 
-use Generator;
 use ReflectionClass;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Resolves a form as argument for a controller action
  * when the FORM_NAME_ATTRIBUTE is set in the routing.
  */
-class FormValueResolver implements ArgumentValueResolverInterface
+class FormValueResolver implements ValueResolverInterface
 {
     /**
      * Defines the key used to look up the form name in the request attributes.
@@ -32,26 +31,23 @@ class FormValueResolver implements ArgumentValueResolverInterface
     const FORM_NAME_ATTRIBUTE = 'formName';
 
     /**
-     * The factory needed to create a new form when it should be created as controller action argument.
-     *
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
      * Create a new FormValueResolver.
      *
      * @param formFactoryInterface $formFactory - The factory used to create a new form when defined in the route
      */
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(
+        /**
+         * The factory needed to create a new form when it should be created as controller action argument.
+         */
+        private readonly FormFactoryInterface $formFactory
+    )
     {
-        $this->formFactory = $formFactory;
     }
 
     /**
      * Return true when the FormValueResolver supports handling the given argument for the given request.
      */
-    public function supports(Request $request, ArgumentMetadata $argument): bool
+    private function supports(Request $request, ArgumentMetadata $argument): bool
     {
         if (FormInterface::class !== $argument->getType()) {
             return false;
@@ -69,10 +65,14 @@ class FormValueResolver implements ArgumentValueResolverInterface
     /**
      * Resolve the form as argument and let the form handle the request.
      *
-     * @return Generator<FormInterface>
+     * @return iterable<FormInterface>
      */
-    public function resolve(Request $request, ArgumentMetadata $argument): Generator
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
+        if (!$this->supports($request, $argument)) {
+            return [];
+        }
+
         $form = $this->getForm($request);
         if ($form instanceof FormInterface) {
             $this->handleRequest($request, $form);

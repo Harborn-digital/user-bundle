@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber\Doctrine;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Security\Ownable;
 use Doctrine\Common\EventSubscriber;
@@ -18,14 +19,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class OwnableSubscriber implements EventSubscriber
 {
-    /**
-     * @var TokenStorageInterface|null
-     */
-    private $tokenStorage;
-
-    public function __construct(TokenStorageInterface $tokenStorage = null)
+    public function __construct(private readonly ?TokenStorageInterface $tokenStorage = null)
     {
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -44,7 +39,7 @@ class OwnableSubscriber implements EventSubscriber
         $entity = $args->getEntity();
         $user   = null;
 
-        if ($this->tokenStorage !== null && $this->tokenStorage->getToken() !== null) {
+        if ($this->tokenStorage instanceof TokenStorageInterface && $this->tokenStorage->getToken() instanceof TokenInterface) {
             $user = $this->tokenStorage->getToken()->getUser();
         }
 

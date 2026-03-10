@@ -19,14 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PasswordType extends AbstractType
 {
-    /**
-     * @var PasswordConstraints
-     */
-    private $passwordConstraints;
-
-    public function __construct(PasswordConstraints $passwordConstraints)
+    public function __construct(private readonly PasswordConstraints $passwordConstraints)
     {
-        $this->passwordConstraints = $passwordConstraints;
     }
 
     public function getParent(): string
@@ -34,14 +28,14 @@ class PasswordType extends AbstractType
         return BasePasswordType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'constraints' => $this->passwordConstraints->getConstraints(),
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return null;
     }

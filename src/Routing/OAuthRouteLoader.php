@@ -20,15 +20,8 @@ class OAuthRouteLoader extends Loader
 {
     private $isLoaded = false;
 
-    /**
-     * @var array
-     */
-    private $resourceOwnerMaps;
-
-    public function __construct(
-        array $resourceOwnerMaps
-    ) {
-        $this->resourceOwnerMaps = $resourceOwnerMaps;
+    public function __construct(private readonly array $resourceOwnerMaps)
+    {
     }
 
     public function load($resource, $type = null): RouteCollection
@@ -50,7 +43,7 @@ class OAuthRouteLoader extends Loader
         return $routes;
     }
 
-    public function supports($resource, $type = null)
+    public function supports(mixed $resource, ?string $type = null): bool
     {
         return 'connectholland_user_oauth' === $type;
     }

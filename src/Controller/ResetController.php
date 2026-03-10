@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Controller;
 
+use ConnectHolland\UserBundle\Form\NewPasswordType;
+use Symfony\Component\Form\FormError;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
@@ -38,46 +40,17 @@ use Twig\Environment;
 /**
  * @codeCoverageIgnore WIP
  */
-final class ResetController
+final readonly class ResetController
 {
     private const PASSWORD_REQUEST_ACTION = 'reset';
     private const PASSWORD_RESET_ACTION   = 'resetPassword';
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    public function __construct(ManagerRegistry $registry, EventDispatcherInterface $eventDispatcher, RouterInterface $router, Environment $twig)
+    public function __construct(private ManagerRegistry $registry, private EventDispatcherInterface $eventDispatcher, private RouterInterface $router, private Environment $twig)
     {
-        $this->registry        = $registry;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->router          = $router;
-        $this->twig            = $twig;
     }
 
-    #[Route(
-        path: ['en' => '/password-reset', 'nl' => '/wachtwoord-vergeten'],
-        name: 'connectholland_user_reset',
-        methods: ['GET', 'POST'],
-        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\ResetType']
-    )]
-    #[Route(path: '/api/account/password-reset', name: 'connectholland_user_reset.api', methods: ['GET', 'POST'], defaults: ['formName' => 'ConnectHolland\UserBundle\Form\ResetType'])]
+    #[Route(path: ['en' => '/password-reset', 'nl' => '/wachtwoord-vergeten'], name: 'connectholland_user_reset', defaults: ['formName' => ResetType::class], methods: ['GET', 'POST'])]
+    #[Route(path: '/api/account/password-reset', name: 'connectholland_user_reset.api', defaults: ['formName' => ResetType::class], methods: ['GET', 'POST'])]
     /**
      * @param FormInterface<mixed> $form
      */
@@ -99,7 +72,7 @@ final class ResetController
         }
 
         $errors = [];
-        /** @var \Symfony\Component\Form\FormError $error */
+        /** @var FormError $error */
         foreach ($form->getErrors(true, true) as $error) {
             $errors[$error->getMessageTemplate()] = $error->getMessage();
         }
@@ -120,13 +93,8 @@ final class ResetController
         );
     }
 
-    #[Route(
-        path: ['en' => '/password-reset/{email}/{token}', 'nl' => '/wachtwoord-vergeten/{email}/{token}'],
-        name: 'connectholland_user_reset_confirm',
-        methods: ['GET', 'POST'],
-        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\NewPasswordType']
-    )]
-    #[Route(path: '/api/password-reset-confirm/{email}/{token}', name: 'connectholland_user_reset_confirm.api', methods: ['GET', 'POST'], defaults: ['formName' => 'ConnectHolland\UserBundle\Form\NewPasswordType'])]
+    #[Route(path: ['en' => '/password-reset/{email}/{token}', 'nl' => '/wachtwoord-vergeten/{email}/{token}'], name: 'connectholland_user_reset_confirm', defaults: ['formName' => NewPasswordType::class], methods: ['GET', 'POST'])]
+    #[Route(path: '/api/password-reset-confirm/{email}/{token}', name: 'connectholland_user_reset_confirm.api', defaults: ['formName' => NewPasswordType::class], methods: ['GET', 'POST'])]
     /**
      * @param FormInterface<mixed> $form
      */
@@ -137,7 +105,7 @@ final class ResetController
         string $token,
         FormInterface $form,
         UserPasswordHasherInterface $encoder,
-        UriSigner $uriSigner
+        \Symfony\Component\HttpFoundation\UriSigner $uriSigner
     ): Response {
         if ($uriSigner->check(sprintf('%s://%s%s', $request->getScheme(), $request->getHttpHost(), $request->getRequestUri())) === false) {
             $defaultResponse          = new RedirectResponse($this->router->generate('connectholland_user_reset'));
@@ -171,13 +139,13 @@ final class ResetController
 
             $authenticateUserEvent = new AuthenticateUserEvent($user, $request);
             $this->eventDispatcher->dispatch($authenticateUserEvent, UserBundleEvents::AUTHENTICATE_USER);
-            if (null !== $authenticateUserEvent->getResponse()) {
+            if ($authenticateUserEvent->getResponse() instanceof Response) {
                 return $authenticateUserEvent->getResponse();
             }
         }
 
         $errors = [];
-        /** @var \Symfony\Component\Form\FormError $error */
+        /** @var FormError $error */
         foreach ($form->getErrors(true, true) as $error) {
             $errors[$error->getMessageTemplate()] = $error->getMessage();
         }

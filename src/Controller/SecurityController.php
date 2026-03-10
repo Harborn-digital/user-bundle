@@ -19,28 +19,10 @@ use Twig\Environment;
 /**
  * @codeCoverageIgnore WIP
  */
-final class SecurityController
+final readonly class SecurityController
 {
-    /**
-     * @var AuthenticationUtils
-     */
-    private $authenticationUtils;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    public function __construct(AuthenticationUtils $authenticationUtils, FormFactoryInterface $formFactory, Environment $twig)
+    public function __construct(private AuthenticationUtils $authenticationUtils, private FormFactoryInterface $formFactory, private Environment $twig)
     {
-        $this->authenticationUtils = $authenticationUtils;
-        $this->formFactory         = $formFactory;
-        $this->twig                = $twig;
     }
 
     #[Route(

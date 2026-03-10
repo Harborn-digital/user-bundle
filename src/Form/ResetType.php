@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class ResetType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
@@ -35,7 +35,7 @@ final class ResetType extends AbstractType
     /**
      * @codeCoverageIgnore No need to test setting options for forms without functionality.
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'attr' => [

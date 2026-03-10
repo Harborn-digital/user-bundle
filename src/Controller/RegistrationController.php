@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Controller;
 
+use ConnectHolland\UserBundle\Form\RegistrationType;
+use Symfony\Component\Form\FormError;
 use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Event\AuthenticateUserEvent;
@@ -35,37 +37,14 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @codeCoverageIgnore WIP
  */
-final class RegistrationController
+final readonly class RegistrationController
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    public function __construct(ManagerRegistry $registry, EventDispatcherInterface $eventDispatcher, RouterInterface $router)
+    public function __construct(private ManagerRegistry $registry, private EventDispatcherInterface $eventDispatcher, private RouterInterface $router)
     {
-        $this->registry        = $registry;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->router          = $router;
     }
 
-    #[Route(
-        path: ['en' => '/register', 'nl' => '/registreren'],
-        name: 'connectholland_user_registration',
-        methods: ['GET', 'POST'],
-        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\RegistrationType']
-    )]
-    #[Route(path: '/api/register', name: 'connectholland_user_registration.api', methods: ['GET', 'POST'], defaults: ['formName' => 'ConnectHolland\UserBundle\Form\RegistrationType'])]
+    #[Route(path: ['en' => '/register', 'nl' => '/registreren'], name: 'connectholland_user_registration', defaults: ['formName' => RegistrationType::class], methods: ['GET', 'POST'])]
+    #[Route(path: '/api/register', name: 'connectholland_user_registration.api', defaults: ['formName' => RegistrationType::class], methods: ['GET', 'POST'])]
     /**
      * @param FormInterface<mixed> $form
      */
@@ -88,7 +67,7 @@ final class RegistrationController
         }
 
         $errors = [];
-        /** @var \Symfony\Component\Form\FormError $error */
+        /** @var FormError $error */
         foreach ($form->getErrors(true, true) as $error) {
             $errors[$error->getMessageTemplate()] = $error->getMessage();
         }
@@ -115,7 +94,7 @@ final class RegistrationController
         methods: ['GET', 'POST']
     )]
     #[Route(path: '/api/register/confirm/{email}/{token}', name: 'connectholland_user_registration_confirm.api', methods: ['GET', 'POST'])]
-    public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
+    public function registrationConfirm(Request $request, string $email, string $token, \Symfony\Component\HttpFoundation\UriSigner $uriSigner): Response
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->registry->getRepository(UserInterface::class);
@@ -140,7 +119,7 @@ final class RegistrationController
 
         $authenticateUserEvent = new AuthenticateUserEvent($user, $request);
         $this->eventDispatcher->dispatch($authenticateUserEvent, UserBundleEvents::AUTHENTICATE_USER);
-        if (null !== $authenticateUserEvent->getResponse()) {
+        if ($authenticateUserEvent->getResponse() instanceof Response) {
             return $authenticateUserEvent->getResponse();
         }
 

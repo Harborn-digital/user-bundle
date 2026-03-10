@@ -17,20 +17,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FlashSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(RequestStack $requestStack, TranslatorInterface $translator)
+    public function __construct(private readonly RequestStack $requestStack, private readonly TranslatorInterface $translator)
     {
-        $this->requestStack = $requestStack;
-        $this->translator   = $translator;
     }
 
     /**

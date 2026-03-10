@@ -16,18 +16,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 class DeleteAccountEvent extends Event implements DeleteAccountEventInterface
 {
     /**
-     * @var UserInterface
-     */
-    private $user;
-
-    /**
      * @var Response
      */
     private $response;
 
-    public function __construct(UserInterface $user)
+    public function __construct(private readonly UserInterface $user)
     {
-        $this->user = $user;
     }
 
     public function getUser(): UserInterface

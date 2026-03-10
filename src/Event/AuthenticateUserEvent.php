@@ -17,24 +17,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class AuthenticateUserEvent extends Event implements AuthenticateUserEventInterface
 {
     /**
-     * @var UserInterface
-     */
-    private $user;
-
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
      * @var Response
      */
     private $response;
 
-    public function __construct(UserInterface $user, Request $request)
+    public function __construct(private readonly UserInterface $user, private readonly Request $request)
     {
-        $this->user    = $user;
-        $this->request = $request;
     }
 
     public function getUser(): UserInterface

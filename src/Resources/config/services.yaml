@@ -238,19 +238,6 @@ services:
         arguments:
             $passwordRequirements: []
 
-    Rollerworks\Component\PasswordStrength\Validator\Constraints\P0wnedPasswordValidator:
-        lazy: false
-        arguments:
-            $client: '@Rollerworks\Component\PasswordStrength\P0wnedPassword\Request\Client'
-        tags:
-            - { name: validator.constraint_validator }
-
-    Rollerworks\Component\PasswordStrength\P0wnedPassword\Request\Client:
-        lazy: false
-        arguments:
-            $client: '@httplug.client'
-            $logger: '@logger'
-
     ConnectHolland\UserBundle\Security\Voter\Owner:
         arguments:
             $decisionManager: '@security.access.decision_manager'

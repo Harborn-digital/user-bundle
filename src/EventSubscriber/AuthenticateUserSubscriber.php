@@ -14,11 +14,11 @@ use ConnectHolland\UserBundle\UserBundleEvents;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 
-final class AuthenticateUserSubscriber implements AuthenticateUserSubscriberInterface
+final readonly class AuthenticateUserSubscriber implements AuthenticateUserSubscriberInterface
 {
     public function __construct(
-        private readonly UserAuthenticatorInterface $userAuthenticator,
-        private readonly AuthenticatorInterface $authenticator,
+        private UserAuthenticatorInterface $userAuthenticator,
+        private AuthenticatorInterface $authenticator,
     ) {}
 
     public function onAuthenticateUser(AuthenticateUserEventInterface $event): void

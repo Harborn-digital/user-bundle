@@ -1,22 +1,22 @@
 connectholland_user_security:
     resource: '@ConnecthollandUserBundle/Controller/SecurityController.php'
-    type: annotation
+    type: attribute
 
 connectholland_user_registration:
     resource: '@ConnecthollandUserBundle/Controller/RegistrationController.php'
-    type: annotation
+    type: attribute
 
 connectholland_user_reset:
     resource: '@ConnecthollandUserBundle/Controller/ResetController.php'
-    type: annotation
+    type: attribute
 
 connectholland_user_account_profile:
     resource: '@ConnecthollandUserBundle/Controller/Account/ProfileController.php'
-    type: annotation
+    type: attribute
 
 connectholland_user_account_detail:
     resource: '@ConnecthollandUserBundle/Controller/Account/AccountController.php'
-    type: annotation
+    type: attribute
 
 connectholland_user_logout:
     path: /logout

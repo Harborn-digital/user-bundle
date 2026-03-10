@@ -24,22 +24,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @codeCoverageIgnore WIP
  */
-final class OAuthUserProvider implements OAuthAwareUserProviderInterface
+final readonly class OAuthUserProvider implements OAuthAwareUserProviderInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(ManagerRegistry $doctrine, EventDispatcherInterface $eventDispatcher)
+    public function __construct(private ManagerRegistry $doctrine, private EventDispatcherInterface $eventDispatcher)
     {
-        $this->doctrine        = $doctrine;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)

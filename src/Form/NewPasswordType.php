@@ -21,14 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class NewPasswordType extends AbstractType
 {
-    /**
-     * @var PasswordConstraints
-     */
-    private $passwordConstraints;
-
-    public function __construct(PasswordConstraints $passwordConstraints)
+    public function __construct(private readonly PasswordConstraints $passwordConstraints)
     {
-        $this->passwordConstraints = $passwordConstraints;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

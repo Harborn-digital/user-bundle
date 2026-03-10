@@ -16,16 +16,10 @@ use ConnectHolland\UserBundle\UserBundleEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class ResetUserSubscriber implements ResetUserSubscriberInterface
+final readonly class ResetUserSubscriber implements ResetUserSubscriberInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function onResetUser(ResetUserEventInterface $event): void

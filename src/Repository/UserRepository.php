@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Repository;
 
+use Doctrine\ORM\Query\Expr\Join;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr;
@@ -41,7 +42,7 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
     public function findOneByOAuthUsername(string $resource, $oauthUsername): ?UserInterface
     {
         return $this->createQueryBuilder('user')
-            ->leftJoin('user.oauths', 'oauths', Expr\Join::WITH, 'oauths.oauthUsername = :oauthUsername')
+            ->leftJoin('user.oauths', 'oauths', Join::WITH, 'oauths.oauthUsername = :oauthUsername')
             ->andWhere('oauths.resource = :resource')
             ->setParameter('resource', $resource)
             ->setParameter('oauthUsername', $oauthUsername)

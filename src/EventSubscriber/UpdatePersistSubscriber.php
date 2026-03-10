@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber;
 
+use Doctrine\Persistence\ObjectManager;
 use ConnectHolland\UserBundle\Event\UpdateEvent;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,14 +17,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdatePersistSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     /**
@@ -45,8 +40,7 @@ class UpdatePersistSubscriber implements EventSubscriberInterface
     private function saveData($data): void
     {
         $entityClass = ClassUtils::getClass($data); // get correct class, even for proxy classes
-
-        /** @var \Doctrine\Persistence\ObjectManager $entityManager */
+        /** @var ObjectManager $entityManager */
         $entityManager = $this->registry->getManagerForClass($entityClass);
         $entityManager->persist($data);
         $entityManager->flush();

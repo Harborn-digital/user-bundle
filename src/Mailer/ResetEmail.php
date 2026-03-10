@@ -17,20 +17,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ResetEmail extends BaseEmail implements ResetEmailInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var UriSigner
-     */
-    private $uriSigner;
-
-    public function __construct(RouterInterface $router, UriSigner $uriSigner)
+    public function __construct(private readonly RouterInterface $router, private readonly \Symfony\Component\HttpFoundation\UriSigner $uriSigner)
     {
-        $this->router    = $router;
-        $this->uriSigner = $uriSigner;
     }
 
     public function send(UserInterface $user): Email

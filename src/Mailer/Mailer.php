@@ -18,28 +18,10 @@ use Twig\Environment;
 /**
  * @codeCoverageIgnore WIP
  */
-final class Mailer implements MailerInterface
+final readonly class Mailer implements MailerInterface
 {
-    /**
-     * @var BaseMailer
-     */
-    private $mailer;
-
-    /**
-     * @var string
-     */
-    private $fromEmail;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    public function __construct(BaseMailer $mailer, string $fromEmail, Environment $twig)
+    public function __construct(private BaseMailer $mailer, private string $fromEmail, private Environment $twig)
     {
-        $this->mailer    = $mailer;
-        $this->fromEmail = $fromEmail;
-        $this->twig      = $twig;
     }
 
     public function createMessageAndSend(string $name, $to, array $parameters = []): Email
@@ -49,7 +31,7 @@ final class Mailer implements MailerInterface
 
     private function createHTMLBody(string $name, array $parameters): string
     {
-        $parameters['name'] = isset($parameters['name']) ? $parameters['name'] : $name;
+        $parameters['name'] ??= $name;
 
         $html = $this->twig->render(sprintf('@ConnecthollandUser/emails/%s.html.twig', $name), $parameters);
 

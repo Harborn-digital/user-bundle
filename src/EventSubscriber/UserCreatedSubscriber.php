@@ -16,16 +16,10 @@ use ConnectHolland\UserBundle\UserBundleEvents;
 /**
  * @codeCoverageIgnore WIP
  */
-final class UserCreatedSubscriber implements UserCreatedSubscriberInterface
+final readonly class UserCreatedSubscriber implements UserCreatedSubscriberInterface
 {
-    /**
-     * @var RegistrationEmail
-     */
-    private $email;
-
-    public function __construct(RegistrationEmail $email)
+    public function __construct(private RegistrationEmail $email)
     {
-        $this->email = $email;
     }
 
     public function onUserCreated(UserCreatedEventInterface $event): void

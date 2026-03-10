@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\Form;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
@@ -20,20 +21,8 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 
 class AccountDeleteType extends AbstractType
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    /**
-     * @var TokenStorageInterface|null
-     */
-    private $tokenStorage;
-
-    public function __construct(ManagerRegistry $doctrine, TokenStorageInterface $tokenStorage)
+    public function __construct(private readonly ManagerRegistry $doctrine, private readonly TokenStorageInterface $tokenStorage)
     {
-        $this->doctrine     = $doctrine;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -64,7 +53,7 @@ class AccountDeleteType extends AbstractType
 
     private function getUser(): ?UserInterface
     {
-        if ($this->tokenStorage !== null && $this->tokenStorage->getToken() !== null) {
+        if ($this->tokenStorage instanceof TokenStorageInterface && $this->tokenStorage->getToken() instanceof TokenInterface) {
             $user = $this->tokenStorage->getToken()->getUser();
             if ($user instanceof UserInterface) {
                 return $user;

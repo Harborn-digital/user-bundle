@@ -20,18 +20,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class PasswordResetFailedSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var NegotiatorInterface
-     */
-    private $negotiator;
-
-    /**
      * @var Request|null
      */
     private $request;
 
-    public function __construct(NegotiatorInterface $negotiator, RequestStack $requestStack)
+    public function __construct(private readonly NegotiatorInterface $negotiator, RequestStack $requestStack)
     {
-        $this->negotiator = $negotiator;
         $this->request    = $requestStack->getCurrentRequest();
     }
 

@@ -19,22 +19,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 /**
  * @codeCoverageIgnore WIP
  */
-final class CreateUserSubscriber implements CreateUserSubscriberInterface
+final readonly class CreateUserSubscriber implements CreateUserSubscriberInterface
 {
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    private $passwordEncoder;
-
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    public function __construct(UserPasswordHasherInterface $passwordEncoder, ManagerRegistry $registry)
+    public function __construct(private UserPasswordHasherInterface $passwordEncoder, private ManagerRegistry $registry)
     {
-        $this->passwordEncoder = $passwordEncoder;
-        $this->registry        = $registry;
     }
 
     public function onCreateUser(CreateUserEventInterface $event): void

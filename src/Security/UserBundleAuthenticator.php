@@ -47,7 +47,7 @@ final class UserBundleAuthenticator extends AbstractLoginFormAuthenticator
         $password  = $request->request->getString('_password');
         $csrfToken = $request->request->getString('_token');
 
-        $request->getSession()?->set(Security::LAST_USERNAME, $email);
+        $request->getSession()->set(Security::LAST_USERNAME, $email);
 
         if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $csrfToken))) {
             throw new InvalidCsrfTokenException();
