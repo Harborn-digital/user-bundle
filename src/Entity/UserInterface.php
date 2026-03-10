@@ -10,9 +10,10 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
-interface UserInterface extends BaseUserInterface
+interface UserInterface extends BaseUserInterface, PasswordAuthenticatedUserInterface
 {
     public function getEmail(): ?string;
 
