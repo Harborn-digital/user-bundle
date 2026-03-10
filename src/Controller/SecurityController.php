@@ -12,7 +12,7 @@ namespace ConnectHolland\UserBundle\Controller;
 use ConnectHolland\UserBundle\Form\LoginType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Twig\Environment;
 
@@ -43,15 +43,12 @@ final class SecurityController
         $this->twig                = $twig;
     }
 
-    /**
-     * @Route({
-     *     "en"="/login",
-     *     "nl"="/inloggen"},
-     *     name="connectholland_user_login",
-     *     methods={"GET", "POST"}
-     * )
-     * @Route("/api/authenticate", name="connectholland_user_login.api", methods={"GET", "POST"})
-     */
+    #[Route(
+        path: ['en' => '/login', 'nl' => '/inloggen'],
+        name: 'connectholland_user_login',
+        methods: ['GET', 'POST']
+    )]
+    #[Route(path: '/api/authenticate', name: 'connectholland_user_login.api', methods: ['GET', 'POST'])]
     public function __invoke(): Response
     {
         $form         = $this->formFactory->create(LoginType::class);

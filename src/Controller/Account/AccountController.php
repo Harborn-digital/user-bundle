@@ -17,14 +17,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultData;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Content\ResultServiceLocatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 
@@ -34,7 +34,7 @@ use Twig\Environment;
 final class AccountController
 {
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
     private $encoder;
 
@@ -63,7 +63,7 @@ final class AccountController
      */
     private $groups = ['account'];
 
-    public function __construct(UserPasswordEncoderInterface $encoder, EventDispatcherInterface $eventDispatcher, Environment $twig, ManagerRegistry $registry, TokenStorageInterface $tokenStorage)
+    public function __construct(UserPasswordHasherInterface $encoder, EventDispatcherInterface $eventDispatcher, Environment $twig, ManagerRegistry $registry, TokenStorageInterface $tokenStorage)
     {
         $this->encoder         = $encoder;
         $this->eventDispatcher = $eventDispatcher;
@@ -72,16 +72,14 @@ final class AccountController
         $this->tokenStorage    = $tokenStorage;
     }
 
-    /**
-     * @Route(
-     *     {"en"="/account/details", "nl"="/account/gegevens"},
-     *     name="connectholland_user_account_account",
-     *     methods={"GET", "POST"},
-     *     defaults={"formName"="ConnectHolland\UserBundle\Form\Account\AccountType"}
-     * )
-     * @Route("/api/account/details", name="connectholland_user_account_account.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\Account\AccountType"})
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
+    #[Route(
+        path: ['en' => '/account/details', 'nl' => '/account/gegevens'],
+        name: 'connectholland_user_account_account',
+        methods: ['GET', 'POST'],
+        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\Account\AccountType']
+    )]
+    #[Route(path: '/api/account/details', name: 'connectholland_user_account_account.api', methods: ['GET', 'POST'], defaults: ['formName' => 'ConnectHolland\UserBundle\Form\Account\AccountType'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(ResultServiceLocatorInterface $resultServiceLocator, UserInterface $user, Request $request, FormInterface $form): ResultInterface
     {
         if ($form->isSubmitted() && $form->isValid()) {
@@ -98,7 +96,7 @@ final class AccountController
             }
 
             if (!empty($plainPassword)) {
-                $password = $this->encoder->encodePassword($user, $plainPassword);
+                $password = $this->encoder->hashPassword($user, $plainPassword);
                 $user->setPassword($password);
             }
 
@@ -130,15 +128,13 @@ final class AccountController
         );
     }
 
-    /**
-     * @Route(
-     *     {"en"="/account/delete", "nl"="/account/verwijderen"},
-     *     name="connectholland_user_account_delete",
-     *     methods={"GET", "POST"},
-     *     defaults={"formName"="ConnectHolland\UserBundle\Form\AccountDeleteType"}
-     * )
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
+    #[Route(
+        path: ['en' => '/account/delete', 'nl' => '/account/verwijderen'],
+        name: 'connectholland_user_account_delete',
+        methods: ['GET', 'POST'],
+        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\AccountDeleteType']
+    )]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(UserInterface $user, Request $request, FormInterface $form): Response
     {
         if ($form->isSubmitted() && $form->isValid()) {

@@ -11,42 +11,31 @@ namespace ConnectHolland\UserBundle\EventSubscriber;
 
 use ConnectHolland\UserBundle\Event\AuthenticateUserEventInterface;
 use ConnectHolland\UserBundle\UserBundleEvents;
-use Symfony\Component\Security\Guard\AuthenticatorInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 
 final class AuthenticateUserSubscriber implements AuthenticateUserSubscriberInterface
 {
-    /**
-     * @var GuardAuthenticatorHandler
-     */
-    private $guardAuthenticatorHandler;
-
-    /**
-     * @var AuthenticatorInterface
-     */
-    private $authenticator;
-
-    public function __construct(GuardAuthenticatorHandler $guardAuthenticatorHandler, AuthenticatorInterface $authenticator)
-    {
-        $this->guardAuthenticatorHandler = $guardAuthenticatorHandler;
-        $this->authenticator             = $authenticator;
-    }
+    public function __construct(
+        private readonly UserAuthenticatorInterface $userAuthenticator,
+        private readonly AuthenticatorInterface $authenticator,
+    ) {}
 
     public function onAuthenticateUser(AuthenticateUserEventInterface $event): void
     {
-        $providerKey = 'main'; // TODO: Make configurable or read from request
+        $response = $this->userAuthenticator->authenticateUser(
+            $event->getUser(),
+            $this->authenticator,
+            $event->getRequest()
+        );
 
-        $token = $this->authenticator->createAuthenticatedToken($event->getUser(), $providerKey);
-
-        $this->guardAuthenticatorHandler->authenticateWithToken($token, $event->getRequest(), $providerKey);
-
-        $event->setResponse($this->guardAuthenticatorHandler->handleAuthenticationSuccess($token, $event->getRequest(), $this->authenticator, $providerKey));
+        $event->setResponse($response);
     }
 
     /**
      * @codeCoverageIgnore No need to test this array 'config' method
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserBundleEvents::AUTHENTICATE_USER => 'onAuthenticateUser',

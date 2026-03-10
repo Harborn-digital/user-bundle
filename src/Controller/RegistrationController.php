@@ -27,9 +27,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\UriSigner;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -44,11 +43,6 @@ final class RegistrationController
     private $registry;
 
     /**
-     * @var Session<mixed>
-     */
-    private $session;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -58,26 +52,21 @@ final class RegistrationController
      */
     private $router;
 
-    /**
-     * @param Session<mixed> $session
-     */
-    public function __construct(ManagerRegistry $registry, Session $session, EventDispatcherInterface $eventDispatcher, RouterInterface $router)
+    public function __construct(ManagerRegistry $registry, EventDispatcherInterface $eventDispatcher, RouterInterface $router)
     {
         $this->registry        = $registry;
-        $this->session         = $session;
         $this->eventDispatcher = $eventDispatcher;
         $this->router          = $router;
     }
 
+    #[Route(
+        path: ['en' => '/register', 'nl' => '/registreren'],
+        name: 'connectholland_user_registration',
+        methods: ['GET', 'POST'],
+        defaults: ['formName' => 'ConnectHolland\UserBundle\Form\RegistrationType']
+    )]
+    #[Route(path: '/api/register', name: 'connectholland_user_registration.api', methods: ['GET', 'POST'], defaults: ['formName' => 'ConnectHolland\UserBundle\Form\RegistrationType'])]
     /**
-     * @Route(
-     *     {"en"="/register", "nl"="/registreren"},
-     *     name="connectholland_user_registration",
-     *     methods={"GET", "POST"},
-     *     defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"}
-     * )
-     * @Route("/api/register", name="connectholland_user_registration.api", methods={"GET", "POST"}, defaults={"formName"="ConnectHolland\UserBundle\Form\RegistrationType"})
-     *
      * @param FormInterface<mixed> $form
      */
     public function register(ResultServiceLocatorInterface $resultServiceLocator, Request $request, FormInterface $form): ResultInterface
@@ -120,14 +109,12 @@ final class RegistrationController
         );
     }
 
-    /**
-     * @Route(
-     *     {"en"="/register/confirm/{email}/{token}", "nl"="/registreren/bevestigen/{email}/{token}"},
-     *     name="connectholland_user_registration_confirm",
-     *     methods={"GET", "POST"}
-     * )
-     * @Route("/api/register/confirm/{email}/{token}", name="connectholland_user_registration_confirm.api", methods={"GET", "POST"})
-     */
+    #[Route(
+        path: ['en' => '/register/confirm/{email}/{token}', 'nl' => '/registreren/bevestigen/{email}/{token}'],
+        name: 'connectholland_user_registration_confirm',
+        methods: ['GET', 'POST']
+    )]
+    #[Route(path: '/api/register/confirm/{email}/{token}', name: 'connectholland_user_registration_confirm.api', methods: ['GET', 'POST'])]
     public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
     {
         /** @var UserRepository $userRepository */
