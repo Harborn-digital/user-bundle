@@ -29,7 +29,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -94,7 +94,7 @@ final readonly class RegistrationController
         methods: ['GET', 'POST']
     )]
     #[Route(path: '/api/register/confirm/{email}/{token}', name: 'connectholland_user_registration_confirm.api', methods: ['GET', 'POST'])]
-    public function registrationConfirm(Request $request, string $email, string $token, \Symfony\Component\HttpFoundation\UriSigner $uriSigner): Response
+    public function registrationConfirm(Request $request, string $email, string $token, UriSigner $uriSigner): Response
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->registry->getRepository(UserInterface::class);

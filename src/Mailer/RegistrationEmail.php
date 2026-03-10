@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\NegotiatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 final class RegistrationEmail extends BaseEmail implements RegistrationEmailInterface
 {
-    public function __construct(private readonly RouterInterface $router, private readonly \Symfony\Component\HttpFoundation\UriSigner $uriSigner, private readonly NegotiatorInterface $negotiator, private readonly RequestStack $requestStack)
+    public function __construct(private readonly RouterInterface $router, private readonly UriSigner $uriSigner, private readonly NegotiatorInterface $negotiator, private readonly RequestStack $requestStack)
     {
     }
 

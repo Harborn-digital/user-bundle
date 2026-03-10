@@ -10,14 +10,14 @@ declare(strict_types=1);
 namespace ConnectHolland\UserBundle\Mailer;
 
 use ConnectHolland\UserBundle\Entity\UserInterface;
-use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 final class ResetEmail extends BaseEmail implements ResetEmailInterface
 {
-    public function __construct(private readonly RouterInterface $router, private readonly \Symfony\Component\HttpFoundation\UriSigner $uriSigner)
+    public function __construct(private readonly RouterInterface $router, private readonly UriSigner $uriSigner)
     {
     }
 

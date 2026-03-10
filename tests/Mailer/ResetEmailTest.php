@@ -13,7 +13,7 @@ use ConnectHolland\UserBundle\Entity\User;
 use ConnectHolland\UserBundle\Mailer\MailerInterface;
 use ConnectHolland\UserBundle\Mailer\ResetEmail;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
