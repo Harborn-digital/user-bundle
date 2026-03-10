@@ -73,14 +73,14 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev"
+            "dev-master": "3.0.x-dev",
+            "dev-4.x": "4.0.x-dev"
         }
     },
     "autoload": {
         "psr-4": {
             "ConnectHolland\\UserBundle\\": "src"
-        },
-        "files": []
+        }
     },
     "autoload-dev": {
         "psr-4": {
