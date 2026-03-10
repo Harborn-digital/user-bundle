@@ -114,9 +114,15 @@ abstract class BaseUser implements UserInterface
         return $this;
     }
 
-    public function getUsername(): string
+    public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    /** @deprecated use getUserIdentifier() instead */
+    public function getUsername(): string
+    {
+        return $this->getUserIdentifier();
     }
 
     public function getRoles(): array

@@ -15,13 +15,7 @@ use Doctrine\Common\Collections\Collection;
 
 trait OwnableEntityTrait
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="ConnectHolland\UserBundle\Entity\UserInterface")
-     * @ORM\JoinColumn(nullable=true)
-     *
-     * @var UserInterface|null
-     */
-    protected $owner;
+    protected ?UserInterface $owner = null;
 
     public function getOwner(): ?UserInterface
     {
