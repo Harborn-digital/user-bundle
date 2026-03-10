@@ -34,9 +34,4 @@ class PasswordType extends AbstractType
             'constraints' => $this->passwordConstraints->getConstraints(),
         ]);
     }
-
-    public function getBlockPrefix(): string
-    {
-        return null;
-    }
 }
