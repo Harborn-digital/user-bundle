@@ -12,7 +12,6 @@ namespace ConnectHolland\UserBundle\ApiResource;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\OpenApi\Model\Response as OpenApiResponse;
@@ -32,7 +31,7 @@ use ArrayObject;
  */
 #[ApiResource(
     operations: [
-        new GetCollection(
+        new Get(
             name: 'account_details_get',
             uriTemplate: '/account/details',
             routeName: 'connectholland_user_account_account.api',
