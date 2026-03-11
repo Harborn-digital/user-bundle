@@ -247,8 +247,6 @@ services:
     ConnectHolland\UserBundle\EventSubscriber\Doctrine\OwnableSubscriber:
         arguments:
             $tokenStorage: '@security.token_storage'
-        tags:
-            - { name: 'doctrine.event_subscriber' }
 
 
     ConnectHolland\UserBundle\ArgumentResolver\FormValueResolver:

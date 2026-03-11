@@ -12,10 +12,10 @@
     "require": {
         "php": "^8.1",
         "ext-json": "*",
-        "doctrine/collections": "^1.6 || ^2.0",
-        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/collections": "^1.6 || ^2.0 || ^3.0",
+        "doctrine/doctrine-bundle": "^2.7 || ^3.0",
         "doctrine/orm": "^2.17 || ^3.0",
-        "doctrine/persistence": "^2.0 || ^3.0",
+        "doctrine/persistence": "^2.0 || ^3.0 || ^4.0",
         "gisostallenberg/response-content-negotiation-bundle": "^2.0",
         "haydenpierce/class-finder": "^0.5.0",
         "league/html-to-markdown": "^5.0",

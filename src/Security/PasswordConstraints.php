@@ -33,10 +33,10 @@ class PasswordConstraints
                 'max' => 4096,
             ]),
             new PasswordStrength(
-                tooShortMessage: 'connectholland_user.validation.password.password_strength.too_short',
-                message: 'connectholland_user.validation.password.password_strength.too_weak',
-                minLength: $this->passwordRequirements['min_length'],
                 minStrength: $this->passwordRequirements['min_strength'],
+                minLength: $this->passwordRequirements['min_length'],
+                message: 'connectholland_user.validation.password.password_strength.too_weak',
+                tooShortMessage: 'connectholland_user.validation.password.password_strength.too_short',
             ),
         ];
 

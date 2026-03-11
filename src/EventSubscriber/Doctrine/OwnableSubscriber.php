@@ -9,35 +9,36 @@ declare(strict_types=1);
 
 namespace ConnectHolland\UserBundle\EventSubscriber\Doctrine;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use ConnectHolland\UserBundle\Entity\UserInterface;
 use ConnectHolland\UserBundle\Security\Ownable;
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class OwnableSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: Events::prePersist)]
+#[AsDoctrineListener(event: Events::preUpdate)]
+class OwnableSubscriber
 {
     public function __construct(private readonly ?TokenStorageInterface $tokenStorage = null)
     {
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getSubscribedEvents(): array
+    public function preUpdate(PreUpdateEventArgs $args): void
     {
-        return [
-            Events::prePersist,
-            Events::preUpdate,
-        ];
+        $this->applyOwner($args->getObject());
     }
 
-    public function preUpdate(LifecycleEventArgs $args): void
+    public function prePersist(PrePersistEventArgs $args): void
     {
-        $entity = $args->getEntity();
-        $user   = null;
+        $this->applyOwner($args->getObject());
+    }
+
+    private function applyOwner(object $entity): void
+    {
+        $user = null;
 
         if ($this->tokenStorage instanceof TokenStorageInterface && $this->tokenStorage->getToken() instanceof TokenInterface) {
             $user = $this->tokenStorage->getToken()->getUser();
@@ -50,10 +51,5 @@ class OwnableSubscriber implements EventSubscriber
         if ($entity->getOwners()->isEmpty() && $user instanceof UserInterface) {
             $entity->addOwner($user);
         }
-    }
-
-    public function prePersist(LifecycleEventArgs $args): void
-    {
-        $this->preUpdate($args);
     }
 }
