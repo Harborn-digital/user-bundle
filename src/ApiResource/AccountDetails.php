@@ -37,7 +37,7 @@ use ArrayObject;
             routeName: 'connectholland_user_account_account.api',
             openapi: new OpenApiOperation(
                 tags: ['Account'],
-                summary: 'Return the authenticated user\'s account info.',
+                summary: 'Return the authenticated user account info.',
                 responses: [
                     '200' => new OpenApiResponse(
                         description: 'The user account.',
@@ -61,7 +61,7 @@ use ArrayObject;
             routeName: 'connectholland_user_account_account.api',
             openapi: new OpenApiOperation(
                 tags: ['Account'],
-                summary: 'Update the authenticated user\'s email and/or password.',
+                summary: 'Update the authenticated user email and/or password.',
                 responses: [
                     '200' => new OpenApiResponse(description: 'Account updated successfully.'),
                     '400' => new OpenApiResponse(description: 'Validation failed.'),
