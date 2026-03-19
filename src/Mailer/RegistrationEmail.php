@@ -49,6 +49,11 @@ final class RegistrationEmail extends BaseEmail implements RegistrationEmailInte
             return 'connectholland_user_registration_confirm.api';
         }
 
-        return 'connectholland_user_registration_confirm';
+        // By convention the confirmation route = registration route + '_confirm'.
+        // This allows custom registration routes (e.g. _volunteer) to have their
+        // own confirmation URLs that carry the same route defaults.
+        $canonicalRoute = $request?->attributes->get('_canonical_route') ?? 'connectholland_user_registration';
+
+        return $canonicalRoute . '_confirm';
     }
 }
