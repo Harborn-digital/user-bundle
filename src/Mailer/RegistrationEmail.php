@@ -50,9 +50,11 @@ final class RegistrationEmail extends BaseEmail implements RegistrationEmailInte
         }
 
         // By convention the confirmation route = registration route + '_confirm'.
-        // This allows custom registration routes (e.g. _volunteer) to have their
-        // own confirmation URLs that carry the same route defaults.
-        $canonicalRoute = $request?->attributes->get('_canonical_route') ?? 'connectholland_user_registration';
+        // _canonical_route is the route name without locale suffix (e.g. .nl/.en).
+        // Fall back to stripping the locale suffix from _route if _canonical_route is absent.
+        $canonicalRoute = $request?->attributes->get('_canonical_route')
+            ?? preg_replace('/\.[a-z]{2}$/', '', $request?->attributes->get('_route') ?? '')
+            ?: 'connectholland_user_registration';
 
         return $canonicalRoute . '_confirm';
     }
