@@ -14,7 +14,6 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\OpenApi\Model\Response as OpenApiResponse;
-use ArrayObject;
 
 /**
  * User registration resource.
@@ -32,15 +31,7 @@ use ArrayObject;
                 summary: 'Register a new user account.',
                 responses: [
                     '200' => new OpenApiResponse(
-                        description: 'Registration successful. A JWT token is returned.',
-                        content: new ArrayObject([
-                            'application/json' => [
-                                'schema' => [
-                                    'type'       => 'object',
-                                    'properties' => ['token' => ['type' => 'string']],
-                                ],
-                            ],
-                        ]),
+                        description: 'Registration successful.',
                     ),
                     '400' => new OpenApiResponse(description: 'Registration failed — validation errors.'),
                 ],

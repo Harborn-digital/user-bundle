@@ -43,10 +43,7 @@ use ArrayObject;
                         description: 'The user account.',
                         content: new ArrayObject([
                             'application/json' => [
-                                'schema' => [
-                                    'type'       => 'object',
-                                    'properties' => ['email' => ['type' => 'string']],
-                                ],
+                                'schema' => ['$ref' => '#/components/schemas/AccountDetails'],
                             ],
                         ]),
                     ),
