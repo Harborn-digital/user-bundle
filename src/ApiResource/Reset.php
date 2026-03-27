@@ -28,12 +28,15 @@ use ApiPlatform\OpenApi\Model\Response as OpenApiResponse;
     operations: [
         new Post(
             uriTemplate: '/account/password-reset',
+            status: 200,
             routeName: 'connectholland_user_reset.api',
+            output: false,
             openapi: new OpenApiOperation(
                 tags: ['Account'],
                 summary: 'Request a password reset e-mail.',
                 responses: [
                     '200' => new OpenApiResponse(description: 'Password reset e-mail sent successfully.'),
+                    '400' => new OpenApiResponse(description: 'Invalid e-mail address.'),
                 ],
             ),
         ),

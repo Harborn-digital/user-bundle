@@ -55,7 +55,9 @@ use ArrayObject;
         ),
         new Post(
             uriTemplate: '/account/details',
+            status: 200,
             routeName: 'connectholland_user_account_account.api',
+            output: false,
             openapi: new OpenApiOperation(
                 tags: ['Account'],
                 summary: 'Update the authenticated user email and/or password.',

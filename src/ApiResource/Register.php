@@ -25,14 +25,14 @@ use ApiPlatform\OpenApi\Model\Response as OpenApiResponse;
     operations: [
         new Post(
             uriTemplate: '/register',
+            status: 200,
             routeName: 'connectholland_user_registration.api',
+            output: false,
             openapi: new OpenApiOperation(
                 tags: ['Register'],
                 summary: 'Register a new user account.',
                 responses: [
-                    '200' => new OpenApiResponse(
-                        description: 'Registration successful.',
-                    ),
+                    '200' => new OpenApiResponse(description: 'Registration successful.'),
                     '400' => new OpenApiResponse(description: 'Registration failed — validation errors.'),
                 ],
             ),
