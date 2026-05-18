@@ -14,19 +14,12 @@ use ConnectHolland\UserBundle\UserBundleEvents;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\NegotiatorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class PasswordResetFailedSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var Request|null
-     */
-    private $request;
-
-    public function __construct(private readonly NegotiatorInterface $negotiator, RequestStack $requestStack)
+    public function __construct(private readonly NegotiatorInterface $negotiator, private readonly RequestStack $requestStack)
     {
-        $this->request    = $requestStack->getCurrentRequest();
     }
 
     /**
@@ -43,7 +36,9 @@ class PasswordResetFailedSubscriber implements EventSubscriberInterface
 
     public function onPostRegistrationEvent(PasswordResetFailedEvent $event): void
     {
-        if ($this->request !== null && $this->negotiator->getResult($this->request) === 'json') {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request !== null && $this->negotiator->getResult($request) === 'json') {
             $response = new JsonResponse(['errors' => ['connectholland_user.password_reset_failed' => 'Resetting the password failed.']], JsonResponse::HTTP_BAD_REQUEST);
             $event->setResponse($response);
         }

@@ -13,19 +13,12 @@ use ConnectHolland\UserBundle\Event\PostRegistrationEvent;
 use GisoStallenberg\Bundle\ResponseContentNegotiationBundle\Negotiation\NegotiatorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class RegistrationSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var Request|null
-     */
-    private $request;
-
-    public function __construct(private readonly NegotiatorInterface $negotiator, RequestStack $requestStack)
+    public function __construct(private readonly NegotiatorInterface $negotiator, private readonly RequestStack $requestStack)
     {
-        $this->request    = $requestStack->getCurrentRequest();
     }
 
     /**
@@ -42,7 +35,9 @@ class RegistrationSubscriber implements EventSubscriberInterface
 
     public function onPostRegistrationEvent(PostRegistrationEvent $event): void
     {
-        if ($this->request !== null && $this->negotiator->getResult($this->request) === 'json') {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request !== null && $this->negotiator->getResult($request) === 'json') {
             $response = new JsonResponse([]);
             $event->setResponse($response);
         }
